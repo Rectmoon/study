@@ -39,7 +39,7 @@ Validator.prototype.add = function(dom,ruleArr){
                 var strategy = tempArr.shift();
                 tempArr.unshift(dom.value);
                 tempArr.push(errMsg);
-                return strategies[strategy].apply(dom,tempArr);
+                return strategies[strategy].apply(dom,tempArr); 
             })
         })(ruleArr[i])
     }
@@ -102,7 +102,6 @@ var submitMsg = function(){
   warn.textContent = '用户信息已成功提交至服务器';
 }
 submitMsg = submitMsg.before(vld.start.bind(vld));
-console.log(submitMsg);
 form.addEventListener('submit',function(e){ 
    e.preventDefault();  
    submitMsg();
