@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            font-size: 0;
+        }
+        .radio-name{
+            display:inline-block;
+            vertical-align: middle;
+            font-size: 16px;
+        }
+        .radio-beauty{
+            width: 18px;
+            height: 18px;
+            box-sizing: border-box;
+            display:inline-block;
+            border:1px solid skyblue;
+            margin:0 15px 0 3px;
+            border-radius:50%;
+            vertical-align: middle;
+        }
+        .radio-beauty:hover{
+            box-shadow: 0 0 7px lightblue;
+            padding:2px;
+            background-color:lightblue;
+            background-clip:content-box;
+        }
+        input[type='radio']:checked+.radio-beauty{
+            padding:2px;
+            background-color:orange;
+            background-clip:content-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="">
+            <span class='radio-name'>前段工程师</span>
+            <input type='radio' name='radioName' id='radioName1' hidden/>
+            <label for="radioName1" class='radio-beauty'></label>
+        </label>
+        <label for="">
+            <span class='radio-name'>后台工程师</span>
+            <input type='radio' name='radioName' id='radioName2' hidden/>
+            <label for="radioName2" class='radio-beauty'></label>
+        </label>
+        <label for="">
+            <span class='radio-name'>全栈工程师</span>
+            <input type='radio' name='radioName' id='radioName3' hidden/>
+            <label for="radioName3" class='radio-beauty'></label>
+        </label>
+    </div>
+</body>
+</html>

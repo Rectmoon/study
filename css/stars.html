@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>星级评分</title>
+    <style>
+        /*
+          评分  
+        */
+        .rating{font-size:0;display:table;}
+        .rating>label{color:#ddd;float:right;}
+        .rating>label:before{padding:5px;font-size:24px;line-height:1em;display:inline-block;content:'★'}
+        .rating>input:checked ~ label,
+        .rating:not(:checked)>label:hover,
+        .rating:not(:checked)>label:hover ~ label{color:#ffd700}
+
+
+        /*
+        展示分数
+        只需要根据分数计算百分比
+        */
+        .star-rating{
+            unicode-bidi:bidi-override;
+            color:#ddd;
+            font-size:0;
+            height:25px;
+            margin:0 auto;
+            position:relative;
+            display:table;
+            padding:0;
+            text-shadow:0px 1px 0 #a2a2a2; 
+        }
+        .star-rating span{
+            padding:5px;
+            font-size:20px;
+        }
+        .star-rating span:after{content:'★';}
+        .star-rating-top{
+            color:#ffd700;
+            padding:0;
+            position: absolute;
+            z-index:1;
+            display:block;
+            top:0;
+            left:0;
+            overflow:hidden;
+            white-space:nowrap;
+        }
+        .star-rating-bottom{
+            padding:0;
+            display: block;
+            z-index:0;
+        }
+    </style>
+</head>
+<body>
+    <div class="rating">
+        <input type="radio" id='star5' name='rating' value='5' hidden/>
+        <label for="star5"></label>
+        <input type="radio" id='star4' name='rating' value='4' hidden/>
+        <label for="star4"></label>
+        <input type="radio" id='star3' name='rating' value='3' hidden/>
+        <label for="star3"></label>
+        <input type="radio" id='star2' name='rating' value='2' hidden/>
+        <label for="star2"></label>
+        <input type="radio" id='star1' name='rating' value='1' hidden/>
+        <label for="star1"></label>
+    </div>
+
+    <div class="star-rating">
+        <div class="star-rating-top" style='width:69%'>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="star-rating-bottom">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</body>
+</html>
