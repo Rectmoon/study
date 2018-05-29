@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <script src='js/jquery-3.3.1.js'></script>
+  <script src='js/bootstrap.js'></script>
+</head>
+
+<body>
+  <form action="processOrder.php" method='post'>
+    <div class="panel panel-default">
+      <div class="panel-heading">Welcome to my sight!</div>
+      <!-- Table -->
+      <table class="table">
+        <tr>
+          <th>item</th>
+          <th>quantity</th>
+        </tr>
+        <tr>
+          <td>Tires</td>
+          <td>
+            <input type="text" name='tireqty' size='3' maxlength="3">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Oil</td>
+          <td>
+            <input type="text" name='oilqty' size='3' maxlength="3">
+          </td>
+        </tr>
+
+        <tr>
+          <td>Spark Plugs</td>
+          <td>
+            <input type="text" name='sparkqty' size='3' maxlength="3">
+          </td>
+        </tr>
+      </table>
+
+    </div>
+    <button type="button" class="btn btn-default">提交</button>
+  </form>
+
+
+  <script>
+    $('.btn').click(function () {
+      $('form').submit()
+    })
+  </script>
+</body>
+
+</html>
