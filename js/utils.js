@@ -218,6 +218,22 @@
       checkDate.setMonth(0)
       checkDate.setDate(1)
       return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1
+    },
+    addHandler: function(element, type, handler) {
+    	if (element.addEventListener) 
+    		element.addEventListener(type, handler, false)
+    	else if (element.attachEvent)
+    		element.attachEvent('on' + type, handler)
+    	else 
+    		element['on' + type] = handler
+    },
+    removeHandler: function(element, type, handler) {
+    	if (element.removeEventListener) 
+    		element.removeEventListener(type, handler, false)
+    	else if (element.detachEvent)
+    		element.detachEvent('on' + type, handler)
+    	else 
+    		element['on' + type] = null
     }
   }
 
