@@ -108,57 +108,6 @@
     isPlaneObject: isPlaneObject,
     isWindow: isWindow,
     toType: toType,
-    extend: function() {
-      var options,
-        name,
-        src,
-        copy,
-        copyIsArray,
-        clone,
-        target = arguments[0] || {},
-        i = 1,
-        length = arguments.length,
-        deep = false
-      // 如果第一个参数为布尔,判定是否深拷贝
-      if (typeof target === 'boolean') {
-        deep = target
-        target = arguments[1] || {}
-        i++
-      }
-      // 确保接受方为一个复杂的数据类型
-      if (typeof target !== 'object' && !isFunction(obj)) {
-        target = {}
-      }
-      if (i === length) {
-        target = this
-        i--
-      }
-      for (; i < length; i++) {
-        if ((options = arguments[i]) != null) {
-          for (name in options) {
-            src = target[name]
-            copy = options[name]
-            if (target === copy) continue
-            if (
-              deep &&
-              copy &&
-              (isPlaneObject(copy) || (copyIsArray = isArray(copy)))
-            ) {
-              if (copyIsArray) {
-                copyIsArray = false
-                clone = src && isArray(src) ? src : []
-              } else {
-                clone = src && isPlaneObject(src) ? src : {}
-              }
-              target[name] = zly.extend(deep, clone, copy)
-            } else if (copy !== undefined) {
-              target[name] = copy
-            }
-          }
-        }
-      }
-      return target
-    },
     each: function(arr, cb, context) {
       var length,
         i = 0
@@ -172,64 +121,6 @@
           if (cb.call(context, arr[i], i, arr) === false) break
         }
       }
-    },
-    dateFormat: function(date, fmt) {
-      if (typeof date === 'number' || typeof date === 'string')
-        date = new Date(date)
-      var valid = date instanceof Date && !isNaN(date.getFullYear())
-      if (!valid) return false
-      var _date_format = /(Y{2,4})|(M{1,2})|(D{1,2})|(h{1,2})|(m{1,2})|(s{1,2})/g
-      return fmt.replace(_date_format, function(self, Y, M, D, h, m, s) {
-        var str
-        switch (true) {
-          case !!Y:
-            str = date.getFullYear().toString()
-            return str.substr(str.length - Y.length)
-          case !!M:
-            str = '0' + (date.getMonth() + 1)
-            return str.substr(str.length - M.length)
-          case !!D:
-            str = '0' + date.getDate()
-            return str.substr(str.length - D.length)
-          case !!h:
-            str = '0' + date.getHours()
-            return str.substr(str.length - h.length)
-          case !!m:
-            str = '0' + date.getMinutes()
-            return str.substr(str.length - m.length)
-          case !!s:
-            str = '0' + date.getSeconds()
-            return str.substr(str.length - s.length)
-          default:
-            return ''
-        }
-      })
-    },
-    /**
-     * 周一开始,取某年第几周
-     * @param {date} String or Number
-     */
-    getWeekOfYear: function(date) {
-      var time,
-        checkDate = new Date(date)
-      // Find Thursday of this week starting on Monday
-      checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7))
-      time = checkDate.getTime()
-      checkDate.setMonth(0)
-      checkDate.setDate(1)
-      return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1
-    },
-    addHandler: function(element, type, handler) {
-      if (element.addEventListener)
-        element.addEventListener(type, handler, false)
-      else if (element.attachEvent) element.attachEvent('on' + type, handler)
-      else element['on' + type] = handler
-    },
-    removeHandler: function(element, type, handler) {
-      if (element.removeEventListener)
-        element.removeEventListener(type, handler, false)
-      else if (element.detachEvent) element.detachEvent('on' + type, handler)
-      else element['on' + type] = null
     }
   }
 
