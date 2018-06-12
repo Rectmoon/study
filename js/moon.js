@@ -197,9 +197,7 @@ namespace('moon.config')
 ;(function() {
   var flag = false
   var config = {
-    loaderPath: flag
-      ? location.protocol + '//ossweb-img.qq.com/images/js/mobile/'
-      : './js/',
+    loaderPath: flag ? location.protocol + 'MY CDN PATH' : './js/',
     version: '20180612',
     expires: 30000
   }
@@ -1901,20 +1899,3 @@ if (!String.prototype.repeat) {
     return new Array(n + 1).join(this)
   }
 }
-// ;(function() {
-//   var updateOrientation = function() {
-//     var orientation = 640
-//     var d = document,
-//       s = d.createElement('style'),
-//       z = (d.documentElement.clientWidth || d.body.clientWidth) / orientation
-//     document.getElementById('tgp_present_log').style.zoom = z
-//     document.getElementById('tgp_user_info').style.zoom = z
-//     document.getElementById('tgp_tip').style.zoom = z
-//     document.getElementById('tgp_warn').style.zoom = z
-//   }
-//   var init = function() {
-//     updateOrientation()
-//     window.addEventListener('resize', updateOrientation, false)
-//   }
-//   window.addEventListener('DOMContentLoaded', init, false)
-// })()
