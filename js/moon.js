@@ -46,7 +46,15 @@ namespace('moon.base')
           .replace(/\[object\s+(\w+)\]/i, '$1')
           .toLowerCase()
   }
-
+  /**
+   * 判断对象是否定义
+   * 其实只对对象中的元素判断有效，如是纯变量，此方法会无法调用，需要外面加try
+   * @param {object} object 对象
+   * @return {bool} 是/否
+   */
+  function isUndefined(o) {
+    return o === undefined && typeof o == 'undefined'
+  }
   function isArray(o) {
     return getParamType(o) === 'array'
   }
@@ -126,6 +134,7 @@ namespace('moon.base')
 
   moon.base.extend({
     getParamType: getParamType,
+    isUndefined: isUndefined,
     isArray: isArray,
     isFunction: isFunction,
     isPlaneObject: isPlaneObject,
@@ -156,14 +165,46 @@ namespace('moon.base')
     q: function(selector, ctx) {
       if (!isDom(ctx) || !isString(selector)) return false
       var CLASS_SELECTOR = /^\.([\w-]+)$/,
-        ID_SELECTOR = /^\.([\w-]+)$/,
+        ID_SELECTOR = /^#[\w\d-]+$/,
         TAG_SELECTOR = /^[\w-]+$/
-      // var elements
+      var elements
+      selector = moon.trim(selector)
+      if (CLASS_SELECTOR.test(selector)) {
+        elements = getElementsByClassName(selector.replace('.', ''), ctx)
+      } else if (TAG_SELECTOR.test(selector)) {
+        elements = ctx.getElementsByTagName(selector)
+      } else if (ID_SELECTOR.test(selector) && ctx === document) {
+        elements = ctx.getElementById(selector.replace('#', ''))
+        if (!elements) {
+          elements = []
+        }
+      } else {
+        elements = ctx.querySelectorAll(selector)
+      }
+      if (elements.nodeType) {
+        return [elements]
+      } else {
+        return Array.prototype.slice.call(elements)
+      }
     }
   })
 })()
 // !!!
 moon.base.extend(window, moon.base)
+
+/**================================================通用配置设置=======================================================*/
+namespace('moon.config')
+;(function() {
+  var flag = false
+  var config = {
+    loaderPath: flag
+      ? location.protocol + '//ossweb-img.qq.com/images/js/mobile/'
+      : './js/',
+    version: '20180612',
+    expires: 30000
+  }
+  extend(moon.config, config)
+})()
 
 /**================================================loader=======================================================*/
 namespace('moon.loader')
@@ -187,9 +228,7 @@ namespace('moon.loader')
      * @return {undefined} undefined
      */
     need: function(modules, cb) {
-      if (!isArray(modules)) {
-        modules = new Array(modules)
-      }
+      if (!isArray(modules)) modules = new Array(modules)
       var mc = moduleContainer('', modules, cb)
       start(mc)
     },
@@ -214,7 +253,7 @@ namespace('moon.loader')
         name = 'noname_' + Math.floor(Math.random() * 1000000)
       }
       //**callback非function 为object时，直接为name返回object（cb回调中）
-      queue.push([name, deps, callback])
+      queue.push([name, deps, cb])
       loader.defineMap.push(name)
     },
     /**
@@ -271,15 +310,15 @@ namespace('moon.loader')
         mc.loadUrlCallback.apply(mc, [moon.loader.modulemap[key], key])
       } else {
         //判断有没有加载过
-        var loaded = false
+        var _loaded = false
         for (var i = 0; i < queue.length; i++) {
           if (queue[i][0] == key) {
             mc.loadUrlCallback.apply(mc, [queue[i][2], key, i])
-            loaded = true
+            _loaded = true
             break
           }
         }
-        if (!loaded) load(need[key], key, mc)
+        if (!_loaded) load(need[key], key, mc)
       }
     }
     //检查加载状态
@@ -339,7 +378,7 @@ namespace('moon.loader')
    * @param {function} callback 回调方法
    * @return {object} object
    */
-  function includerContainer(files, callback) {
+  function includerContainer(files, cb) {
     var needown = 0,
       hasdown = 0,
       need = {}
@@ -357,8 +396,8 @@ namespace('moon.loader')
       files: files,
       need: need, //依赖对象数组(用于load下载)
       res: new Array(), //依赖对象结果 结果集
-      expires: needown * milo.config.expires, //过期时间
-      callback: callback, //模块加载完成后的回调
+      expires: needown * moon.config.expires, //过期时间
+      callback: cb, //模块加载完成后的回调
       needown: needown, //需要下载数
       hasdown: hasdown, //已下载数
       /**
@@ -519,7 +558,7 @@ namespace('moon.loader')
       res: new Array(), //依赖对象结果 结果集
       //**对于对象的时间处理还需要调整
       expires: modules.length * moon.config.expires, //过期时间
-      callback: callback, //模块加载完成后的回调
+      callback: cb, //模块加载完成后的回调
       needown: needown, //需要下载数
       hasdown: hasdown, //已下载数
       hasmaped: hasmaped, //已成功定义数
@@ -540,7 +579,7 @@ namespace('moon.loader')
           var deps = queue.splice(startPos, 1).pop()
           if (deps === null) {
             moon.loader.modulemap[name] = ret
-            remoduleContainerturn
+            return
           }
           deps[0] = name
           //每新建一个deps则处理
@@ -550,12 +589,458 @@ namespace('moon.loader')
           //失败提前处理结果
           moon.loader.modulemap[name] = 'undefined'
         }
+      },
+      /**
+       * mc所有文件下载成功后回调
+       * @param {bool} ret 下载情况
+       * @param {string} name 模块名称
+       * @return {undefined} undefined
+       * 等待maped成功后
+       */
+      loadInluderCallback: function(ret) {
+        if (!ret) {
+          //**看失败是否可提前处理结果
+          //失败处理
+          //给模块中未定义模块置为undefined
+          //并置maped数量
+        }
+        this.checkMaped()
+      },
+      /**
+       * mc所有文件下载成功后回调
+       * @param {bool} ret 下载情况
+       * @param {string} name 模块名称
+       * @return {undefined} undefined
+       * 等待maped成功后
+       */
+      completeLoad: function(maped) {
+        var ret = []
+        //**取content的deps对应查modulemap存在与否
+        for (var i = 0; i < this.modules.length; i++) {
+          ret.push(this.res[this.modules[i]])
+        }
+
+        if (!isFunction(this.callback) && !isObject(this.callback)) return false
+        if (this.name == '') this.callback.apply(null, ret)
+        else {
+          isObject(this.callback)
+            ? (moon.loader.modulemap[this.name] = this.callback)
+            : (moon.loader.modulemap[this.name] = this.callback.apply(
+                null,
+                ret
+              ))
+        }
+      },
+      /**
+       * 检查是否已有maped的对象
+       * @return {undefined} undefined
+       * 在限定时间内检查modulemap
+       */
+      checkMaped: function() {
+        //如modulemap存在maped对象，则为res添加。
+        for (var i = 0; i < this.modules.length; i++) {
+          if (
+            isUndefined(this.res[this.modules[i]]) &&
+            !isUndefined(moon.loader.modulemap[this.modules[i]])
+          ) {
+            this.res[this.modules[i]] = moon.loader.modulemap[this.modules[i]]
+            this.hasmaped++
+          }
+        }
+        //加载完成
+        if (this.hasmaped == this.needown) {
+          this.completeLoad.apply(this, [true])
+          return
+        }
+
+        //加载超时
+        if (this.hasmaped < this.needown && this.expires <= 0) {
+          for (var i = 0; i < this.modules.length; i++) {
+            if (!isObject(moon.loader.modulemap[this.modules[i]])) {
+              this.res[this.modules[i]] = 'undefined'
+              this.hasmaped++
+            }
+          }
+          this.completeLoad.apply(this, [false])
+          return
+        }
+
+        //继续监听
+        if (this.hasmaped < this.needown && this.expires > 0) {
+          this.expires = this.expires - 50
+          var mc = this
+          setTimeout(function() {
+            mc.checkMaped()
+          }, 50)
+        }
       }
     }
   }
 })()
 extend(window, moon.loader)
-/**================================================浏览器类型和版本号===================================================*/
+/**================================================dom工具类===========================================================*/
+namespace('moon.dom')
+;(function() {
+  var dom = moon.dom,
+    userAgent = navigator.userAgent.toLowerCase()
+  extend(dom, {
+    /**
+     * 判断浏览器类型
+     */
+    browser: {
+      /**
+       * 获取版本号
+       */
+      version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [
+        0,
+        '0'
+      ])[1],
+      /**
+       * 是否webkit浏览器
+       */
+      webkit: /webkit/.test(userAgent),
+      /**
+       * 是否opera浏览器
+       */
+      opera: /opera/.test(userAgent),
+      /**
+       * 是否IE浏览器
+       */
+      msie: /msie/.test(userAgent) && !/opera/.test(userAgent),
+      /**
+       * 是否mozilla浏览器
+       */
+      mozilla:
+        /mozilla/.test(userAgent) && !/(compatible|webkit)/.test(userAgent),
+      /**
+       * 是否TT浏览器
+       */
+      tt: /tencenttraveler/.test(userAgent),
+      /**
+       * 是否chrome浏览器
+       */
+      chrome: /chrome/.test(userAgent),
+      /**
+       * 是否firefox浏览器
+       */
+      firefox: /firefox/.test(userAgent),
+      /**
+       * 是否safari浏览器
+       */
+      safari: /safari/.test(userAgent),
+      /**
+       * 是否gecko浏览器
+       */
+      gecko: /gecko/.test(userAgent),
+      /**
+       * 是否IE6
+       */
+      ie6: this.msie && this.version.substr(0, 1) == '6'
+    },
+
+    /**
+     * 获取手机平台
+     * @param {string} pa 参数名称
+     * @return {string} 参数值
+     */
+    mobilePlat: (function() {
+      var ua = navigator.userAgent
+      if (/(iPhone|iPad|iPod|iOS)/i.test(ua)) {
+        return 'ios'
+      } else if (/(Android)/i.test(ua)) {
+        return 'android'
+      } else if (/(Windows Phone)/i.test(ua)) {
+        return 'winphone'
+      } else {
+        return 'pc'
+      }
+    })(),
+    /**
+     * 获取webview的平台
+     * @param {string} pa 参数名称
+     * @return {string} 参数值
+     */
+    webViewPlat: (function() {
+      var ua = navigator.userAgent.toLowerCase()
+      if (/(micromessenger)/.test(ua)) {
+        return 'wx'
+      } else if (/(mqqbrowser)/.test(ua)) {
+        return 'mqqbrowser'
+      } else if (/qq\/(\/[\d\.]+)*/.test(ua) || /qzone\//.test(ua)) {
+        return 'qq'
+      } else if (/weibo/.test(ua)) {
+        return 'weibo'
+      }
+      return 'other'
+    })(),
+    /**
+     * 网络状态，手Q跟微信的webview的ua里面有网络类型
+     */
+    networkType: (function() {
+      var ua = navigator.userAgent.toLowerCase()
+      var res = /nettype\/([\S]+)(\s)+/.exec(ua)
+      if (res != null) {
+        return res[1] || 'unknown'
+      }
+      return 'unknown'
+    })(),
+    /**
+     * 判断DOM对象是否存在样式类名称
+     * @param {dom} element dom对象
+     * @param {string} className 样式名称
+     * @return {bool}
+     */
+    hasClass: function(element, className) {
+      var elementClassName = element.className
+      return (
+        elementClassName.length > 0 &&
+        (elementClassName == className ||
+          new RegExp('(^|\\s)' + className + '(\\s|$)').test(elementClassName))
+      )
+    },
+    /**
+     * 为DOM对象增加样式类名称
+     * @param {dom} element dom对象
+     * @param {string} className 样式名称
+     * @return {dom}
+     */
+    addClass: function(element, className) {
+      if (!moon.hasClass(element, className))
+        element.className += (element.className ? ' ' : '') + className
+      return element
+    },
+    /**
+     * 为DOM对象删除样式类名称
+     * 为DOM对象删除样式类名称
+     * @param {dom} element dom对象
+     * @param {string} className 样式名称
+     * @return {dom}
+     */
+    removeClass: function(element, className) {
+      element.className = element.className.replace(
+        new RegExp('(^|\\s+)' + className + '(\\s+|$)'),
+        ''
+      )
+      return element
+    },
+    /**
+     * 获取url中的参数值
+     * @param {string} pa 参数名称
+     * @return {string} 参数值
+     */
+    request: function(pa) {
+      var url = window.location.href.replace(/#+.*$/, ''),
+        params = url.substring(url.indexOf('?') + 1, url.length).split('&'),
+        param = {}
+      for (var i = 0; i < params.length; i++) {
+        var pos = params[i].indexOf('='), //查找name=value
+          key = params[i].substring(0, pos),
+          val = params[i].substring(pos + 1) //提取value
+        param[key] = val
+      }
+      return typeof param[pa] == 'undefined' ? '' : param[pa]
+    },
+    isOwnProperty: function(object, property) {
+      return Object.prototype.hasOwnProperty.call(object, property)
+    },
+    serializeParams: function(params, character) {
+      var key, serialize
+      if (character == null) character = ''
+      serialize = character
+      for (key in params) {
+        if (params.hasOwnProperty(key)) {
+          if (serialize !== character) serialize += '&'
+          serialize +=
+            '' + encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
+        }
+      }
+      if (serialize === character) return ''
+      return serialize
+    },
+    each: function(arr, cb, context) {
+      var length,
+        i = 0
+      if (isArray(arr)) {
+        length = arr.length
+        for (; i < length; i++) {
+          if (cb.call(context, arr[i], i, arr) === false) break
+        }
+      } else {
+        for (i in arr) {
+          if (cb.call(context, arr[i], i, arr) === false) break
+        }
+      }
+    },
+    map: function(arr, cb, context) {
+      var length,
+        value,
+        i = 0,
+        res = []
+      if (isArray(arr)) {
+        length = arr.length
+        for (; i < length; i++) {
+          value = cb(arr[i], i, context)
+          if (value != null) res.push(value)
+        }
+      } else {
+        for (i in arr) {
+          value = cb(arr[i], i, context)
+          if (value != null) {
+            res.push(value)
+          }
+        }
+      }
+      return [].concat.apply([], res)
+    },
+    instance: function(elements, property) {
+      return moon.map(elements, function(element, index) {
+        return element[property]
+      })
+    },
+    filter: function(elements, selector) {
+      return [].filter.call(elements, function(element) {
+        return (
+          element.parentNode &&
+          q(selector, element.parentNode).indexOf(element) >= 0
+        )
+      })
+    },
+    removeNode: function(element) {
+      if (element.parentNode != null) {
+        element.parentNode.removeChild(element)
+      }
+    },
+    /**
+     * 为dom对象设置样式
+     * @param {dom} ele dom对象
+     * @param {object} styles 样式对象 like:{width:100,height:100}
+     * @return undefined
+     */
+    setStyle: function(ele, styles) {
+      for (var i in styles) {
+        ele.style[i] = styles[i]
+      }
+    },
+
+    /**
+     * 为dom对象获取选定属性的样式
+     * @param {dom} ele dom对象
+     * @param {string} prop 属性名称
+     * @return 属性样式
+     */
+    getStyle: function(el, prop) {
+      var viewCSS = isFunction(document.defaultView) //(typeof document.defaultView == 'function')
+        ? document.defaultView()
+        : document.defaultView
+      if (viewCSS && viewCSS.getComputedStyle) {
+        var s = viewCSS.getComputedStyle(el, null)
+        return s && s.getPropertyValue(prop)
+      }
+      return (el.currentStyle && (el.currentStyle[prop] || null)) || null
+    },
+    /**
+     * 获取页面最大高度
+     * @return 属性样式
+     */
+    getMaxH: function() {
+      return this.getPageHeight() > this.getWinHeight()
+        ? this.getPageHeight()
+        : this.getWinHeight()
+    },
+    /**
+     * 获取页面最大宽度
+     * @return 属性样式
+     */
+    getMaxW: function() {
+      return this.getPageWidth() > this.getWinWidth()
+        ? this.getPageWidth()
+        : this.getWinWidth()
+    },
+    /**
+     * 网页内容高度
+     * @return {int} 网页内容高度
+     */
+    getPageHeight: function() {
+      var h =
+        window.innerHeight && window.scrollMaxY
+          ? window.innerHeight + window.scrollMaxY
+          : document.body.scrollHeight > document.body.offsetHeight
+            ? document.body.scrollHeight
+            : document.body.offsetHeight
+      return h > document.documentElement.scrollHeight
+        ? h
+        : document.documentElement.scrollHeight
+    },
+    /**
+     * 浏览器可视区域高度
+     * @return {int} 网可视区域高度
+     */
+    getWinHeight: function() {
+      return window.innerHeight
+        ? window.innerHeight
+        : document.documentElement && document.documentElement.clientHeight
+          ? document.documentElement.clientHeight
+          : document.body.offsetHeight
+    },
+    /**
+     * 网页内容宽度
+     * @return {int} 网页内容宽度
+     */
+    getPageWidth: function() {
+      return window.innerWidth && window.scrollMaxX
+        ? window.innerWidth + window.scrollMaxX
+        : document.body.scrollWidth > document.body.offsetWidth
+          ? document.body.scrollWidth
+          : document.body.offsetWidth
+    },
+    /**
+     * 浏览器可视区域宽度
+     * @return {int} 网可视区域宽度
+     */
+    getWinWidth: function() {
+      return window.innerWidth
+        ? window.innerWidth
+        : document.documentElement && document.documentElement.clientWidth
+          ? document.documentElement.clientWidth
+          : document.body.offsetWidth
+    },
+    /**
+     * 设置dom透明度
+     * @param {dom} ele dom对象
+     * @param {int} level 透明度值（0-100的整数）
+     * @return {undefined}
+     */
+    setOpacity: function(ele, level) {
+      if (
+        this.browser.msie &&
+        (!document.documentMode || document.documentMode < 9)
+      )
+        ele.style.filter = 'Alpha(opacity=' + level + ')'
+      else ele.style.opacity = level / 100
+    },
+    /**
+     * 获取页面中对象的绝对X位置
+     * @param {dom} e dom对象
+     * @return {int}
+     */
+    getX: function(e) {
+      var t = e.offsetLeft
+      while ((e = e.offsetParent)) t += e.offsetLeft
+      return t
+    },
+    /**
+     * 获取页面中对象的绝对Y位置
+     * @param {dom} e dom对象
+     * @return {int}
+     */
+    getY: function(e) {
+      var t = e.offsetTop
+      while ((e = e.offsetParent)) t += e.offsetTop
+      return t
+    }
+  })
+})()
+
 /**================================================字符串工具类=========================================================*/
 namespace('moon.string')
 ;(function() {
@@ -1189,41 +1674,247 @@ namespace('moon.event')
      */
     ready: function(fn) {
       bindReadyEvent()
+      if (moon.isReady) fn.call()
+      else {
+        if (isFunction(fn)) moon.readyFn.push(fn)
+      }
+    },
+    /**
+     * 该方法用于绑定点击事件，比一般的click事件反应速度快2倍。
+     * @param {dom} obj 要绑定的dom对象
+     * @param {function} cb 事件触发的函数
+     *  @return {undefined}
+     */
+    touchClick: function(obj, cb) {
+      var start_x = 0,
+        start_y = 0
+      obj.addEventListener('touchstart', function(e) {
+        start_x = e.touches[0].clientX
+        start_y = e.touches[0].clientY
+        document.addEventListener('touchend', touEnd, false)
+      })
+      function touEnd(e) {
+        var endX = e.changedTouches[0].clientX
+        var endY = e.changedTouches[0].clientY
+        if (Math.abs(endX - start_x) < 5 && Math.abs(endY - start_y) < 5) {
+          cb.call(obj, e)
+        }
+        document.removeEventListener('touchend', touEnd, false)
+      }
+    },
+    /**
+     * 阻止默认行为
+     * @param {event} e 事件
+     * @return {dom}
+     */
+    preventDefault: function(e) {
+      if (e.preventDefault) e.preventDefault()
+      else e.returnValue = false
+    },
+    /**
+     * 阻止事件冒泡传递
+     * @param {event} e 事件
+     * @return {dom}
+     */
+    stopPropagation: function(e) {
+      if (e.stopPropagation) e.stopPropagation()
+      else e.cancelBubble = true
     }
   })
 
   function bindReadyEvent() {
-    if (document.readyState === 'complete') {
-      return ready()
-    }
-    if (document.addEventListener) {
-      document.addEventListener(
-        'DOMContentLoaded',
-        function() {
-          document.removeEventListener(
-            'DOMContentLoaded',
-            arguments.callee,
-            false
-          )
-          ready()
-        },
-        false
-      )
-      window.addEventListener('load', ready, false)
+    if (document.readyState === 'complete') return ready()
+    moon.addHandler(document, 'DOMContentLoaded', function() {
+      moon.removeHandler(document, 'DOMContentLoaded', arguments.callee)
+    })
+    moon.addHandler(window, 'load', ready)
+  }
+  function ready() {
+    if (!moon.isReady) {
+      if (!document.body) return setTimeout(ready, 15)
+      moon.isReady = true
+      //把预加载的合并文件里的Define，进行预Need一下,以利用原逻辑，加到map中
+      moon.loader.preNeed()
+      if (moon.readyFn.length > 0) {
+        var i = 0,
+          fn
+        while ((fn = moon.readyFn[i++])) fn.call()
+        moon.readyFn.length = 0
+      }
     }
   }
-
-  // function ready() {
-  //   if (!moon.isReady) {
-  //     if (!document.body) return setTimeout(ready, 15)
-  //     moon.isReady = true
-  //   }
-  // }
 })()
 
+/**=================================================storage工具类================================================*/
+namespace('moon.store')
+;(function() {
+  var store = (moon.store = {
+    storage: window.localStorage,
+    session: {
+      storage: window.sessionStorage
+    }
+  })
+  var api = {
+    setItem: function(k, v) {
+      if (this.disabled) return
+      if (v === undefined) return this.remove(k)
+      this.storage.setItem(k, JSON.stringify(v))
+    },
+    getItem: function(k, def) {
+      if (this.disabled) return def
+      var v = deserialize(this.storage.getItem(k))
+      return v === undefined ? def : v
+    },
+    hasItem: function(k) {
+      return this.getItem(k) !== undefined
+    },
+    removeItem: function(k) {
+      if (this.disabled) return
+      this.storage.removeItem(k)
+    },
+    clearItem: function() {
+      if (this.disabled) return
+      this.storage.clear()
+    },
+    forEach: function(cb) {
+      if (this.disabled) return
+      for (var i = 0; i < this.storage.length; i++) {
+        var k = this.storage.key(i)
+        cb(k, this.getItem(k))
+      }
+    },
+    getAll: function() {
+      if (this.disabled) return null
+      var res = {}
+      this.forEach(function(k, v) {
+        res[k] = v
+      })
+      return res
+    }
+  }
+  extend(store, api)
+  extend(store.session, api)
+  function deserialize(val) {
+    if (typeof val !== 'string') return undefined
+    try {
+      return JSON.parse(val)
+    } catch (e) {
+      return val || undefined
+    }
+  }
+})()
+
+moon.base.extend(moon, moon.browser)
+moon.base.extend(moon, moon.dom)
 moon.base.extend(moon, moon.string)
 moon.base.extend(moon, moon.number)
 moon.base.extend(moon, moon.array)
 moon.base.extend(moon, moon.cookie)
 moon.base.extend(moon, moon.date)
 moon.base.extend(moon, moon.event)
+moon.base.extend(moon, moon.store)
+
+/*===========================================其他==============================================*/
+;(function(doc, win) {
+  var docEl = doc.documentElement,
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+    recalc = function() {
+      var clientWidth = docEl.clientWidth
+      if (!clientWidth) return
+      docEl.style.fontSize = 100 * (clientWidth / 750) + 'px'
+    }
+
+  if (!doc.addEventListener) return
+  recalc()
+  win.addEventListener(resizeEvt, recalc, false)
+  doc.addEventListener('DOMContentLoaded', recalc, false)
+})(document, window)
+
+function getElementsByClassName(className, node) {
+  if (node.getElementsByClassName) {
+    // 使用现有方法
+    return node.getElementsByClassName(className)
+  } else {
+    // 循环遍历所有标签，返回带有相应类名的元素
+    var results = [],
+      elems = node.getElementsByTagName('*')
+    for (var i = 0, len = elems.length; i < len; i++) {
+      if (elems[i].className.indexOf(className) != -1) {
+        results[results.length] = elems[i]
+      }
+    }
+    return results
+  }
+}
+
+;(function() {
+  var lastTime = 0
+  var vendors = ['webkit', 'moz', 'ms', 'o']
+  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame']
+    window.cancelAnimationFrame =
+      window[vendors[x] + 'CancelAnimationFrame'] ||
+      window[vendors[x] + 'CancelRequestAnimationFrame']
+  }
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime()
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime))
+      var id = window.setTimeout(function() {
+        callback(currTime + timeToCall)
+      }, timeToCall)
+      lastTime = currTime + timeToCall
+      return id
+    }
+  }
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function(id) {
+      clearTimeout(id)
+    }
+  }
+})()
+
+// function executeFrame() {
+//   console.log(1)
+//   requestAnimationFrame(executeFrame)
+// }
+// executeFrame()
+
+if (!String.prototype.padStart) {
+  String.prototype.padStart = function(targetLength, padString) {
+    targetLength = targetLength >> 0 //truncate if number or convert non-number to 0;
+    padString = String(typeof padString !== 'undefined' ? padString : '')
+    if (this.length > targetLength) return String(this)
+    else {
+      targetLength = targetLength - this.length
+      if (targetLength > padString.length) {
+        padString += padString.repeat(
+          Math.ceil(targetLength / padString.length)
+        )
+      }
+      return padString.slice(0, targetLength) + String(this)
+    }
+  }
+}
+if (!String.prototype.repeat) {
+  String.prototype.repeat = function(n) {
+    return new Array(n + 1).join(this)
+  }
+}
+// ;(function() {
+//   var updateOrientation = function() {
+//     var orientation = 640
+//     var d = document,
+//       s = d.createElement('style'),
+//       z = (d.documentElement.clientWidth || d.body.clientWidth) / orientation
+//     document.getElementById('tgp_present_log').style.zoom = z
+//     document.getElementById('tgp_user_info').style.zoom = z
+//     document.getElementById('tgp_tip').style.zoom = z
+//     document.getElementById('tgp_warn').style.zoom = z
+//   }
+//   var init = function() {
+//     updateOrientation()
+//     window.addEventListener('resize', updateOrientation, false)
+//   }
+//   window.addEventListener('DOMContentLoaded', init, false)
+// })()
