@@ -49,7 +49,7 @@ window.$group_log = function(
 }
 
 // Element-ui
-var ElementUI = require('common/wegame-ui')
+var ElementUI = require('common/element-ui')
 window.$loading = {
   instance: null,
   show: function(text) {
