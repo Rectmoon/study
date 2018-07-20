@@ -1835,6 +1835,25 @@ moon.base.extend(moon, moon.store)
   doc.addEventListener('DOMContentLoaded', recalc, false)
 })(document, window)
 
+// (function () {
+//     var updateOrientation = function () {
+//       var orientation = 640;
+//       var d = document,
+//         s = d.createElement("style"),
+//         z = (d.documentElement.clientWidth || d.body.clientWidth) / orientation;
+//       document.getElementById("present_log").style.zoom = z;
+//       document.getElementById("user_info").style.zoom = z;
+//       document.getElementById("my_tip").style.zoom = z;
+//       document.getElementById("my_warn").style.zoom = z;
+//     };
+//     var init = function () {
+//       updateOrientation();
+//       window.addEventListener("resize", updateOrientation, false);
+//     };
+//     window.addEventListener("DOMContentLoaded", init, false);
+//   })();
+  
+
 function getElementsByClassName(className, node) {
   if (node.getElementsByClassName) {
     // 使用现有方法
