@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: #ddd;
+    }
+
+    #container {
+      width: 198px;
+      height: 66px;
+      padding: 10px;
+      border: 1px solid #aaaaaa;
+    }
+
+    #list li {
+      height: 20px;
+      line-height: 20px;
+      background: orange;
+      text-align: center;
+      margin-bottom: 10px;
+      list-style: none;
+    }
+  </style>
+</head>
+
+<body>
+  <p>请把span拖放到矩形中：</p>
+  <div id="container" ondrop="drop(event, true)" ondragover="allowDrop(event)"></div>
+  <br />
+  <span id="drag" draggable="true" ondragstart="drag(event)">span</span>
+
+  <ul id='list'>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)" id='first'>1</li>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)" id="second">2</li>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)" id='third'>3</li>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)" id='forth'>4</li>
+    <li draggable="true" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)" id="last">5</li>
+  </ul>
+
+  <script>
+
+    function insertAfter(newElement, targetElement) {
+      var parent = targetElement.parentNode;
+      if (parent.lastChild == targetElement)
+        parent.appendChild(newElement)
+      else
+        parent.insertBefore(newElement, targetElement.nextSibling);
+    }
+
+    function drop(e, flag) {
+      e.preventDefault()
+      var uid = e.dataTransfer.getData("attrid"),
+        y1 = e.dataTransfer.getData("y1"),
+        oUid = document.getElementById(uid),
+        oTid = document.getElementById(e.target.id)
+      if (flag) return e.target.appendChild(oUid);
+      if (y1 > e.pageY)
+        document.getElementsByTagName("ul")[0].insertBefore(oUid, oTid);
+      else
+        insertAfter(oUid, oTid)
+    }
+
+    function drag(e) {
+      e.dataTransfer.setData("attrid", e.target.id);
+      e.dataTransfer.setData("y1", e.pageY);
+    }
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+  </script>
+</body>
+
+</html>
