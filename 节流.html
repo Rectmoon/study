@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>节流</title>
+
+  <link rel="stylesheet" href="css/weui.min.css">
+  <link rel="stylesheet" href="css/jquery-weui.min.css">
+</head>
+
+<body>
+
+
+  <a href="javascript:;" id='btn' class="weui-btn weui-btn_plain-primary">按钮</a>
+  <script src='js/jquery-3.3.1.min.js'></script>
+  <script src='js/jquery-weui.min.js'></script>
+  <script>
+    // function throttle(cb, delay, options) {
+    //   var ctx, args, result,
+    //     timer = null, previous = 0
+    //   if (!options) options = {}
+    //   return function () {
+    //     var now = getNow()
+    //     if (!previous && options.leading === false) previous = now
+    //     var remaining = delay - (now - previous)
+    //     ctx = this
+    //     args = arguments
+    //     // 如果当前调用已经大于上次调用时间 + delay, 或者用户手动调了时间
+    //     if (remaining <= 0 || remaining > delay) {
+    //       if (timer) {
+    //         clearTimeout(timer)
+    //         timer = null
+    //       }
+    //       previous = now
+    //       result = cb.apply(ctx, args)
+    //       if (!timer) ctx = args = null
+    //     } else if (!timer && options.trailing !== false) {
+    //       timer = setTimeout(later, remaining)
+    //     }
+    //     return result
+    //   }
+
+    //   function getNow() {
+    //     return +new Date()
+    //   }
+    //   function later() {
+    //     previous = options.leading === false ? 0 : getNow()
+    //     timer = null
+    //     result = cb.apply(ctx, args)
+    //     ctx = args = null
+    //   }
+    // }
+
+    function throttle1(cb, delay) {
+      var previous = 0
+      return function () {
+        var now = +new Date(), ctx = this
+        if (now - previous >= delay) {
+          cb.apply(ctx, arguments)
+          previous = now
+        }
+      }
+    }
+
+    function throttle2(cb, delay) {
+      var timer, ctx, args
+      return function () {
+        ctx = this,
+          args = arguments
+        if (!timer) {
+          timer = setTimeout(function () {
+            cb.apply(this, args)
+            timer = null
+          }, delay)
+        }
+      }
+    }
+
+    function cb(e) {
+      console.log(e)
+      console.log(123)
+    }
+
+    // $('#btn').on('click', throttle1(cb, 2000))
+    $('#btn').on('click', throttle2(cb, 1000))
+  </script>
+</body>
+
+</html>
