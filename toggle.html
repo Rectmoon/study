@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>toggle button</title>
+
+  <style type='text/css'>
+    * {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      border: 0;
+      user-select: none;
+      outline: none;
+    }
+
+    [tappable],
+    [tappable] div,
+    [tappable] ion-icon,
+    [tappable] ion-label,
+    [tappable] span,
+    a,
+    a div,
+    a ion-icon,
+    a ion-label,
+    a span,
+    button,
+    button div,
+    button ion-icon,
+    button ion-label,
+    button span,
+    input,
+    textarea {
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+    }
+
+    button {
+      border: 0;
+      font-family: inherit;
+      font-style: inherit;
+      font-variant: inherit;
+      line-height: 1;
+      text-transform: none;
+      cursor: pointer;
+      -webkit-appearance: button;
+      text-decoration: none;
+    }
+
+    #box {
+      position: relative;
+      width: 51px;
+      height: 32px;
+      -webkit-box-sizing: content-box;
+      box-sizing: content-box;
+      contain: strict;
+      padding: 6px 8px 5px 16px;
+    }
+
+    .toggle.toggle-checked .toggle-icon {
+      background-color: #32db64;
+    }
+
+
+    .toggle .toggle-icon {
+      border-radius: 16px;
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: #e6e6e6;
+      -webkit-transition: background-color .3s;
+      transition: background-color .3s;
+      pointer-events: none;
+    }
+
+    .toggle .toggle-icon:before {
+      left: 2px;
+      right: 2px;
+      top: 2px;
+      bottom: 2px;
+      border-radius: 16px;
+      position: absolute;
+      background-color: #fff;
+      content: "";
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+      -webkit-transition: -webkit-transform .3s;
+      transition: -webkit-transform .3s;
+      transition: transform .3s;
+      transition: transform .3s, -webkit-transform .3s;
+    }
+
+    .toggle.toggle-checked .toggle-icon:before {
+      -webkit-transform: scale3d(0, 0, 0);
+      transform: scale3d(0, 0, 0);
+    }
+
+    .toggle-icon .toggle-inner {
+      left: 2px;
+      top: 2px;
+      border-radius: 14px;
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background-color: #fff;
+      -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, .16), 0 3px 1px rgba(0, 0, 0, .1);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, .16), 0 3px 1px rgba(0, 0, 0, .1);
+      -webkit-transition: width 120ms ease-in-out 80ms, left 110ms ease-in-out 80ms, right 110ms ease-in-out 80ms, -webkit-transform .3s;
+      transition: width 120ms ease-in-out 80ms, left 110ms ease-in-out 80ms, right 110ms ease-in-out 80ms, -webkit-transform .3s;
+      transition: transform .3s, width 120ms ease-in-out 80ms, left 110ms ease-in-out 80ms, right 110ms ease-in-out 80ms;
+      transition: transform .3s, width 120ms ease-in-out 80ms, left 110ms ease-in-out 80ms, right 110ms ease-in-out 80ms, -webkit-transform .3s;
+      will-change: transform;
+      contain: strict;
+    }
+
+    .toggle-checked .toggle-inner {
+      -webkit-transform: translate3d(19px, 0, 0);
+      transform: translate3d(19px, 0, 0);
+    }
+
+    .item-cover {
+      left: 0;
+      top: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 0 0;
+      cursor: pointer;
+    }
+
+    .button-inner {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -webkit-flex-flow: row nowrap;
+      -ms-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .button-effect {
+      border-radius: 50%;
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+      position: absolute;
+      z-index: 0;
+      display: none;
+      background-color: #555;
+      opacity: .2;
+      -webkit-transition-timing-function: ease-in-out;
+      transition-timing-function: ease-in-out;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box" class='toggle'>
+    <div class="toggle-icon">
+      <div class="toggle-inner"></div>
+    </div>
+    <button class='item-cover'>
+      <span class="button-inner"></span>
+      <div class="button-effect"></div>
+    </button>
+
+  </div>
+
+
+  <script src='js/jquery-3.3.1.min.js'></script>
+  <script>
+    $('#box').on('click', function () {
+      if ($(this).hasClass('toggle-checked')) {
+        $(this).removeClass('toggle-checked')
+      } else {
+        $(this).addClass('toggle-checked')
+      }
+    })
+
+  </script>
+</body>
+
+</html>
