@@ -15,6 +15,7 @@
 
 
   <a href="javascript:;" id='btn' class="weui-btn weui-btn_plain-primary">按钮</a>
+  <a href="javascript:;" id='btn1' class="weui-btn weui-btn_plain-primary">按钮</a>
   <script src='js/jquery-3.3.1.min.js'></script>
   <script src='js/jquery-weui.min.js'></script>
   <script>
@@ -79,13 +80,21 @@
       }
     }
 
+
+    /**
+    
+    比较两个方法：
+   
+   第一种事件会立刻执行，第二种事件会在 n 秒后第一次执行
+   第一种事件停止触发后没有办法再执行事件，第二种事件停止触发后依然会再执行一次事件
+    */
     function cb(e) {
       console.log(e)
       console.log(123)
     }
 
     // $('#btn').on('click', throttle1(cb, 2000))
-    $('#btn').on('click', throttle2(cb, 1000))
+    $('#btn').on('click', throttle2(cb, 3000))
   </script>
 </body>
 
