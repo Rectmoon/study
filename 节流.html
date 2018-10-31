@@ -16,8 +16,8 @@
 
   <a href="javascript:;" id='btn' class="weui-btn weui-btn_plain-primary">按钮</a>
   <a href="javascript:;" id='btn1' class="weui-btn weui-btn_plain-primary">按钮</a>
-  <script src='js/jquery-3.3.1.min.js'></script>
-  <script src='js/jquery-weui.min.js'></script>
+  <script src='js/lib/jquery-3.3.1.min.js'></script>
+  <script src='js/lib/jquery-weui.min.js'></script>
   <script>
     // function throttle(cb, delay, options) {
     //   var ctx, args, result,
@@ -54,6 +54,60 @@
     //     ctx = args = null
     //   }
     // }
+
+
+    function getNow() {
+      return +new Date()
+    }
+
+    function throttle(callback, wait = 50, options = {}) {
+      let context,
+        args,
+        result,
+        timer = null,
+        previous = 0
+      const later = () => {
+        // 如果设置了 leading，就将 previous 设为 0
+        previous = options.leading === false ? 0 : getNow()
+        // 置空 一是为了防止内存泄漏，二是为了下面的定时器判断
+        timer = null
+        result = callback.apply(context, args)
+        if (!timer) context = args = null
+      }
+      return function () {
+        let now = getNow()
+        // 首次进入前者肯定为 true
+        // 如果需要第一次不执行函数
+        // 就将上次时间戳设为当前的
+        // 这样在接下来计算 remaining 的值时会大于0
+        if (!previous && options.leading === false) previous = now
+        let remaining = wait - (now - previous)
+        context = this
+        args = arguments
+        // 如果当前调用已经大于上次调用时间 + wait
+        // 或者用户手动调了时间
+        // 如果设置了 trailing = false，只会进入这个条件
+        // 如果没有设置 leading = false，那么第一次会进入这个条件
+        // 因为定时器的延时, 并不是准确的时间，很可能你设置了2秒
+        // 但是他需要2.2秒才触发，这时候就会进入这个条件
+        if (remaining <= 0 || remaining > wait) {
+          // 如果存在定时器就清理掉否则会调用二次回调
+          if (timer) {
+            clearTimeout(timer)
+            timer = null
+          }
+          previous = now
+          result = callback.apply(context, args)
+          if (!timer) context = args = null
+        } else if (!timer && options.trailing !== false) {
+          // 判断是否设置了定时器和 trailing
+          // 没有的话就开启一个定时器
+          // 并且不能不能同时设置 leading 和 trailing
+          timer = setTimeout(later, remaining)
+        }
+        return result
+      }
+    }
 
     function throttle1(cb, delay) {
       var previous = 0
@@ -94,7 +148,8 @@
     }
 
     // $('#btn').on('click', throttle1(cb, 2000))
-    $('#btn').on('click', throttle2(cb, 3000))
+    // $('#btn').on('click', throttle2(cb, 3000))
+    $('#btn').on('click', throttle(cb, 3000))
   </script>
 </body>
 
