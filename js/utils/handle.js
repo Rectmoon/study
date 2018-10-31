@@ -1,4 +1,4 @@
-const now = () => +new Date()
+const getNow = () => +new Date()
 /**
  * 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
  *
@@ -61,14 +61,14 @@ export function throttle(callback, wait = 50, options = {}) {
     previous = 0
   const later = () => {
     // 如果设置了 leading，就将 previous 设为 0
-    previous = options.leading === false ? 0 : now()
+    previous = options.leading === false ? 0 : getNow()
     // 置空 一是为了防止内存泄漏，二是为了下面的定时器判断
     timer = null
     result = callback.apply(context, args)
     if (!timer) context = args = null
   }
-  return function() {
-    let now = now()
+  function throttled(...params) {
+    let now = getNow()
     // 首次进入前者肯定为 true
     // 如果需要第一次不执行函数
     // 就将上次时间戳设为当前的
@@ -76,7 +76,7 @@ export function throttle(callback, wait = 50, options = {}) {
     if (!previous && options.leading === false) previous = now
     let remaining = wait - (now - previous)
     context = this
-    args = arguments
+    args = params
     // 如果当前调用已经大于上次调用时间 + wait
     // 或者用户手动调了时间
     // 如果设置了 trailing = false，只会进入这个条件
@@ -100,4 +100,10 @@ export function throttle(callback, wait = 50, options = {}) {
     }
     return result
   }
+  throttled.cancel = function() {
+    clearTimeout(timer)
+    previous = 0
+    timer = context = args = null
+  }
+  return throttled
 }
