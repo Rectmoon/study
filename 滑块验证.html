@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style type='text/css'>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: none;
+    }
+
+    .drag {
+      width: 300px;
+      height: 40px;
+      line-height: 40px;
+      background-color: orange;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .bg {
+      width: 40px;
+      height: 100%;
+      position: absolute;
+      background-color: #75CDF9;
+    }
+
+    .text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      user-select: none;
+    }
+
+    .btn {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      border: 1px solid #ccc;
+      cursor: move;
+      font-family: "宋体";
+      text-align: center;
+      background-color: #fff;
+      user-select: none;
+      color: #666;
+      box-sizing: border-box;
+    }
+  </style>
+  <script src='js/lib/jquery-3.3.1.min.js'></script>
+</head>
+
+<body>
+  <div class='drag'>
+    <div class="bg"></div>
+    <div class="text" onselectstart="return false;">请拖动滑块解锁</div>
+    <div class="btn">&gt;&gt;</div>
+  </div>
+
+  <script>
+    var $btn = $("div.btn"),
+      $drag = $('div.drag'),
+      $text = $('div.text'),
+      $bg = $('div.bg'),
+      disX = $drag.width() - $btn.width(),
+      disY = $drag.height() - $btn.height() - 2,
+      success = false
+    /* 绑定鼠标左键按住事件 */
+    $btn.bind("mousedown", function (event) {
+      /* 获取需要拖动节点的坐标 */
+      var offset_x = $(this)[0].offsetLeft;//x坐标
+      var offset_y = $(this)[0].offsetTop;//y坐标
+      /* 获取当前鼠标的坐标 */
+      var mouse_x = event.pageX;
+      var mouse_y = event.pageY;
+
+      $btn.css('transition', '')
+      $bg.css('transition', '').show()
+      /* 绑定拖动事件 */
+      /* 由于拖动时，可能鼠标会移出元素，所以应该使用全局（document）元素 */
+      $(document).bind("mousemove", function (ev) {
+        /* 计算鼠标移动了的位置 */
+        var _x = ev.pageX - mouse_x;
+        var _y = ev.pageY - mouse_y;
+        _x = _x > disX ? disX : _x < 0 ? 0 : _x
+        _y = _y > disY ? disY : _y < 0 ? 0 : _y
+
+        /* 设置移动后的元素坐标 */
+        var now_x = (offset_x + _x) + "px";
+        var now_y = (offset_y + _y) + "px";
+        /* 改变目标元素的位置 */
+        $btn.css({
+          top: now_y,
+          left: now_x
+        });
+
+        if (_x == disX) {
+
+          //1.设置滑动成功后的样式
+          $text.text('验证通过').css('color', '#fff')
+          $btn.html("&radic;").css('color', 'green')
+          $bg.css('backgroundColor', "lightgreen")
+
+          //2.设置滑动成功后的状态
+          success = true;
+          //成功后，清除掉鼠标按下事件和移动事件（因为移动时并不会涉及到鼠标松开事件）
+          $(document).unbind('mousemove')
+          //3.成功解锁后的回调函数
+          setTimeout(function () {
+            alert('解锁成功！');
+          }, 100);
+        }
+      });
+    });
+    /* 当鼠标左键松开，接触事件绑定 */
+    $(document).bind("mouseup", function () {
+      if (!success) {
+        $btn.css({ left: 0, transition: 'left 1s ease' })
+        $bg.css({ transition: 'left 1s ease' })
+      }
+      $(this).unbind("mousemove");
+    });
+  </script>
+</body>
+
+</html>

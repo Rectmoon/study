@@ -12,9 +12,7 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
-      border: 0;
       user-select: none;
       outline: none;
     }
@@ -52,7 +50,7 @@
       text-decoration: none;
     }
 
-    #box {
+    .toggle {
       position: relative;
       width: 51px;
       height: 32px;
@@ -190,9 +188,9 @@
   </div>
 
 
-  <script src='js/jquery-3.3.1.min.js'></script>
+  <script src='js/lib/jquery-3.3.1.min.js'></script>
   <script>
-    $('#box').on('click', function () {
+    $('.toggle').on('click', function () {
       if ($(this).hasClass('toggle-checked')) {
         $(this).removeClass('toggle-checked')
       } else {
