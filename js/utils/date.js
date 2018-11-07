@@ -1,7 +1,5 @@
 import { getType } from './base'
 
-const TODAY = new Date()
-
 export function isDate(o) {
   return getType(o) === 'date'
 }
@@ -19,7 +17,7 @@ export function pickOpts(obj, keys) {
 
 export function toDateString(o, l = '-') {
   let a = [],
-    d = isDate(o) ? o : TODAY,
+    d = isDate(o) ? o : new Date(),
     m = d.getMonth() + 1,
     da = d.getDate()
   a.push(d.getFullYear())
@@ -30,7 +28,7 @@ export function toDateString(o, l = '-') {
 
 export function toDateTimeString(o) {
   let a = [],
-    d = isDate(o) ? o : TODAY,
+    d = isDate(o) ? o : new Date(),
     h = d.getHours(),
     i = d.getMinutes(),
     s = d.getSeconds()
@@ -38,6 +36,71 @@ export function toDateTimeString(o) {
   a.push(i.toString().length < 2 ? '0' + i : i)
   a.push(s.toString().length < 2 ? '0' + s : s)
   return toDateString.apply(null, arguments) + ' ' + a.join(':')
+}
+
+export function getDetail(date = new Date()) {
+  let now = new Date(),
+    dateInfo = {},
+    _diff
+  const weekDayArr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  if (typeof date === 'number') date = new Date(date)
+  //充值date对象，让其成为一天的起点时间
+  date = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  now = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  _diff = date.getTime() - now.getTime()
+
+  if (_diff == 0) {
+    dateInfo.day1 = '今天'
+  } else if (_diff == 86400000) {
+    dateInfo.day1 = '明天'
+  } else if (_diff == 172800000) {
+    dateInfo.day1 = '后天'
+  }
+  dateInfo.weekday = weekDayArr[date.getDay()]
+  dateInfo.year = date.getFullYear()
+  dateInfo.month = date.getMonth() + 1
+  dateInfo.day = date.getDate()
+  return dateInfo
+}
+
+export function parseToDate(dateStr, formatStr = 'y-m-d h:i:s') {
+  if (!dateStr || typeof formatStr !== 'string') return null
+  let arr = formatStr
+    .replace(/[^ymdhis]/gi, '')
+    .split('')
+    .map(s => s.toLowerCase())
+  if (!arr.length) return null
+  formatStr = formatStr.replace(/y|m|d|h|i|s/gi, k => {
+    k = k.toLowerCase()
+    switch (k) {
+      case 'y':
+        return '(\\d{4})'
+      case 'm':
+      case 'd':
+      case 'h':
+      case 'i':
+      case 's':
+        return '(\\d{1,2})'
+      default:
+        break
+    }
+  })
+  let reg = new RegExp(formatStr, 'gi'),
+    obj = {},
+    a = reg.exec(dateStr)
+  if (!a) return null
+  a.slice(1).forEach((item, i) => {
+    obj[arr[i]] = item
+  })
+  return new Date(
+    obj['y'] || '',
+    obj['m'] - 1 || '',
+    obj['d'] || '',
+    obj['h'] || '',
+    obj['i'] || '',
+    obj['s'] || ''
+  )
 }
 
 export function isLeapYear(year) {
@@ -106,7 +169,7 @@ export function getWeekOfYear(date, fromMonday = false) {
   return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1
 }
 
-export function formatDate(date = TODAY, fmt = 'yyyy-mm-dd hh:ii:ss') {
+export function formatDate(date = new Date(), fmt = 'yyyy-mm-dd hh:ii:ss') {
   const o = {
     'y+': date.getFullYear(), //年
     'm+': date.getMonth() + 1, //月
@@ -142,7 +205,7 @@ export function formatDate(date = TODAY, fmt = 'yyyy-mm-dd hh:ii:ss') {
 }
 
 export function getTimeDetail(timeStr) {
-  let _now = +TODAY,
+  let _now = new Date().getTime(),
     se = _now - timeStr,
     res = ''
   const DATE_LEVEL = {
