@@ -181,7 +181,7 @@ export default {
               if (dialogElement && dialogElement.offsetHeight > 0) {
                 dialogElement.focus()
               }
-            } catch (e) {}
+            } catch (e) {console.error(e)}
           }, 250)
         }
       }
@@ -331,8 +331,8 @@ export default {
       _bh = _win.contentWindow.document.body.scrollHeight
       _dh = _win.contentWindow.document.documentElement.scrollHeight
       _h = Math.max(_bh, _dh)
-      this.iHeight = win.height = _h
-    } catch (e) {}
+      this.iHeight = _win.height = _h
+    } catch (e) {console.error(e)}
     $(_win).css({
       marginTop: '-' + _win.offsetHeight / 2 + 'px',
       marginLeft: '-' + _win.offsetWidth / 2 + 'px',
