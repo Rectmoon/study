@@ -1,51 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="js/lib/vue.js"></script>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <script src='js/lib/vue.js'></script>
-  <script src='js/lib/jquery-3.3.1.min.js'></script>
-</head>
+  <body>
+    <div id="app">
+      <button @click="fn">click me</button> <button id="btn">click me</button>
+      <input
+        ref="ipt"
+        type="text"
+        v-model="a"
+        @change="foo"
+        style="width:500px;"
+      />
 
-<body>
-  <div id='app'>
-    <button @click='fn'>click me</button>
-    <button id='btn'>click me</button>
-    <input ref='ipt' type="text" v-model='a' @change='foo' style='width:500px;'>
-  </div>
+      <input ref="ipt1" type="text" v-model="obj.d" style="width:500px;" />
+      <p>{{ obj.d }}</p>
+      <button @click="f">aaaa</button>
+    </div>
 
-  <script>
-    var vm = new Vue({
-      el: '#app',
-      data: {
-        a: 1
-      },
-      methods: {
-        fn: function () {
-          this.$refs.ipt.value = (222)
-          console.log(this.a)
+    <script>
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          a: 1,
+          obj: {
+            c: 1
+          }
         },
-        foo: function (e) {
-          console.log(e)
-          this.a = e.target.value
+        methods: {
+          fn: function() {
+            this.$refs.ipt.value = 222
+            console.log(this.a)
+          },
+          foo: function(e) {
+            console.log(e)
+            this.a = e.target.value
+          },
+          f() {
+            // this.$set(this.obj, 'd', 2222)
+            // console.log(this.obj)
+            this.obj = { d: 22, c: 1 }
+          }
         }
-      }
-    })
+      })
 
-    $(function () {
-      $('#btn').on('click', function () {
-        vm.$refs.ipt.value = 'ok'
-        vm.a = 344
-        vm.$nextTick(function () {
-          console.log(vm.$refs.ipt.style.width)
+      $(function() {
+        $('#btn').on('click', function() {
+          vm.$refs.ipt.value = 'ok'
+          vm.a = 344
+          vm.$nextTick(function() {
+            console.log(vm.$refs.ipt.style.width)
+          })
         })
       })
-    })
-
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
