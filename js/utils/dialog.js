@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import browser from './browser'
 
 let fixIECenter,
@@ -39,7 +40,8 @@ export default {
     this.iHeight = _p.iHeight || _sAuto
     this.sMsg = _p.sMsg || null
     this.sClass = _p.sClass || null
-    this.sStyles = _p.sStyle || 'padding:10px;border:4px solid #dedede;background-color:#fff'
+    this.sStyles =
+      _p.sStyle || 'padding:10px;border:4px solid #dedede;background-color:#fff'
     this.sTime = _p.sTime || null
     this.delayPop = _p.delayPop || false
     this.sPzIndex = _p.PopzIndex || 9999
@@ -181,13 +183,16 @@ export default {
               if (dialogElement && dialogElement.offsetHeight > 0) {
                 dialogElement.focus()
               }
-            } catch (e) {console.error(e)}
+            } catch (e) {
+              console.error(e)
+            }
           }, 250)
         }
       }
       lastFocus = oDoc.activeElement
       oDoc.onfocus = focusHandle
-      if (oDoc.addEventListener) oDoc.addEventListener('focus', focusHandle, true)
+      if (oDoc.addEventListener)
+        oDoc.addEventListener('focus', focusHandle, true)
       else oDoc.onfocusin = focusHandle
       escCloseHandle = e => {
         let code
@@ -285,7 +290,8 @@ export default {
       _ih,
       _iTop
     if (oOverLay === undefined) $('#' + OVERLAY_ID)[0]
-    if (isIE9 && (!oDoc.documentMode || oDoc.documentMode > 8)) _w = _w - 17 < 0 ? 0 : _w - 3
+    if (isIE9 && (!oDoc.documentMode || oDoc.documentMode > 8))
+      _w = _w - 17 < 0 ? 0 : _w - 3
     _h = _h - 3 < 0 ? 0 : _h - 3
     try {
       _ih = _obj.offsetHeight
@@ -318,7 +324,8 @@ export default {
     if (!isLongPopBox) {
       if (!this.fixed) {
         _iScrollTop = oBody.scrollTop || oDel.scrollTop
-        dialogElement.style.marginTop = parseInt(_iScrollTop - _obj.offsetHeight / 2, 10) + 'px'
+        dialogElement.style.marginTop =
+          parseInt(_iScrollTop - _obj.offsetHeight / 2, 10) + 'px'
       }
     }
   },
@@ -332,7 +339,9 @@ export default {
       _dh = _win.contentWindow.document.documentElement.scrollHeight
       _h = Math.max(_bh, _dh)
       this.iHeight = _win.height = _h
-    } catch (e) {console.error(e)}
+    } catch (e) {
+      console.error(e)
+    }
     $(_win).css({
       marginTop: '-' + _win.offsetHeight / 2 + 'px',
       marginLeft: '-' + _win.offsetWidth / 2 + 'px',
@@ -355,7 +364,8 @@ export default {
     dialogOpen = false
     if (!this.isNoAccessible) {
       if (focusHandle !== null) {
-        if (oDoc.removeEventListener) oDoc.removeEventListener('focus', focusHandle, false)
+        if (oDoc.removeEventListener)
+          oDoc.removeEventListener('focus', focusHandle, false)
         else oDoc.onfocus = null
         if ((oDoc.onfocus = focusHandle)) oDoc.onfocus = null
       }

@@ -1,4 +1,5 @@
 import _ from 'underscore'
+import $ from 'jquery'
 
 export default class AbstractView {
   constructor() {
