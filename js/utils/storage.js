@@ -1,4 +1,4 @@
-import extend from './extend'
+import { extend } from './base'
 
 function deserialize(val) {
   if (typeof val !== 'string') return undefined
