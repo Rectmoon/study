@@ -7,7 +7,7 @@
  * modified content fix移动端首次定位不准确的bug，使用visibility属性，先隐藏，计算并设置完top，left后再显示，保证坐标准确
  */
 namespace('showDialog')
-define('utils.dialog', [], function() {
+define('./dialog', [], function() {
   var M = moon,
     oIfrBg,
     fixIECenter,
@@ -445,7 +445,7 @@ define('utils.dialog', [], function() {
         _bh = _win.contentWindow.document.body.scrollHeight
         _dh = _win.contentWindow.document.documentElement.scrollHeight
         _h = Math.max(_bh, _dh)
-        this.iHeight = win.height = _h
+        this.iHeight = _win.height = _h
       } catch (e) {}
       M.setStyle(_win, {
         marginTop: '-' + _win.offsetHeight / 2 + 'px',

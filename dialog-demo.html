@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="box"><h1>hello world</h1></div>
+
+    <script src="js/lib/moon.js"></script>
+    <script src="js/lib/dialog.js"></script>
+    <script>
+      moon.ready(function() {
+        console.log(showDialog.show('box'))
+      })
+    </script>
+  </body>
+</html>
