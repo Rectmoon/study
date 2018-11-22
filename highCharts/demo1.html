@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../js/lib/vue.js"></script>
+    <link rel="stylesheet" href="../assets/css/iview.min.css" />
+    <script src="../js/lib/iview.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <style>
+      .controller {
+        float: right;
+        margin-right: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>hello highcharts</h1>
+      <v-chart :id="id" :option="option"></v-chart>
+    </div>
+
+    <script type="text/x-template" id="chart">
+      <div>
+        <h1>{{title}}</h1>
+        <ul class='room-info'>
+          <li v-for='(v, k) in roomInfo' :key='k'>
+            <p>v</p>
+            <p>{{v.undone}}</p>
+          </li>
+        </ul>
+        <div class='controller'>
+          <DatePicker type="date" :options="options1" placeholder="Select date" style="width: 200px"></DatePicker>
+          <Button :type="type.w" :loading='loading_week' :disabled='loading_week' @click='switchTo("week")'>周</Button>
+          <Button :type="type.m" :loading='loading_month' :disabled='loading_month' @click='switchTo("month")'>月</Button>
+        </div>
+        <div
+         :id="id"
+        style="min-width: 310px; height: 400px; margin: 0 auto"
+        ></div>
+      </div>
+    </script>
+
+    <script>
+      var Chart = {
+        template: '#chart',
+        props: {
+          id: { type: String },
+          title: { type: String },
+          option: { type: Object, default: {} }
+        },
+        methods: {
+          switchTo: function(s) {
+            this.dataType = s
+            this['loading_' + s] = true
+            var z = this
+            setTimeout(function() {
+              z['loading_' + s] = false
+            }, 1000)
+          }
+        },
+        computed: {
+          type: function() {
+            var o = {
+              w: '',
+              m: ''
+            }
+            o.w = this.dataType == 'week' ? 'info' : 'default'
+            o.m = this.dataType == 'week' ? 'default' : 'info'
+            return o
+          },
+          roomInfo: function() {
+            return {
+              done: { msg: '今日出租房间', count: 12 },
+              undone: { msg: '今日未出租房间', count: 1 },
+              total: { msg: '房间总数', count: 13 }
+            }
+          }
+        },
+        data: function() {
+          return {
+            loading_week: false,
+            loading_month: false,
+            dataType: 'week',
+            options1: {
+              shortcuts: [
+                {
+                  text: 'Today',
+                  value() {
+                    return new Date()
+                  },
+                  onClick: picker => {
+                    this.$Message.info('Click today')
+                  }
+                },
+                {
+                  text: 'Yesterday',
+                  value() {
+                    const date = new Date()
+                    date.setTime(date.getTime() - 3600 * 1000 * 24)
+                    return date
+                  },
+                  onClick: picker => {
+                    this.$Message.info('Click yesterday')
+                  }
+                },
+                {
+                  text: 'One week',
+                  value() {
+                    const date = new Date()
+                    date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                    return date
+                  },
+                  onClick: picker => {
+                    this.$Message.info('Click a week ago')
+                  }
+                }
+              ]
+            }
+          }
+        },
+        mounted: function() {
+          Highcharts.chart(this.id, this.option)
+        }
+      }
+
+      new Vue({
+        el: '#app',
+        components: {
+          'v-chart': Chart
+        },
+        data: {
+          id: 'test',
+          option: {
+            chart: {
+              type: 'spline'
+            },
+            title: {
+              text: '月平均气温'
+            },
+            subtitle: {
+              text: '数据来源: WorldClimate.com'
+            },
+            xAxis: {
+              categories: [
+                '一月',
+                '二月',
+                '三月',
+                '四月',
+                '五月',
+                '六月',
+                '七月',
+                '八月',
+                '九月',
+                '十月',
+                '十一月',
+                '十二月'
+              ],
+              plotbands: [{ from: 4.5, to: 6.5, color: 'rgba(68,170,213,0)' }]
+            },
+            yAxis: {
+              title: {
+                text: '气温 (°C)'
+              }
+            },
+            legend: {
+              align: 'right',
+              verticalAlign: 'top'
+              // layout: 'vertical'
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [
+              {
+                //两条数据
+                name: '东京',
+                data: [
+                  7.0,
+                  6.9,
+                  9.5,
+                  14.5,
+                  18.4,
+                  21.5,
+                  25.2,
+                  26.5,
+                  23.3,
+                  18.3,
+                  13.9,
+                  9.6
+                ]
+              },
+              {
+                name: '伦敦',
+                data: [
+                  3.9,
+                  4.2,
+                  5.7,
+                  8.5,
+                  11.9,
+                  15.2,
+                  17.0,
+                  16.6,
+                  14.2,
+                  10.3,
+                  6.6,
+                  4.8
+                ]
+              }
+            ]
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
