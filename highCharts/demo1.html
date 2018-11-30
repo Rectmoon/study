@@ -21,6 +21,10 @@
     <div id="app">
       <h1>hello highcharts</h1>
       <v-chart :id="id" :option="option"></v-chart>
+      <i-select v-model='s1'>
+        <i-option value='1'>1</i-option>
+        <i-option value='2'>2</i-option>
+      </i-select>
     </div>
 
     <script type="text/x-template" id="chart">
@@ -134,6 +138,7 @@
         },
         data: {
           id: 'test',
+          s1: '1',
           option: {
             chart: {
               type: 'spline'
