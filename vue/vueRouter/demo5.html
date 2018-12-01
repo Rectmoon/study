@@ -48,7 +48,6 @@
   </head>
   <body>
     <div id="app">
-      <strong class="title">{{ $route.name }}</strong>
       <breadcrumb separator="/" class="breadcrumb-inner">
         <breadcrumb-item v-for="(item, i) in list" :key="i" :to="item.to">{{
           item.name
@@ -84,8 +83,9 @@
       <div class='detail'>
         {{$route.params.id}}
         <h2>{{$route.name}}</h2>
-        <router-link :to="{name: 'room', params: {roomId: 9}}" tag='li'>房间9</router-link>
-        <router-link :to="{name: 'room', params: {roomId: 10}}" tag='li'>房间10</router-link>
+        <div v-if="$route.name.indexOf('main') == -1">
+         <p v-for='item in rooms' :key='item.id' @click='goToRoom(item)'>{{item.name}}</p>
+        </div>
         <router-view></router-view>
       </div>
     </script>
@@ -199,7 +199,11 @@
             this.page = i
           },
           handleDbClick: function(d) {
-            this.$store.commit('setDetailItem', d)
+            this.$store.commit({
+              type: 'setDetailItem',
+              detailItem: d,
+              name: this.$route.name + '-detail'
+            })
             var path = this.$route.path,
               id = d.id
             this.$router.push({
@@ -211,7 +215,30 @@
 
       var Detail = {
         template: '#detail',
-        props: ['id']
+        props: ['id'],
+        data: function() {
+          return {
+            rooms: [
+              { roomId: 1, name: '万科' },
+              { roomId: 2, name: '阳光一百' }
+            ]
+          }
+        },
+        methods: {
+          goToRoom: function(room) {
+            this.$store.commit({
+              type: 'setDetailItem',
+              name: 'room',
+              detailItem: room
+            })
+            this.$router.push({
+              name: 'room',
+              params: {
+                roomId: room.roomId
+              }
+            })
+          }
+        }
       }
 
       var Room = {
@@ -225,21 +252,27 @@
             state.currentRoute = n
           },
           setDetailItem: function(state, o) {
-            state.detailItem = o
+            state.detailItem[o.name] = o.detailItem
           }
         },
         getters: {
           breadList: function(state) {
-            return state.currentRoute.matched.map(function(item) {
+            return state.currentRoute.matched.map(function(item, i) {
               var o = { name: item.name }
-              if (!item.meta.disabled) {
-                if (item.meta && item.meta.flag) {
+              if (state.detailItem[item.name]) {
+                o.name = state.detailItem[item.name].name
+              }
+              if (
+                !item.meta.disabled &&
+                i !== state.currentRoute.matched.length - 1
+              ) {
+                if (item.meta.flag) {
                   o.to = {
                     name: item.name,
-                    params: { id: state.detailItem.id }
+                    params: { id: state.detailItem[item.name].id }
                   }
                 } else {
-                  o.to = item.path
+                  o.to = item.path || '/'
                 }
               }
               return o
@@ -253,6 +286,7 @@
         routes: [
           {
             path: '/',
+            redirect: '/main',
             component: Home,
             name: '项目管理',
             iconCls: 'el-icon-message',
@@ -305,16 +339,22 @@
         data: {},
         computed: {
           list: function() {
-            // console.log(this.$store.getters.breadList)
             return this.$store.getters.breadList
           }
         },
         watch: {
-          $route(newRoute) {
+          $route: function(newRoute) {
             this.$store.commit('setCurrentRoute', newRoute)
           }
         },
+        destroyed: function() {
+          console.log(this.list)
+        },
         methods: {}
+      })
+
+      window.addEventListener('load', function() {
+        vm.$router.replace('/') // 列表页面的路由
       })
     </script>
   </body>
