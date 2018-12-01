@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/vuex.js"></script>
+    <script src="../../js/lib/vue-router.min.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      #app {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .view {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .detail {
+        width: 100%;
+        height: 100%;
+        background: orange;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <strong class="title">{{ $route.name }}</strong>
+      <breadcrumb separator="/" class="breadcrumb-inner">
+        <breadcrumb-item v-for="(item, i) in list" :key="i" :to="item.to">{{
+          item.name
+        }}</breadcrumb-item>
+      </breadcrumb>
+
+      <router-view class="view"></router-view>
+    </div>
+
+    <script type="text/x-template" id="home">
+      <div>
+        <div class="search">搜索 <i-input placeholder='项目名称/项目管理员'></i-input></div>
+
+        <router-link to='/main' tag='i-button'>项目</router-link>
+        <router-link to='/sub' tag='i-button'>子项目</router-link>
+        <router-view></router-view>
+      </div>
+    </script>
+
+    <script type="text/x-template" id="page-table">
+      <div>
+        <Table :data="tableData" :columns="tableColumns" :loading='loading' stripe border @on-row-dblclick='handleDbClick'></Table>
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+              <Page :total="100" :current="1" @on-change="changePage"></Page>
+            </div>
+        </div>
+        <router-view></router-view>
+      </div>
+    </script>
+
+    <script type="text/x-template" id="detail">
+      <div class='detail'>
+        {{$route.params.id}}
+        <h2>{{$route.name}}</h2>
+        <router-link :to="{name: 'room', params: {roomId: 9}}" tag='li'>房间9</router-link>
+        <router-link :to="{name: 'room', params: {roomId: 10}}" tag='li'>房间10</router-link>
+        <router-view></router-view>
+      </div>
+    </script>
+
+    <script type="text/x-template" id="room">
+      <div class='detail'>
+        <h2>{{$route.name}}</h2>
+        {{$route.params.roomId}}
+      </div>
+    </script>
+
+    <script>
+      var Home = {
+        template: '#home',
+        props: {
+          name: {
+            type: String,
+            default: 'ok'
+          }
+        },
+        mounted: function() {}
+      }
+
+      var PageTable = {
+        template: '#page-table',
+        data: function() {
+          return {
+            loading: false,
+            page: 1,
+            tableData: [],
+            tableColumns: [
+              {
+                title: 'Name',
+                key: 'id'
+              },
+              {
+                title: 'Name',
+                key: 'name'
+              },
+              {
+                title: 'Status',
+                key: 'status',
+                render: function(h, params) {
+                  var row = params.row
+                  var color =
+                    row.status === 1
+                      ? 'primary'
+                      : row.status === 2
+                      ? 'success'
+                      : 'error'
+                  var text =
+                    row.status === 1
+                      ? 'Working'
+                      : row.status === 2
+                      ? 'Success'
+                      : 'Fail'
+
+                  return h(
+                    'Tag',
+                    {
+                      props: {
+                        type: 'dot',
+                        color: color
+                      }
+                    },
+                    text
+                  )
+                }
+              },
+              {
+                title: 'Sampling Time',
+                key: 'time',
+                render: function(h, params) {
+                  return h('div', 'Almost' + params.row.time + 'days')
+                }
+              }
+            ]
+          }
+        },
+        mounted: function() {
+          this.loadData()
+        },
+        watch: {
+          $route() {
+            this.loadData()
+          }
+        },
+        methods: {
+          loadData: function() {
+            this.loading = true
+            var z = this
+            setTimeout(function() {
+              z.tableData = z.getMockData()
+              z.loading = false
+            }, 1000)
+          },
+          getMockData: function() {
+            var data = [],
+              name = this.$route.name || ''
+            for (var i = 0; i < 10; i++) {
+              data.push({
+                name: name + 'Business' + Math.floor(Math.random() * 100 + 1),
+                status: Math.floor(Math.random() * 3 + 1),
+                id: i + 1,
+                time: Math.floor(Math.random() * 7 + 1)
+              })
+            }
+            return data
+          },
+          changePage: function(i) {
+            this.page = i
+          },
+          handleDbClick: function(d) {
+            this.$store.commit('setDetailItem', d)
+            var path = this.$route.path,
+              id = d.id
+            this.$router.push({
+              path: path + '/' + id
+            })
+          }
+        }
+      }
+
+      var Detail = {
+        template: '#detail',
+        props: ['id']
+      }
+
+      var Room = {
+        template: '#room'
+      }
+
+      var store = new Vuex.Store({
+        state: { currentRoute: { matched: [] }, detailItem: {} },
+        mutations: {
+          setCurrentRoute: function(state, n) {
+            state.currentRoute = n
+          },
+          setDetailItem: function(state, o) {
+            state.detailItem = o
+          }
+        },
+        getters: {
+          breadList: function(state) {
+            return state.currentRoute.matched.map(function(item) {
+              var o = { name: item.name }
+              if (!item.meta.disabled) {
+                if (item.meta && item.meta.flag) {
+                  o.to = {
+                    name: item.name,
+                    params: { id: state.detailItem.id }
+                  }
+                } else {
+                  o.to = item.path
+                }
+              }
+              return o
+            })
+          }
+        }
+      })
+
+      var router = new VueRouter({
+        linkActiveClass: 'active',
+        routes: [
+          {
+            path: '/',
+            component: Home,
+            name: '项目管理',
+            iconCls: 'el-icon-message',
+            children: [
+              {
+                path: 'main',
+                component: PageTable,
+                name: 'main',
+                children: [
+                  {
+                    path: ':id',
+                    meta: { flag: true },
+                    component: Detail,
+                    name: 'main-detail',
+                    props: true
+                  }
+                ]
+              },
+              {
+                path: 'sub',
+                component: PageTable,
+                name: 'sub',
+                children: [
+                  {
+                    path: ':id',
+                    meta: { flag: true },
+                    component: Detail,
+                    name: 'sub-detail',
+                    props: true,
+                    children: [
+                      {
+                        name: 'room',
+                        path: 'room/:roomId',
+                        meta: { disabled: true },
+                        component: Room
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      })
+
+      var vm = new Vue({
+        el: '#app',
+        store: store,
+        router: router,
+        data: {},
+        computed: {
+          list: function() {
+            // console.log(this.$store.getters.breadList)
+            return this.$store.getters.breadList
+          }
+        },
+        watch: {
+          $route(newRoute) {
+            this.$store.commit('setCurrentRoute', newRoute)
+          }
+        },
+        methods: {}
+      })
+    </script>
+  </body>
+</html>

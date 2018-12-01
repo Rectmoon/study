@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/vue-router.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex a {
+        display: block;
+        flex: 1;
+        text-align: center;
+        border: 1px solid #ccc;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Hello App!</h1>
+      <nav class="flex">
+        <router-link to="/a">a</router-link>
+        <router-link to="/b">b</router-link>
+        <router-link to="/c">c</router-link>
+      </nav>
+      <router-view></router-view>
+    </div>
+
+    <script type="text/x-template" id="a">
+      <h1>我是a</h1>
+    </script>
+    <script type="text/x-template" id="b">
+      <h1>我是b</h1>
+    </script>
+    <script type="text/x-template" id="c">
+      <h1>我是c</h1>
+    </script>
+
+    <script>
+      var A = { template: '#a' }
+      var B = { template: '#b' }
+      var C = { template: '#c' }
+
+      var router = new VueRouter({
+        routes: [
+          { path: '/a', component: A },
+          { path: '/b', component: B },
+          { path: '/c', component: C }
+        ]
+      })
+
+      var v = new Vue({
+        el: '#app',
+        router
+      })
+    </script>
+  </body>
+</html>

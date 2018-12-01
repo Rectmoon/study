@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+    <script src="../../js/lib/vue-router.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex a {
+        display: block;
+        flex: 1;
+        text-align: center;
+        border: 1px solid #ccc;
+        text-decoration: none;
+      }
+
+      .item {
+        width: 100%;
+        border: 1px dashed orange;
+        background: #ddd;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Hello App!</h1>
+      <router-view></router-view>
+      <nav class="flex">
+        <router-link to="/a">a</router-link>
+        <router-link to="/b/1">b</router-link>
+        <router-link to="/c">c</router-link>
+      </nav>
+    </div>
+
+    <script type="text/x-template" id="a">
+      <div>
+        111
+        <h1>我是a</h1>
+        <ul>
+          <li v-for='item in list' class='item' :key='item.id' @click='handleItemClick(item.id)'>
+            {{item.name}}
+          </li>
+        </ul>
+      </div>
+    </script>
+    <script type="text/x-template" id="b">
+      <div class='detail'>
+        {{$route.params.id}}
+        <h1>我是b</h1>
+      </div>
+    </script>
+    <script type="text/x-template" id="c">
+      <h1>我是c</h1>
+    </script>
+
+    <script>
+      Vue.prototype.$Loading.config({
+        color: 'orange',
+        height: 5
+      })
+
+      var A = {
+        template: '#a',
+        data: function() {
+          return {
+            list: []
+          }
+        },
+        mounted: function() {
+          console.log(this.$route)
+          var z = this
+          this.$Loading.start()
+          setTimeout(function() {
+            z.list = z.getList()
+            z.$Loading.finish()
+          }, 1000)
+        },
+        methods: {
+          getList: function() {
+            var arr = []
+            for (var i = 0; i < 10; i++) {
+              arr.push({
+                id: i,
+                name: (Math.random() + '').slice(2, 10)
+              })
+            }
+            return arr
+          },
+          handleItemClick: function(id) {
+            this.$router.push({ path: '/b/' + id })
+            // this.$router.push({ name: 'b', params: { id: id } })
+          }
+        }
+      }
+
+      var B = {
+        template: '#b',
+        mounted: function() {
+          console.log(this.$route)
+          console.log(this.$router)
+        }
+      }
+      var C = {
+        template: '#c',
+        mounted: function() {
+          console.log(this.$route)
+        }
+      }
+
+      var router = new VueRouter({
+        routes: [
+          { path: '/a', component: A, children: [] },
+          { name: 'b', path: '/b/:id', component: B },
+          { path: '/c', component: C }
+        ]
+      })
+
+      var v = new Vue({
+        el: '#app',
+        router: router
+      })
+    </script>
+  </body>
+</html>

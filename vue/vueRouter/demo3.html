@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+    <script src="../../js/lib/vue-router.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex a {
+        display: block;
+        flex: 1;
+        text-align: center;
+        border: 1px solid #ccc;
+        text-decoration: none;
+      }
+
+      .item {
+        width: 100%;
+        border: 1px dashed orange;
+        background: #ddd;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <i-menu :theme="theme" active-name="1-2" :open-names="['1']">
+        <Submenu name="1">
+          <template slot="title">
+            Navigation One
+          </template>
+          <menu-group title="Item 1">
+            <menu-item name="1-1">Option 1</menu-item>
+            <menu-item name="1-2">Option 2</menu-item>
+          </menu-group>
+          <menu-group title="Item 2">
+            <menu-item name="1-3">Option 3</menu-item>
+            <menu-item name="1-4">Option 4</menu-item>
+          </menu-group>
+        </Submenu>
+        <submenu name="2">
+          <template slot="title">
+            Navigation Two
+          </template>
+          <menu-item name="2-1">Option 5</menu-item>
+          <menu-item name="2-2">Option 6</menu-item>
+          <submenu name="3">
+            <template slot="title"
+              >submenu</template
+            >
+            <menu-item name="3-1">Option 7</menu-item>
+            <menu-item name="3-2">Option 8</menu-item>
+          </submenu>
+        </submenu>
+        <submenu name="4">
+          <template slot="title">
+            Navigation Three
+          </template>
+          <menu-item name="4-1">Option 9</menu-item>
+          <menu-item name="4-2">Option 10</menu-item>
+          <menu-item name="4-3">Option 11</menu-item>
+          <menu-item name="4-4">Option 12</menu-item>
+        </submenu>
+      </i-menu>
+
+      <br />
+
+      <breadcrumb separator="=>">
+        <breadcrumb-item to="/" v-for="(item, i) in list" :key="i">
+          <Icon type="ios-home-outline"></Icon> Home
+        </breadcrumb-item>
+        <breadcrumb-item to="/b/22">
+          <Icon type="logo-buffer"></Icon> Components
+        </breadcrumb-item>
+        <breadcrumb-item>
+          <Icon type="ios-cafe"></Icon> Breadcrumb
+        </breadcrumb-item>
+      </breadcrumb>
+
+      <router-view></router-view>
+
+      <nav class="flex">
+        <router-link to="/">home</router-link>
+        <router-link to="/home/b/12">project</router-link>
+        <router-link to="/c">c</router-link>
+      </nav>
+    </div>
+
+    <script type="text/x-template" id="a">
+      <div>
+        111
+        <h1>我是a</h1>
+        <ul>
+          <li v-for='item in list' class='item' :key='item.id' @click='handleItemClick(item.id)'>
+            {{item.name}}
+          </li>
+        </ul>
+        <router-view></router-view>
+      </div>
+    </script>
+    <script type="text/x-template" id="b">
+      <div class='detail'>
+        {{$route.params.id}}
+        <h1>我是b</h1>
+        <router-link :to="'/b/'+ $route.params.id+'/sub/123'">点击子项目</router-link>
+        <router-view></router-view>
+      </div>
+    </script>
+
+    <script type="text/x-template" id="sub">
+      <div class='sub'>
+        {{$route.params.id}}
+        <h1>子项目</h1>
+      </div>
+    </script>
+    <script type="text/x-template" id="c">
+      <h1>我是c</h1>
+    </script>
+
+    <script>
+      Vue.use(iview)
+      Vue.prototype.$Loading.config({
+        color: 'orange',
+        height: 5
+      })
+
+      var A = {
+        template: '#a',
+        data: function() {
+          return {
+            list: []
+          }
+        },
+        mounted: function() {
+          var z = this
+          this.$Loading.start()
+          setTimeout(function() {
+            z.list = z.getList()
+            z.$Loading.finish()
+          }, 1000)
+        },
+        methods: {
+          getList: function() {
+            var arr = []
+            for (var i = 0; i < 10; i++) {
+              arr.push({
+                id: i,
+                name: (Math.random() + '').slice(2, 10)
+              })
+            }
+            return arr
+          },
+          handleItemClick: function(id) {
+            this.$router.push({ path: '/b/' + id, proName: '阳光一百' + id })
+          }
+        }
+      }
+
+      var B = {
+        template: '#b',
+        mounted: function() {
+          console.log(this.$route)
+          console.log(this.$router)
+        }
+      }
+      var Sub = {
+        template: '#sub',
+        mounted: function() {
+          console.log(this.$route)
+          console.log(this.$router)
+        }
+      }
+
+      var C = {
+        template: '#c',
+        mounted: function() {
+          console.log(this.$route)
+        }
+      }
+
+      var router = new VueRouter({
+        routes: [
+          {
+            name: 'home',
+            path: '/',
+            component: A,
+            children: [
+              {
+                name: 'project',
+                path: 'b/:id',
+                component: B,
+                children: [
+                  { name: 'subProject', path: 'sub/:id', component: Sub }
+                ]
+              }
+            ]
+          },
+          { path: '/c', component: C }
+        ]
+      })
+
+      var v = new Vue({
+        el: '#app',
+        router: router,
+        data: {
+          theme: 'dark',
+          list: []
+        },
+        watch: {
+          $route(newRoute) {
+            console.log(newRoute)
+            this.list = newRoute.matched
+            console.log(this.list)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

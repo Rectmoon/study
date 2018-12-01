@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+    <script src="../../js/lib/vue-router.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex a {
+        display: block;
+        flex: 1;
+        text-align: center;
+        border: 1px solid #ccc;
+        text-decoration: none;
+      }
+
+      .item {
+        width: 100%;
+        border: 1px dashed orange;
+        background: #ddd;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Route props</h1>
+      <ul class="flex">
+        <li class="item"><router-link to="/">/</router-link></li>
+        <li class="item">
+          <router-link to="/hello/you">/hello/you</router-link>
+        </li>
+        <li class="item"><router-link to="/static">/static</router-link></li>
+        <li class="item">
+          <router-link to="/dynamic/5">/dynamic/5</router-link>
+        </li>
+        <li class="item"><router-link to="/attrs">/attrs</router-link></li>
+      </ul>
+      <router-view class="view" foo="123" :project="project"></router-view>
+    </div>
+
+    <script type="text/x-template" id="hello">
+      <div>
+        <h1>{{name}}</h1>
+        <h1>{{$attrs}}</h1>
+      </div>
+    </script>
+
+    <script>
+      function dynamicPropsFn(route) {
+        var now = new Date()
+        return {
+          name: now.getFullYear() + parseInt(route.params.years) + '!'
+        }
+      }
+
+      var Hello = {
+        template: '#hello',
+        props: {
+          name: {
+            type: String,
+            default: 'ok'
+          }
+        },
+        mounted: function() {
+          console.log(this.$route)
+        }
+      }
+
+      var router = new VueRouter({
+        routes: [
+          { path: '/', component: Hello }, // No props, no nothing
+          { path: '/hello/:name', component: Hello, props: true }, // Pass route.params to props
+          { path: '/static', component: Hello, props: { name: 'world' } }, // static values
+          { path: '/dynamic/:years', component: Hello, props: dynamicPropsFn }, // custom logic for mapping between route and props
+          { path: '/attrs', component: Hello, props: { name: 'attrs' } }
+        ]
+      })
+
+      var v = new Vue({
+        el: '#app',
+        router: router,
+        data: {
+          list: [],
+          project: {}
+        },
+        watch: {
+          $route(newRoute) {
+            console.log(newRoute)
+            this.list = newRoute.matched
+            this.project = (Math.random() + '').slice(2, 10)
+            console.log(this.list)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
