@@ -199,8 +199,7 @@
             this.page = i
           },
           handleDbClick: function(d) {
-            this.$store.commit({
-              type: 'setDetailItem',
+            this.$store.commit('setDetailItem', {
               detailItem: d,
               name: this.$route.name + '-detail'
             })
