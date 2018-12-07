@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <i-button type="primary" @click="modal = true"
+        >Display dialog box</i-button
+      >
+      <Modal
+        v-model="modal"
+        title="Title"
+        :loading="loading"
+        :mask-closable="false"
+        ok-text="完成"
+        @on-ok="handleSubmit('form', 1)"
+        @on-cancel="handleSubmit('form', 0)"
+        ref="ly"
+      >
+        <h1>我是表单</h1>
+        <i-form ref="form" :model="form" :rules="formRules"
+          ><form-item prop="name">
+            <i-input v-model="form.name"></i-input></form-item
+        ></i-form>
+      </Modal>
+    </div>
+
+    <script>
+      var v = new Vue({
+        el: '#app',
+        data: {
+          modal: false,
+          loading: true,
+          form: { name: '' },
+          formRules: {
+            name: [{ required: true, message: 'name is required' }]
+          }
+        },
+        methods: {
+          handleSubmit: function(name, flag) {
+            if (!flag) {
+              this.modal = false
+              this.$refs[name].resetFields()
+              return
+            }
+            var z = this
+            this.$refs[name].validate(function(valid) {
+              if (valid) {
+                setTimeout(function() {
+                  z.modal = false
+                  z.$refs[name].resetFields()
+                  z.loading = false
+                  z.$nextTick(function() {
+                    z.loading = true
+                  })
+                }, 3000)
+              } else {
+                z.loading = false
+                z.$nextTick(function() {
+                  z.loading = true
+                })
+              }
+            })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
