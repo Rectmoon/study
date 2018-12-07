@@ -53,14 +53,7 @@
             var z = this
             this.$refs[name].validate(function(valid) {
               if (valid) {
-                setTimeout(function() {
-                  z.modal = false
-                  z.$refs[name].resetFields()
-                  z.loading = false
-                  z.$nextTick(function() {
-                    z.loading = true
-                  })
-                }, 3000)
+                z.toService(name)
               } else {
                 z.loading = false
                 z.$nextTick(function() {
@@ -68,6 +61,17 @@
                 })
               }
             })
+          },
+          toService: function(name) {
+            var z = this
+            setTimeout(function() {
+              z.modal = false
+              z.$refs[name].resetFields()
+              z.loading = false
+              z.$nextTick(function() {
+                z.loading = true
+              })
+            }, 3000)
           }
         }
       })
