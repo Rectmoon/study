@@ -257,7 +257,6 @@ export function getTimeDetail(timeStr) {
       }
     }
   })
-
   for (let i = 0, len = handleFn.length; i < len; i++) {
     let item = handleFn[i]
     if (se >= item.t) {
@@ -266,4 +265,26 @@ export function getTimeDetail(timeStr) {
     }
   }
   return '1分钟前'
+}
+
+export function diffDate(date1, date2) {
+  let d1 = getType(date1) === 'date' ? date1 : new Date(date1),
+    d2 = getType(date2) === 'date' ? date2 : new Date(date2)
+  const diff = Math.abs(d1 - d2)
+  let ms = diff % 1000,
+    s = Math.round((diff / 1000) % 60),
+    min = Math.floor((diff / 60000) % 60),
+    h = Math.floor((diff / 3600000) % 24),
+    d = Math.floor((diff / 86400000) % 30),
+    mon = Math.floor((diff / (86400000 * 30)) % 12),
+    y = Math.floor(diff / (86400000 * 365))
+  return {
+    y,
+    mon,
+    d,
+    h,
+    min,
+    s,
+    ms
+  }
 }
