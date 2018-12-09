@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <i-button type="primary" @click="modal = true"
+        >Display dialog box</i-button
+      >
+      <Modal
+        v-model="modal"
+        title="Title"
+        :loading="loading"
+        :mask-closable="false"
+        ok-text="完成"
+        @on-ok="handleSubmit('form', 1)"
+        @on-cancel="handleSubmit('form', 0)"
+        ref="ly"
+      >
+        <h1>我是表单</h1>
+        <i-form
+          ref="form"
+          :model="form"
+          :rules="formRules"
+          label-position="right"
+          :label-width="80"
+        >
+          <form-item prop="name" label="用户名">
+            <i-input v-model="form.name"></i-input>
+          </form-item>
+          <Row>
+            <i-col span="12">
+              <form-item prop="checkInDate" label="入住时间">
+                <date-picker
+                  :clearable="false"
+                  v-model="form.checkInDate"
+                  @on-change="startTimeChange"
+                  :options="startTimeOption"
+                  type="datetime"
+                ></date-picker>
+              </form-item>
+            </i-col>
+            <i-col span="12">
+              <form-item prop="checkOutDate" label="离开时间">
+                <date-picker
+                  :clearable="false"
+                  v-model="form.checkOutDate"
+                  @on-change="endTimeChange"
+                  :options="endTimeOption"
+                  type="datetime"
+                ></date-picker>
+              </form-item>
+            </i-col>
+          </Row>
+          <form-item label="周期">
+            <input-number readonly v-model="diff.y"></input-number> 年
+            <input-number readonly v-model="diff.mon"></input-number> 月
+            <input-number readonly v-model="diff.d"></input-number> 日
+          </form-item>
+        </i-form>
+      </Modal>
+    </div>
+
+    <script>
+      function getType(o) {
+        return Object.prototype.toString
+          .call(o)
+          .slice(8, -1)
+          .toLowerCase()
+      }
+
+      function isLeapYear(year) {
+        return 0 == year % 4 && (year % 100 != 0 || year % 400 == 0)
+      }
+
+      function floorMod(x, n) {
+        return x - n * Math.floor(x / n)
+      }
+
+      function daysInMonth(year, month) {
+        const modMonth = floorMod(month - 1, 12) + 1,
+          modYear = year + (month - modMonth) / 12
+        if (modMonth === 2) return isLeapYear(modYear) ? 29 : 28
+        return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][modMonth - 1]
+      }
+
+      function diffDate(startDate, endDate) {
+        let d1 =
+            getType(startDate) === 'date' ? startDate : new Date(startDate),
+          d2 = getType(endDate) === 'date' ? endDate : new Date(endDate)
+        const diff = d2 - d1
+        let ms = diff % 1000,
+          y1 = d1.getFullYear(),
+          m1 = d1.getMonth() + 1,
+          s = Math.round((diff / 1000) % 60),
+          min = Math.floor((diff / 60000) % 60),
+          h = Math.floor((diff / 3600000) % 24),
+          d = d2.getDate() - d1.getDate(),
+          mon = d2.getMonth() - d1.getMonth(),
+          y = d2.getFullYear() - d1.getFullYear()
+
+        if (mon < 0) {
+          y--
+          mon = d2.getMonth() + (12 - d1.getMonth())
+        }
+        if (d < 0) {
+          mon--
+          if (mon < 0) {
+            y--
+            mon += 12
+          }
+          let monthLength = daysInMonth(y1, m1)
+          d = d2.getDate() + (monthLength - d1.getDate())
+        }
+        return {
+          y,
+          mon,
+          d,
+          h,
+          min,
+          s,
+          ms
+        }
+      }
+
+      function getTheDestinyTime(
+        date = new Date(),
+        type = 'year',
+        next = true,
+        limit = 1
+      ) {
+        const d = getType(date) === 'date' ? date : new Date(date)
+        let year = d.getFullYear(),
+          month = d.getMonth(),
+          day = d.getDate()
+        switch (type) {
+          case 'year':
+            year = next ? year + limit : year - limit
+            break
+          case 'month':
+            month = next ? month + limit : month - limit
+            break
+          case 'day':
+            day = next ? day + limit : day - limit
+            break
+          default:
+            break
+        }
+        return new Date(year, month, day)
+      }
+
+      var d1 = new Date()
+      var d2 = getTheDestinyTime(d1)
+
+      var dialogFormMixin = {
+        data: function() {
+          return { modal: false, loading: true }
+        },
+        methods: {
+          handleSubmit: function(name, flag) {
+            if (!flag) {
+              this.modal = false
+              this.$refs[name].resetFields()
+              return
+            }
+            var z = this
+            this.$refs[name].validate(function(valid) {
+              if (valid) {
+                z.toService(name)
+              } else {
+                z.loading = false
+                z.$nextTick(function() {
+                  z.loading = true
+                })
+              }
+            })
+          },
+          toService: function(name) {
+            var z = this
+            setTimeout(function() {
+              z.modal = false
+              z.$refs[name].resetFields()
+              z.loading = false
+              z.$nextTick(function() {
+                z.loading = true
+              })
+            }, 3000)
+          }
+        }
+      }
+      var v = new Vue({
+        el: '#app',
+        mixins: [dialogFormMixin],
+        data: {
+          form: { name: '', checkInDate: d1, checkOutDate: d2 },
+          formRules: {
+            name: [{ required: true, message: 'name is required' }]
+          },
+          startTimeOption: {
+            disabledDate: function(date) {
+              return date && date.valueOf() < Date.now() - 86400000
+            }
+          },
+          endTimeOption: {
+            disabledDate: function(date) {
+              return date && date.valueOf() < d1.getTime()
+            }
+          }
+        },
+        methods: {
+          startTimeChange: function(t) {
+            this.endTimeOption = {
+              disabledDate: function(date) {
+                return date && date.valueOf() < new Date(t).getTime() + 86400000
+              }
+            }
+          },
+          endTimeChange: function(t) {
+            this.startTimeOption = {
+              disabledDate: function(date) {
+                return date && date.valueOf() > new Date(t).getTime() - 86400000
+              }
+            }
+          }
+        },
+        computed: {
+          diff: function() {
+            return diffDate(this.form.checkInDate, this.form.checkOutDate)
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

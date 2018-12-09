@@ -139,7 +139,6 @@ export function weeksInWeekYear(weekYear) {
         Math.floor(last / 100) +
         Math.floor(last / 400)) %
       7
-  console.log(p1)
   return p1 === 4 || p2 === 3 ? 53 : 52
 }
 
@@ -267,17 +266,33 @@ export function getTimeDetail(timeStr) {
   return '1分钟前'
 }
 
-export function diffDate(date1, date2) {
-  let d1 = getType(date1) === 'date' ? date1 : new Date(date1),
-    d2 = getType(date2) === 'date' ? date2 : new Date(date2)
-  const diff = Math.abs(d1 - d2)
+export function diffDate(startDate, endDate) {
+  let d1 = isDate(startDate) ? startDate : new Date(startDate),
+    d2 = isDate(endDate) ? endDate : new Date(endDate)
+  const diff = d2 - d1
   let ms = diff % 1000,
+    y1 = d1.getFullYear(),
+    m1 = d1.getMonth() + 1,
     s = Math.round((diff / 1000) % 60),
     min = Math.floor((diff / 60000) % 60),
     h = Math.floor((diff / 3600000) % 24),
-    d = Math.floor((diff / 86400000) % 30),
-    mon = Math.floor((diff / (86400000 * 30)) % 12),
-    y = Math.floor(diff / (86400000 * 365))
+    d = d2.getDate() - d1.getDate(),
+    mon = d2.getMonth() - d1.getMonth(),
+    y = d2.getFullYear() - d1.getFullYear()
+
+  if (mon < 0) {
+    y--
+    mon = d2.getMonth() + (12 - d1.getMonth())
+  }
+  if (d < 0) {
+    mon--
+    if (mon < 0) {
+      y--
+      mon += 12
+    }
+    let monthLength = daysInMonth(y1, m1)
+    d = d2.getDate() + (monthLength - d1.getDate())
+  }
   return {
     y,
     mon,
@@ -287,4 +302,31 @@ export function diffDate(date1, date2) {
     s,
     ms
   }
+}
+
+export function getTheDestinyTime(
+  date = new Date(),
+  type = 'year',
+  next = true,
+  limit = 1
+) {
+  const d = getType(date) === 'date' ? date : new Date(date)
+  let year = d.getFullYear(),
+    month = d.getMonth(),
+    day = d.getDate()
+
+  switch (type) {
+    case 'year':
+      year = next ? year + limit : year - limit
+      break
+    case 'month':
+      month = next ? month + limit : month - limit
+      break
+    case 'day':
+      day = next ? day + limit : day - limit
+      break
+    default:
+      break
+  }
+  return new Date(year, month, day)
 }
