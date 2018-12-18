@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../../assets/css/iview.min.css" />
+    <script src="../../js/lib/vue.js"></script>
+    <script src="../../js/lib/iview.min.js"></script>
+    <style>
+      .ivu-table-header tr:nth-child(2) {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-model="len" />
+      <Tabs type="card">
+        <tab-pane label="标签一">
+          <i-table
+            :border="true"
+            ref="selection"
+            :columns="columns"
+            :data="tableData"
+          ></i-table>
+        </tab-pane>
+        <tab-pane label="标签二"> 222 </tab-pane>
+        <tab-pane label="标签三">标签三的内容</tab-pane>
+      </Tabs>
+      <i-button @click="handleSelectAll(true)">Set all selected</i-button>
+      <i-button @click="handleSelectAll(false)">Cancel all selected</i-button>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: function() {
+          var z = this
+          return {
+            len: 5,
+            obj: { a: '2344' },
+            columns: [
+              {
+                type: 'selection',
+                width: 60,
+                align: 'center'
+              },
+              {
+                title: '楼层',
+                width: 80,
+                align: 'center',
+                key: 'floorNum'
+              },
+              {
+                title: '房号',
+                key: 'arr',
+                align: 'center',
+                children: Array.apply(null, { length: 2 }).map(function(
+                  item,
+                  i
+                ) {
+                  return {
+                    title: 'id',
+                    align: 'center',
+                    renderHeader: function() {},
+                    render: function(h, params) {
+                      return h('div', [
+                        h('Checkbox', {
+                          props: {
+                            value: params.row.arr[i].checked
+                          },
+                          on: {
+                            'on-change': function(v) {
+                              z.handleItemCheck(v, i, params.row.arr[i])
+                            }
+                          }
+                        }),
+                        h(
+                          'Tag',
+                          {
+                            props: {
+                              color: 'volcano'
+                            }
+                          },
+                          params.row.arr[i].id
+                        )
+                      ])
+                    }
+                  }
+                })
+              }
+            ],
+            b: 3,
+            tableData: [
+              {
+                floorNum: '1',
+                arr: [{ checked: false, id: 101 }, { checked: false, id: 102 }],
+                _checked: true
+              },
+              {
+                floorNum: '2',
+                arr: [{ checked: false, id: 201 }, { checked: false, id: 202 }],
+                _checked: true
+              },
+              {
+                floorNum: '3',
+                arr: [{ checked: false, id: 301 }, { checked: false, id: 302 }],
+                _checked: true
+              },
+              {
+                floorNum: '4',
+                arr: [{ checked: false, id: 401 }, { checked: false, id: 402 }],
+                _checked: true
+              }
+            ]
+          }
+        },
+        methods: {
+          handleSelectAll: function(status) {
+            this.tableData.forEach(item => {
+              item.arr.forEach(function(v) {
+                v.checked = status
+              })
+            })
+          },
+          handleItemCheck: function(v, i, obj) {
+            obj.checked = v
+            if (!v) {
+              var o = this.tableData.filter(item => {
+                return item.arr.some(function(j) {
+                  return j.id == obj.id
+                })
+              })[0]
+              o._checked = false
+            } else {
+              this.tableData.forEach(item => {
+                if (
+                  item.arr.every(function(j) {
+                    return j.checked
+                  })
+                ) {
+                  console.log(1)
+                  item._checked = true
+                }
+              })
+            }
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
