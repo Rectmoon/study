@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../js/lib/d3.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <p>1</p>
+      <p>2</p>
+      <p>3</p>
+      <p>4</p>
+      <p>5</p>
+    </div>
+
+    <script>
+      var paragraphs = document.getElementsByTagName('p')
+      for (var i = 0; i < paragraphs.length; i++) {
+        var paragraph = paragraphs.item(i)
+        paragraph.style.setProperty('color', '#000', null)
+      }
+      console.log(paragraphs)
+
+      d3.selectAll('p').style('color', function(d, i) {
+        return i % 2 ? 'orange' : 'lightblue'
+      })
+
+      d3.selectAll('p')
+        .data([4, 8, 15, 16, 23, 42])
+        .style('font-size', function(d) {
+          return d + 'px'
+        })
+
+      // d3.select('body')
+      //   .selectAll('p')
+      //   .data([4, 8, 15, 16, 23, 42])
+      //   .enter()
+      //   .append('p')
+      //   .text(function(d) {
+      //     return 'I’m number ' + d + '!'
+      //   })
+
+      var p = d3
+        .select('body')
+        .selectAll('p')
+        .data([4, 8, 15, 16, 23, 426])
+        .text(function(d) {
+          return d
+        })
+
+      // Enter…
+      p.enter()
+        .append('p')
+        .text(function(d) {
+          return d
+        })
+
+      // Exit…
+      p.exit().remove()
+
+      d3.select('body')
+        .transition()
+        .style('background-color', 'lightblue')
+
+      d3.selectAll('circle')
+        .transition()
+        .duration(750)
+        .delay(function(d, i) {
+          return i * 10
+        })
+        .attr('r', function(d) {
+          return Math.sqrt(d * scale)
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="../js/lib/d3.min.js"></script>
+    <title></title>
+  </head>
+  <body>
+    <section></section>
+    <section></section>
+    <section></section>
+    <section></section>
+
+    <script>
+      var data = [4, 8, 15, 16, 23, 42]
+      var div = document.createElement('div')
+      div.innerHTML = 'Hello, world!'
+      document.body.appendChild(div)
+
+      var b = d3.select('body')
+      var div2 = b.append('div')
+      div2.html('ok')
+
+      var section = d3.selectAll('section')
+      var div3 = section.append('div')
+      div3.html('fine')
+
+      var body = d3.select('body')
+      body.style('color', 'pure').style('background-color', 'cyan')
+
+      var section1 = d3.selectAll('section')
+      section1.append('div').html('First!')
+      section1.append('div').html('Second.')
+    </script>
+  </body>
+</html>

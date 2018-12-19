@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Let’s Make a Bar Chart</title>
+    <style>
+      #chart div {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: center;
+        padding: 3px;
+        margin: 1px;
+        color: #fff;
+      }
+    </style>
+    <script src="../js/lib/d3.min.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      var data = [4, 8, 15, 16, 23, 49]
+
+      d3.select('body')
+        .style('color', 'black')
+        .style('background-color', 'lightblue')
+
+      // var x = d3
+      //   .scaleLinear()
+      //   .domain([0, d3.max(data)])
+      //   .range([0, 490])
+
+      var x = d3
+        .scaleBand()
+        .domain([0, 1, 2, 3, 4])
+        .range([0, 490])
+
+      /*
+      1.d3.scaleLinear() 线性比例尺 
+      domain是定义域，就是坐标系下的值 
+      range是值域，就是映射到svg画布上的值 
+      domain：连续型 
+      range：连续型
+      scale_l = d3.scaleLinear().domain([1,10]).range([0,100])
+
+
+      2.d3.scaleBand() 序数比例尺, 用domain将range平均分割
+      domain: 离散型 
+      range:连续型 
+      scale_b= d3.scaleBand().domain([1,2,3,4]).range([0,100])
+
+
+      3.d3.scaleOrdinal() 序数比例尺 
+      domain: 离散型 
+      range:离散型
+      scale_o = d3.scaleOrdinal().domain(['a', 'b', 'c']).range([10, 20, 30])
+
+
+      4.d3.scaleQuantize() 量化比例尺 (scaleBand的逆变换)
+      domain: 连续型 
+      range:离散型 
+      scale_q = d3.scaleQuantize().domain([0, 10]).range(['s', 'm', 'l'])
+
+
+      5.d3.scaleTime() 时间比例尺 
+      domain：连续型，是时间 
+      range：连续，是刻度
+      scale = d3.scaleTime()
+        .domain([new Date(2018, 0, 1, 0), new Date(2018, 0, 1, 2)])
+        .range([0,100])
+
+
+      其他
+      d3.scaleIdentity() // 恒等比例尺
+      d3.scaleSqrt() // 乘方比例尺
+      d3.scalePow() // 类似scaleSqrt的乘方比例尺
+      d3.scaleLog() // 对数比例尺
+      d3.scaleQuantile() // 分位数比例尺
+
+      invert()与invertExtent()方法
+
+      let scale = d3.scaleLinear().domain([1,5]).range([0,100])
+      scale.invert(50) // => 3
+
+      let scale2 = d3.scaleQuantize().domain([0,10]).range(['small', 'big'])
+      scale2.invertExtent('small') // => [0,5]
+      */
+
+      d3.select('#chart')
+        .selectAll('div')
+        .data(data)
+        .enter()
+        .append('div')
+        .style('width', function(d) {
+          return x(d) + 'px'
+        })
+        .text(function(d) {
+          return d
+        })
+    </script>
+  </body>
+</html>
