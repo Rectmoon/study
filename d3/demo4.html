@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="../js/lib/d3.min.js"></script>
+  </head>
+  <body>
+    <svg width="720" height="120">
+      <circle
+        cx="30"
+        cy="60"
+        r="5.656854249492381"
+        style="fill:steelblue;"
+      ></circle>
+      <circle
+        cx="130"
+        cy="60"
+        r="7.54983443527075"
+        style="fill:steelblue;"
+      ></circle>
+    </svg>
+
+    <script>
+      var cs = d3.selectAll('circle')
+      cs.style('fill', 'lightblue')
+      cs.attr('r', 30)
+      cs.attr('cx', function() {
+        return Math.random() * 720
+      })
+      cs.data([32, 57, 112])
+      cs.attr('r', function(d) {
+        return Math.sqrt(d)
+      })
+      cs.attr('cx', function(d, i) {
+        return i * 100 + 30
+      })
+
+      var svg = d3.select('svg')
+      var circle = svg
+        .selectAll('circle')
+        .data([32, 57, 293, 500], function(d) {
+          return d
+        })
+
+      circle
+        .enter()
+        .append('circle')
+        .attr('cy', 60)
+        .attr('cx', function(d, i) {
+          return i * 100 + 30
+        })
+        .attr('r', function(d) {
+          return Math.sqrt(d)
+        })
+        .style('fill', 'orange')
+
+      circle.exit().remove()
+    </script>
+  </body>
+</html>
