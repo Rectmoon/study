@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .demo {
+        margin: 50px auto;
+      }
+
+      .demo1 {
+        width: 50%;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+
+        box-shadow: 0 0 5px 0 #ddd inset;
+        overflow: hidden;
+      }
+
+      .demo1 span {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-color: #2989d8;
+        background: -moz-linear-gradient(
+          45deg,
+          #2989d8 33%,
+          #7db9e8 34%,
+          #7db9e8 59%,
+          #2989d8 60%
+        ); /* FF3.6+ */
+        background: -webkit-gradient(
+          linear,
+          left bottom,
+          right top,
+          color-stop(33%, #2989d8),
+          color-stop(34%, #7db9e8),
+          color-stop(59%, #7db9e8),
+          color-stop(60%, #2989d8)
+        ); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(
+          45deg,
+          #2989d8 33%,
+          #7db9e8 34%,
+          #7db9e8 59%,
+          #2989d8 60%
+        ); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(
+          45deg,
+          #2989d8 33%,
+          #7db9e8 34%,
+          #7db9e8 59%,
+          #2989d8 60%
+        ); /* Opera 11.10+ */
+        background: -ms-linear-gradient(
+          45deg,
+          #2989d8 33%,
+          #7db9e8 34%,
+          #7db9e8 59%,
+          #2989d8 60%
+        ); /* IE10+ */
+        background: linear-gradient(
+          45deg,
+          #2989d8 33%,
+          #7db9e8 34%,
+          #7db9e8 59%,
+          #2989d8 60%
+        ); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#2989d8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+        background-size: 60px 30px;
+        text-align: center;
+        color: #fff;
+        -webkit-animation: load 3s ease-in;
+      }
+
+      @-webkit-keyframes load {
+        0% {
+          width: 0%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      .demo2 {
+        width: 80%;
+        height: 50px;
+        position: relative;
+      }
+
+      .demo2 div {
+        width: 100%;
+        height: 10px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        margin-top: -5px;
+        background: #ccc;
+      }
+
+      .demo2 div span {
+        position: absolute;
+        background: orange;
+        width: 100%;
+        height: 10px;
+        -webkit-animation: bgLoad 5.5s linear;
+      }
+
+      @-webkit-keyframes bgLoad {
+        0% {
+          width: 0%;
+        }
+        18.18%,
+        27.27% {
+          width: 25%;
+        }
+        45.45%,
+        54.54% {
+          width: 50%;
+        }
+        72.72%,
+        81.81% {
+          width: 75%;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      .demo2 > span {
+        position: absolute;
+        top: 50%;
+        margin-top: -10px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: orange;
+        margin-left: -10px;
+        color: #fff;
+      }
+
+      .demo2 span:nth-child(2) {
+        left: 0%;
+        background: orange;
+      }
+
+      .demo2 span:nth-child(3) {
+        left: 25%;
+        background: orange;
+        -webkit-animation: circleLoad_1 1.5s ease-in;
+      }
+
+      .demo2 span:nth-child(4) {
+        left: 50%;
+        background: orange;
+        -webkit-animation: circleLoad_2 3s ease-in;
+      }
+
+      .demo2 span:nth-child(5) {
+        left: 75%;
+        background: orange;
+        -webkit-animation: circleLoad_3 4.5s ease-in;
+      }
+
+      .demo2 span:nth-child(6) {
+        left: 100%;
+        background: orange;
+        -webkit-animation: circleLoad_4 6s ease-in;
+      }
+
+      @-webkit-keyframes circleLoad_1 {
+        0%,
+        66.66% {
+          background: #ccc;
+        }
+        100% {
+          background: orange;
+        }
+      }
+      @-webkit-keyframes circleLoad_2 {
+        0%,
+        83.34% {
+          background: #ccc;
+        }
+        100% {
+          background: orange;
+        }
+      }
+      @-webkit-keyframes circleLoad_3 {
+        0%,
+        88.88% {
+          background: #ccc;
+        }
+        100% {
+          background: orange;
+        }
+      }
+      @-webkit-keyframes circleLoad_4 {
+        0%,
+        91.67% {
+          background: #ccc;
+        }
+        100% {
+          background: orange;
+        }
+      }
+
+      .demo3 {
+        width: 200px;
+        height: 200px;
+        margin: 50px auto;
+        position: relative;
+        border: 1px solid #ddd;
+        transform: rotateX(60deg);
+      }
+
+      .demo3 .container {
+        width: 100px;
+        height: 200px;
+        position: absolute;
+        top: 0;
+        overflow: hidden;
+      }
+
+      .right {
+        right: 0;
+      }
+      .left {
+        left: 0;
+      }
+
+      .demo3 .container .circle-progress {
+        width: 180px;
+        height: 180px;
+        border: 10px solid transparent;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        /* -webkit-transform: rotate(45deg); */
+        -webkit-transform: rotate(-135deg);
+      }
+
+      .demo3 .container .circle-progress.left-circle {
+        border-left: 10px solid lightblue;
+        border-bottom: 10px solid lightblue;
+        left: 0;
+        /* -webkit-animation: circleProgressLoad_left 5s linear infinite; */
+        -webkit-animation: circleProgressLoad_left 5s linear;
+      }
+
+      .demo3 .container .circle-progress.right-circle {
+        border-top: 10px solid lightblue;
+        border-right: 10px solid lightblue;
+        right: 0;
+        /* -webkit-animation: circleProgressLoad_right 5s linear infinite; */
+        -webkit-animation: circleProgressLoad_right 5s linear;
+      }
+
+      @-webkit-keyframes circleProgressLoad_left {
+        0%,
+        50% {
+          -webkit-transform: rotate(45deg);
+          /* -webkit-transform: rotate(-135deg); */
+        }
+        100% {
+          -webkit-transform: rotate(225deg);
+          /* -webkit-transform: rotate(45deg); */
+        }
+      }
+
+      @-webkit-keyframes circleProgressLoad_right {
+        0% {
+          -webkit-transform: rotate(45deg);
+          /* -webkit-transform: rotate(-135deg); */
+        }
+        50%,
+        100% {
+          -webkit-transform: rotate(225deg);
+          /* -webkit-transform: rotate(45deg); */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo demo1"><span></span></div>
+
+    <div class="demo demo2">
+      <div><span></span></div>
+      <span></span> <span></span> <span></span> <span></span> <span></span>
+    </div>
+
+    <div class="demo demo3">
+      <div class="container left">
+        <div class="circle-progress left-circle"></div>
+      </div>
+      <div class="container right">
+        <div class="circle-progress right-circle"></div>
+      </div>
+    </div>
+  </body>
+</html>
