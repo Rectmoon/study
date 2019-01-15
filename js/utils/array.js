@@ -48,3 +48,31 @@ export function theBest(arr, compare, by = x => x) {
     else return pair
   }, null)[1]
 }
+
+export function buildTree(
+  arr,
+  map = {
+    value: 'id',
+    label: 'name',
+    parent: 'parentId'
+  }
+) {
+  let tmp = {},
+    tree = []
+  arr.forEach(item => {
+    item.value = item.value || item[map.value]
+    item.label = item.label || item[map.label]
+    tmp[item.value] = item
+  })
+  Object.keys(tmp).forEach(key => {
+    let v = tmp[key]
+    if (v[map.parent] != 0) {
+      let arr = tmp[v[map.parent]].children || []
+      arr.push(v)
+      tmp[v[map.parent]].children = arr
+    } else {
+      tree.push(v)
+    }
+  })
+  return tree
+}
