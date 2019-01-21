@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>cross domain</title>
+  </head>
+  <body>
+    <script>
+      ;(function(doc, win) {
+        var fn = function() {}
+        fn.prototype = {
+          /*本地数据存储*/
+          setLocalCookie: function(k, v, t, domain) {
+            typeof window.localStorage !== 'undefined'
+              ? localStorage.setItem(k, v)
+              : (function() {
+                  t = t || 365 * 12 * 60 * 60
+                  domain = domain ? domain : '.hc360.com'
+                  document.cookie =
+                    k +
+                    '=' +
+                    v +
+                    ';max-age=' +
+                    t +
+                    ';domain=' +
+                    domain +
+                    ';path=/'
+                })()
+          },
+          getLocalCookie: function(k) {
+            k = k || 'localDataTemp'
+            return typeof window.localStorage !== 'undefined'
+              ? localStorage.getItem(k)
+              : (function() {
+                  var all = document.cookie.split(';')
+                  var cookieData = {}
+                  for (var i = 0, l = all.length; i < l; i++) {
+                    var p = all[i].indexOf('=')
+                    var dataName = all[i]
+                      .substring(0, p)
+                      .replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
+                    cookieData[dataName] = all[i].substring(p + 1)
+                  }
+                  return cookieData[k]
+                })()
+          },
+          clearLocalData: function(k) {
+            k = k || 'localDataTemp'
+            typeof window.localStorage !== 'undefined'
+              ? localStorage.removeItem(k)
+              : (function() {
+                  document.cookie = k + '=temp' + ';max-age=0'
+                })()
+          },
+          init: function() {
+            this.bindEvent()
+          },
+          bindEvent: function() {
+            var z = this
+            win.addEventListener(
+              'message',
+              function(evt) {
+                if (win.parent != evt.source) return
+                var options = JSON.parse(evt.data)
+                if (options.type == 'GET') {
+                  var data = tools.getLocalCookie(options.key)
+                  win.parent.postMessage(data, '*')
+                }
+                options.type == 'SET' &&
+                  z.setLocalCookie(options.key, options.value)
+                options.type == 'REM' && z.clearLocalData(options.key)
+              },
+              false
+            )
+          }
+        }
+        var tools = new fn()
+        tools.init()
+      })(document, window)
+    </script>
+  </body>
+</html>
