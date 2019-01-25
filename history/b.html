@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <script src="../js/lib/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+      div {
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+        margin-left: 200px;
+        margin-bottom: 20px;
+      }
+
+      .demo1,
+      .demo3 {
+        background: green;
+      }
+
+      .demo2,
+      .demo4 {
+        background: blue;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function() {
+        $('.demo1').click(function() {
+          //可回退，替换当前页面
+          window.location.replace('./a.html')
+        })
+      })
+    </script>
+  </head>
+
+  <body>
+    <div class="demo1">b</div>
+  </body>
+</html>

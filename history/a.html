@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <script src="../js/lib/jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+      div {
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+        margin-left: 200px;
+        margin-bottom: 20px;
+      }
+
+      .demo1,
+      .demo3 {
+        background: green;
+      }
+
+      .demo2,
+      .demo4 {
+        background: blue;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function() {
+        $('.demo1').click(function() {
+          //可回退，替换当前页面
+          window.location.href = 'https://www.baidu.com/'
+        })
+        $('.demo2').click(function() {
+          //可回退，替换当前页面
+          window.location.assign('https://www.baidu.com/')
+        })
+        $('.demo3').click(function() {
+          //刷新当前页面当取值为 true 时，将强制浏览器从服务器重新获取当前页面资源，
+          //而不是从浏览器的缓存中读取，如果取值为 false 或不传该参数时，
+          //浏览器则可能会从缓存中读取当前页面。
+          window.location.reload(true)
+        })
+        $('.demo4').click(function() {
+          //不可回退
+          window.location.replace('https://www.baidu.com/')
+        })
+      })
+    </script>
+  </head>
+
+  <body>
+    <div class="demo1"></div>
+    <div class="demo2"></div>
+    <div class="demo3"></div>
+    <div class="demo4"></div>
+  </body>
+</html>
