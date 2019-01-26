@@ -82,10 +82,10 @@ video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
+  font-family: PingFangHK-Medium;
   vertical-align: baseline;
   outline: none;
+  box-sizing: border-box;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -122,4 +122,51 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.ib {
+  display: inline-block;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clearfix:after {
+  content: '.';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-r {
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.flex-v {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
