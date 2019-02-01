@@ -12,56 +12,100 @@
         height: 100px;
         background-color: orange;
       }
+
+      .dialog {
+        width: 400px;
+        height: 100px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .close {
+        position: absolute;
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        right: 0;
+        top: 0;
+        text-align: center;
+        background-color: orange;
+      }
+
+      .hide {
+        display: none;
+      }
     </style>
     <script src="js/lib/moon.js"></script>
     <script src="js/lib/dialog.js"></script>
+
+    <script>
+      Function.prototype.before = function(beforefn) {
+        var _z = this
+        return function() {
+          var shouldContinue = beforefn.apply(this, arguments)
+          if (shouldContinue) {
+            return _z.apply(this, arguments)
+          }
+        }
+      }
+
+      Function.prototype.after = function(afterfn) {
+        var _z = this
+        return function() {
+          var ret = _z.apply(this, arguments)
+          afterfn.apply(this, arguments)
+          return ret
+        }
+      }
+      function show(id) {
+        showDialog.show({
+          id: id,
+          bgcolor: '#000',
+          opacity: 70
+        })
+      }
+      function closeDialog() {
+        showDialog.hide()
+      }
+    </script>
   </head>
   <body>
     <div id="box"></div>
+
+    <div id="lzx" class="dialog hide">
+      <p>hello lzx</p>
+      <span class="close" onclick="closeDialog()">x</span>
+    </div>
+
+    <div id="offline" class="dialog hide">
+      <p>设备不在线</p>
+      <span class="close" onclick="closeDialog()">x</span>
+    </div>
+
     <script>
-      class FlowHelper {
-        constructor() {
-          this.pid = 0
-          this.steps = []
+      var isOnline = true
+      setTimeout(() => {
+        isOnline = false
+      }, 1000)
+
+      function pre() {
+        if (!isOnline) {
+          show('offline')
         }
-        init() {
-          this.pid = 0
-          this.doStep()
-        }
-        next(data) {
-          if (typeof this.steps[this.pid + 1] === 'function') {
-            this.pid++
-            this.doStep(data)
-          }
-        }
-        doStep(data) {
-          if (typeof this.steps[this.pid] === 'function') {
-            this.steps[this.pid].call(this, data)
-          }
-        }
-        register(...args) {
-          args.forEach(arg => {
-            if (typeof arg === 'function') {
-              this.steps.push(arg)
-            }
-          })
-        }
+        return isOnline
       }
 
-      function isNetWorkConnected() {
-        this.next()
+      function f1() {
+        show('lzx')
       }
 
       function bindEvents() {
-        moon.addHandler(m('box'), 'click', function() {
-          console.log(2)
-        })
+        moon.addHandler(m('box'), 'click', f1.before(pre))
       }
 
       function pageInit() {
-        var f = new FlowHelper()
-        f.register(isNetWorkConnected, bindEvents)
-        f.init()
+        bindEvents()
       }
 
       moon.ready(function() {
