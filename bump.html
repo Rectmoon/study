@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style type="text/css">
+      .bumpy-char {
+        position: relative;
+        line-height: 3.4em;
+      }
+    </style>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <script src="plugins/jquery.easing.js"></script>
+    <script src="plugins/jquery.bump.js"></script>
+  </head>
+  <body>
+    <div class="example">床前明月光</div>
+    <div class="example">疑是地上霜</div>
+    <div class="example">举头望明月</div>
+    <div class="example">低头思故乡</div>
+
+    <script>
+      $(function() {
+        $('div.example').bump({
+          bounceUpDuration: 500,
+          bounceDownDuration: 500
+        })
+      })
+    </script>
+  </body>
+</html>
