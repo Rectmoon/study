@@ -7,13 +7,16 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="box"><h1>hello world</h1></div>
+    <div id="box" style="display: none"><h1>hello world</h1></div>
 
     <script src="js/lib/moon.js"></script>
     <script src="js/lib/dialog.js"></script>
     <script>
       moon.ready(function() {
         showDialog.show('box')
+        setTimeout(function() {
+          showDialog.hide()
+        }, 3000)
       })
     </script>
   </body>
