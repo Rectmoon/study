@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      body {
+        background-color: #000;
+      }
+
+      canvas {
+        display: inline-block;
+      }
+
+      #canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -10;
+      }
+    </style>
+
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <script src="plugins/jquery.easing.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <canvas id="canvas" width="100%" height="100%"></canvas>
+      <canvas id="canvas2" width="80%" height="80%"></canvas>
+    </div>
+
+    <script>
+      'use strict'
+      $(function() {
+        function t(t) {
+          return Math.floor(255 * Math.random() + t)
+        }
+        function r(t, r, i) {
+          return 'rgba(' + t + ',' + r + ',' + i + ', 0.9)'
+        }
+        function i(t, r, i, a) {
+          return (t * r + i * a) / (r + a)
+        }
+        function a(t, a) {
+          var n = t.color,
+            o = a.color,
+            e = i(n.r, t.radius, o.r, a.radius),
+            h = i(n.g, t.radius, o.g, a.radius),
+            s = i(n.b, t.radius, o.b, a.radius)
+          return r(Math.floor(e), Math.floor(h), Math.floor(s))
+        }
+        function n(i) {
+          ;(i = i || 0),
+            (this.r = t(i)),
+            (this.g = t(i)),
+            (this.b = t(i)),
+            (this.style = r(this.r, this.g, this.b))
+        }
+        function o() {
+          ;(this.x = Math.random() * h.width),
+            (this.y = Math.random() * h.height),
+            (this.vx = -0.5 + Math.random()),
+            (this.vy = -0.5 + Math.random()),
+            (this.radius = 2 * Math.random()),
+            (this.color = new n())
+        }
+        function e() {
+          s.clearRect(0, 0, h.width, h.height),
+            (function() {
+              for (var t = 0; t < u.nb; t++) {
+                var r = u.array[t]
+                r.y < 0 || r.y > h.height
+                  ? ((r.vx = r.vx), (r.vy = -r.vy))
+                  : (r.x < 0 || r.x > h.width) &&
+                    ((r.vx = -r.vx), (r.vy = r.vy)),
+                  (r.x += r.vx),
+                  (r.y += r.vy)
+              }
+            })(),
+            (function() {
+              for (var t = 0; t < u.nb; t++)
+                for (var r = 0; r < u.nb; r++) {
+                  var i = u.array[t],
+                    n = u.array[r]
+                  i.x - n.x < u.distance &&
+                    i.y - n.y < u.distance &&
+                    i.x - n.x > -u.distance &&
+                    i.y - n.y > -u.distance &&
+                    i.x - d.x < u.d_radius &&
+                    i.y - d.y < u.d_radius &&
+                    i.x - d.x > -u.d_radius &&
+                    i.y - d.y > -u.d_radius &&
+                    (s.beginPath(),
+                    (s.strokeStyle = a(i, n)),
+                    s.moveTo(i.x, i.y),
+                    s.lineTo(n.x, n.y),
+                    s.stroke(),
+                    s.closePath())
+                }
+            })(),
+            (function() {
+              for (var t = 0; t < u.nb; t++) u.array[t].draw()
+            })(),
+            requestAnimationFrame(e)
+        }
+        var h = document.querySelector('canvas'),
+          s = h.getContext('2d')
+        ;(h.width = window.innerWidth),
+          (h.height = window.innerHeight),
+          (s.lineWidth = 0.3),
+          (s.strokeStyle = new n(150).style)
+        var d = {
+            x: (50 * h.width) / 100,
+            y: (50 * h.height) / 100
+          },
+          u = {
+            nb: 250,
+            distance: 100,
+            d_radius: 150,
+            array: []
+          }
+        ;(o.prototype = {
+          draw: function() {
+            s.beginPath(),
+              (s.fillStyle = this.color.style),
+              s.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, !1),
+              s.fill()
+          }
+        }),
+          $('canvas').on('mousemove', function(t) {
+            ;(d.x = t.pageX), (d.y = t.pageY)
+          }),
+          $('canvas').on('mouseleave', function(t) {
+            ;(d.x = h.width / 2), (d.y = h.height / 2)
+          }),
+          (function() {
+            for (var t = 0; t < u.nb; t++) u.array.push(new o())
+          })(),
+          requestAnimationFrame(e)
+      })
+    </script>
+
+    <script>
+      'use strict'
+      function resize() {
+        ;(w = canvas.width = window.innerWidth),
+          (h = canvas.height = window.innerHeight)
+      }
+      function animate() {
+        context.clearRect(0, 0, w, h), (t += 0.1)
+        for (var e = 0; e < 1e4; e++) {
+          var a = 0.05 + (Math.sin(2e-5 * t) / Math.PI) * 0.2,
+            n = Math.min(w, h) * ((Math.cos((t + e) * a) / Math.PI) * 1.5),
+            i = Math.sin(e) * n + canvas.width / 2,
+            c = Math.cos(e) * n + canvas.height / 2
+          ;(context.fillStyle = 'rgba(0,255,255,0.5)'),
+            context.fillRect(i, c, 1.5, 1.5)
+        }
+        setTimeout(animate, 16)
+      }
+      var w,
+        h,
+        canvas = document.getElementById('canvas2'),
+        context = canvas.getContext('2d'),
+        t = 0
+      ;(context.globalCompositeOperation = 'lighter'),
+        window.addEventListener('resize', resize, !1),
+        resize(),
+        animate()
+    </script>
+  </body>
+</html>
