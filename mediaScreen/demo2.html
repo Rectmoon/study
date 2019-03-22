@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1" />
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <title>demo2</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #header {
+        width: 100%;
+        height: 100px;
+        background-color: #33ccff;
+      }
+      .fl {
+        float: left;
+      }
+      .fr {
+        float: right;
+      }
+      #left_col {
+        width: 100px;
+        height: 800px;
+        background-color: greenyellow;
+      }
+      #right_col {
+        padding-left: 100px;
+        width: 100%;
+        height: 800px;
+        background-color: orange;
+      }
+
+      @media (max-width: 700px) {
+        #header {
+          height: 50px;
+        }
+        #left_col {
+          width: 0;
+        }
+        #right_col {
+          padding-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="con">
+      <div id="left_col" class="fl"></div>
+      <div id="right_col"></div>
+    </div>
+
+    <script>
+      var obj1 = { _2: 'zhangsan', _1: 8, _3: 'lisi' } //要排序的对象
+      var obj2 = { 2: 'zhangsan', 1: 8, 3: 'lisi' } //要排序的对象
+      function objKeySort(obj) {
+        //排序的函数
+        var newkey = Object.keys(obj) //先用Object内置类的keys方法获取要排序对象的属性名，再利用Array原型上的sort方法对获取的属性名进行排序，newkey是一个数组
+        var newObj = {} //创建一个新的对象，用于存放排好序的键值对
+        for (var i = 0; i < newkey.length; i++) {
+          //遍历newkey数组
+          newObj[newkey[i]] = obj[newkey[i]] //向新创建的对象中按照排好的顺序依次增加键值对
+        }
+        console.log(newObj)
+        return newObj //返回排好序的新对象
+      }
+      objKeySort(obj1)
+      objKeySort(obj2)
+    </script>
+  </body>
+</html>

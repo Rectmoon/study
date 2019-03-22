@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1" />
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <title>Document</title>
+
+    <style>
+      @media screen and (max-width: 960px) {
+        body {
+          background: #000;
+        }
+      }
+
+      @media (min-width: 960px) {
+        body {
+          background: orange;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let set6 = new Set([1, 2, 2, 3, 4, 3, 5])
+      console.log('distinct 1:', set6)
+
+      // ======================================================
+      var data1 = { a: 1 },
+        data2 = { b: 2 },
+        obj = {}
+      obj[data1] = 1
+      obj[data2] = 2
+      console.log(obj) //{[object Object]: 2}
+      console.log(data1.toString() == data2.toString()) // true
+
+      const map = new Map([['a', 1], ['b', 2]]).set('c', 222).set('c', 4444)
+      console.log(map)
+      console.log(map.get('c'))
+      console.log(1111)
+      console.log(map.size)
+      console.log(map.keys())
+      console.log(map.values())
+      console.log(map.entries())
+
+      map.forEach(function(key, value, map) {
+        console.log(key + ':' + value)
+      })
+
+      /**
+      map对比的是引用地址，引用地址不同则视为不相同。
+
+      如果Map的键是一个简单类型的值(数字、字符串、布尔值),
+      则只要两个值严格相等，Map将其视为一个键，包括0和-0。
+      另外，虽然NaN不严格相等于自身，但Map将其视为同一个键。
+
+      实例属性和方法：size、set、get、has、delete、clear,
+      遍历方法：keys（）、values（）、entries（）、forEach（）
+      */
+    </script>
+  </body>
+</html>
