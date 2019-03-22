@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .wrap {
+        margin: 20px 0;
+      }
+
+      .wrap1 {
+        overflow: hidden;
+      }
+      .wrap1 .left {
+        float: left;
+        width: 200px;
+        height: 100px;
+        background: coral;
+        margin-left: -100%;
+      }
+      .wrap1 .middle {
+        float: left;
+        width: 100%;
+        height: 100px;
+        background: lightblue;
+      }
+      .wrap1 .right {
+        float: left;
+        width: 120px;
+        height: 100px;
+        background: gray;
+        margin-left: -120px;
+      }
+      .wrap1 .main {
+        margin: 0 140px 0 220px;
+        background: lightpink;
+      }
+
+      .wrap2 {
+        display: flex;
+        justify-content: space-between;
+      }
+      .wrap2 .left,
+      .wrap2 .right,
+      .wrap2 .middle {
+        height: 100px;
+      }
+      .wrap2 .left {
+        width: 200px;
+        background: coral;
+      }
+      .wrap2 .right {
+        width: 120px;
+        background: lightblue;
+      }
+      .wrap2 .middle {
+        background: #555;
+        width: 100%;
+        margin: 0 20px;
+      }
+
+      .wrap3 {
+        position: relative;
+        background: lightpink;
+      }
+      .wrap3 .left {
+        width: 200px;
+        height: 100px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: coral;
+      }
+      .wrap3 .right {
+        width: 120px;
+        height: 100px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: lightblue;
+      }
+      .wrap3 .middle {
+        height: 50px;
+        margin: 0 140px 0 220px;
+        background: #555;
+      }
+
+      .wrap4 {
+        background: #eee;
+        overflow: hidden;
+        margin: 90px 0;
+      }
+
+      .wrap4 .left {
+        width: 200px;
+        height: 50px;
+        float: left;
+        background: coral;
+      }
+      .wrap4 .right {
+        width: 120px;
+        height: 200px;
+        float: right;
+        background: lightblue;
+      }
+      .wrap4 .middle {
+        margin-left: 220px;
+        background: lightpink;
+        margin-right: 140px;
+      }
+
+      .sub,
+      .main,
+      .extra {
+        float: left;
+        height: 300px;
+      }
+      .sub {
+        margin-left: -100%;
+        width: 200px;
+        background: red;
+      }
+      .extra {
+        margin-left: -220px;
+        width: 220px;
+        background: lightblue;
+      }
+      .main {
+        width: 100%;
+      }
+      .main-inner {
+        margin: 0 240px 0 220px;
+        min-height: 130px;
+        background: green;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap wrap1">
+      <div class="middle">
+        <div class="main">中间</div>
+      </div>
+      <div class="left">左侧</div>
+      <div class="right">右侧</div>
+    </div>
+
+    <div class="wrap wrap2">
+      <div class="left">左侧</div>
+      <div class="middle">中间</div>
+      <div class="right">右侧</div>
+    </div>
+
+    <div class="wrap wrap3">
+      <div class="left">左侧</div>
+      <div class="middle">中间</div>
+      <div class="right">右侧</div>
+    </div>
+
+    <div class="wrap wrap4">
+      <div class="left">左侧</div>
+      <div class="right">右侧</div>
+      <div class="middle">中间</div>
+    </div>
+
+    <div class="main">
+      <div class="main-inner">
+        <h4>main</h4>
+        <p>
+          HHHHHHHHHHHHHHHHHHHHHH hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+          HHHHHHHHHHHHHHHHHHHHHH hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+        </p>
+      </div>
+    </div>
+    <div class="sub">
+      <h4>sub</h4>
+      <p>
+        oooooooooooooo 0000000000000000 00000000000000000 ooooooooooooooo
+        ooooooooooooooo 000000000000000
+      </p>
+    </div>
+
+    <div class="extra">
+      <h4>extra</h4>
+      <p>
+        BBBBBBBBBBBBBB 888888888888888888 BBBBBBBBBBBBBBBBBB
+        88888888888888888888
+      </p>
+    </div>
+    <div style="clear:both;"></div>
+  </body>
+</html>
