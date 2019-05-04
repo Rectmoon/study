@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>jquery countdown倒计时插件</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      html,
+      body {
+        font: 24px/1.5 'Microsoft YaHei', arial, tahcoma, '\5b8b\4f53',
+          sans-serif;
+        font-weight: 700;
+        background: #efefef;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      #countdown {
+        width: 60%;
+        margin: 20% auto;
+        color: orange;
+      }
+
+      .countdown-day,
+      .countdown-hour,
+      .countdown-minute,
+      .countdown-second {
+        display: inline-block;
+        margin: 0 0.5rem;
+        background: cyan;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+      }
+    </style>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="plugins/jquery.countdown.js"></script>
+  </head>
+
+  <body>
+    <div id="countdown"></div>
+    <script type="text/javascript">
+      $('#countdown').countdown({
+        startTime: '2019/05/07 10:30:00'
+      })
+    </script>
+  </body>
+</html>
