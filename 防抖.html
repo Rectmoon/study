@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>防抖</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>防抖</title>
+    <link rel="stylesheet" href="assets/css/weui.min.css" />
+    <link rel="stylesheet" href="assets/css/jquery-weui.min.css" />
+  </head>
 
-  <link rel="stylesheet" href="css/weui.min.css">
-  <link rel="stylesheet" href="css/jquery-weui.min.css">
-</head>
-
-<body>
-
-
-  <a href="javascript:;" id='btn' class="weui-btn weui-btn_plain-primary">按钮</a>
-  <script src='js/lib/jquery-3.3.1.min.js'></script>
-  <script src='js/lib/jquery-weui.min.js'></script>
-  <script>
-    /**
+  <body>
+    <a href="javascript:;" id="btn" class="weui-btn weui-btn_plain-primary"
+      >按钮</a
+    >
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+    <script src="js/lib/jquery-weui.min.js"></script>
+    <script>
+      /**
       对于按钮防点击来说的实现：
       如果函数是立即执行的，就立即调用，
       如果函数是延迟执行的，就缓存上下文和参数，放到延迟函数中去执行。
@@ -27,54 +26,53 @@
     
       对于延时执行函数来说的实现：清除定时器ID，如果是延迟调用就调用函数
     */
-    function debounce(cb, delay, immediate) {
-      var timer, ctx, args
-      return function () {
-        var params = arguments
-        // 如果没有创建延迟执行函数（later），就创建一个
-        if (!timer) {
-          timer = later()
-          if (immediate) {
-            // 如果是立即执行，调用函数
-            cb.apply(this, params)
+      function debounce(cb, delay, immediate) {
+        var timer, ctx, args
+        return function() {
+          var params = arguments
+          // 如果没有创建延迟执行函数（later），就创建一个
+          if (!timer) {
+            timer = later()
+            if (immediate) {
+              // 如果是立即执行，调用函数
+              cb.apply(this, params)
+            } else {
+              // 否则缓存参数和调用上下文
+              ctx = this
+              args = params
+            }
           } else {
-            // 否则缓存参数和调用上下文
-            ctx = this
-            args = params
+            // 如果已有延迟执行函数（later），调用的时候清除原来的并重新设定一个
+            // 这样做延迟函数会重新计时
+            clearTimeout(timer)
+            timer = later()
           }
-        } else {
-          // 如果已有延迟执行函数（later），调用的时候清除原来的并重新设定一个
-          // 这样做延迟函数会重新计时
-          clearTimeout(timer)
-          timer = later()
+        }
+        // 延迟执行函数
+        function later() {
+          return setTimeout(function() {
+            // 延迟函数执行完毕，清空缓存的定时器序号
+            timer = null
+            // // 延迟执行的情况下，函数会在延迟函数中执行
+            // 使用到之前缓存的参数和上下文
+            if (!immediate) {
+              cb.apply(ctx, args)
+              ctx = args = null
+            }
+          }, delay)
         }
       }
-      // 延迟执行函数
-      function later() {
-        return setTimeout(function () {
-          // 延迟函数执行完毕，清空缓存的定时器序号
-          timer = null
-          // // 延迟执行的情况下，函数会在延迟函数中执行
-          // 使用到之前缓存的参数和上下文
-          if (!immediate) {
-            cb.apply(ctx, args)
-            ctx = args = null
-          }
-        }, delay)
+
+      function cb(e) {
+        console.log(e.target)
+        var t = e.target
+        setTimeout(function() {
+          console.log(t)
+          console.log(123)
+        }, 200)
       }
-    }
 
-    function cb(e) {
-      console.log(e.target)
-      var t = e.target
-      setTimeout(function () {
-        console.log(t)
-        console.log(123)
-      }, 200);
-    }
-
-    $('#btn').on('click', debounce(cb, 1000, true))
-  </script>
-</body>
-
+      $('#btn').on('click', debounce(cb, 1000, true))
+    </script>
+  </body>
 </html>
