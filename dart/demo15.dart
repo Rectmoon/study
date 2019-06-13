@@ -1,5 +1,3 @@
-import 'demo9.dart' as prefix0;
-
 /** 
  * 1. 作为mixins的类只能继承自Object， 不能继承其他类
  * 2. 作为mixins的类不能有构造函数

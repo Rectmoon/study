@@ -60,25 +60,21 @@ class Mongo implements Db {
 class Mybatis implements Db {
   @override
   add(String data) {
-    // TODO: implement add
     return null;
   }
 
   @override
   delete() {
-    // TODO: implement delete
     return null;
   }
 
   @override
   edit() {
-    // TODO: implement edit
     return null;
   }
 
   @override
   find() {
-    // TODO: implement find
     return null;
   }
 

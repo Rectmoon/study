@@ -8,7 +8,6 @@ class Dog extends Animal {
 
   @override
   run() {
-    // TODO: implement run
     print('dog is running');
   }
 
@@ -18,13 +17,11 @@ class Dog extends Animal {
 class Cat extends Animal {
   @override
   eat() {
-    // TODO: implement eat
     print('cat is eating');
   }
 
   @override
   run() {
-    // TODO: implement run
     print('cat is running');
   }
 }
