@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+    <script>
+      try {
+        draw()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        ctx.lineWidth = 10
+        ctx.strokeStyle = "orange"
+
+        ctx.beginPath()
+        ctx.moveTo(20, 20)
+        ctx.lineTo(130, 130)
+
+        ctx.rect(40, 40, 70, 70)
+        ctx.stroke()
+      }
+    </script>
+  </body>
+</html>

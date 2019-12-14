@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+    <script>
+      try {
+        draw()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        ctx.translate(75, 75)
+
+        for (var i = 1; i < 6; i++) {
+          ctx.save()
+          ctx.fillStyle = "rgb(" + 51 * i + "," + (255 - 51 * i) + ",255)"
+
+          for (var j = 0; j < i * 6; j++) {
+            ctx.rotate((Math.PI * 2) / (i * 6))
+            ctx.beginPath()
+            ctx.arc(0, i * 12.5, 5, 0, Math.PI * 2, true)
+            ctx.fill()
+          }
+
+          ctx.restore()
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      #box {
+        width: 100px;
+        height: 100px;
+        background: rgb(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+
+    <div id="box"></div>
+    <script>
+      try {
+        draw()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        // ctx.transform(1, 0.5, -0.5, 1, 30, 10)
+        ctx.transform(1, 0.5, -0.5, 1, 0, 0)
+        ctx.fillStyle = "red"
+        ctx.fillRect(0, 0, 250, 100)
+
+        // ctx.transform(1, 0.5, -0.5, 1, 30, 10)
+        // ctx.fillStyle = "blue"
+        // ctx.fillRect(0, 0, 250, 100)
+        // 登录状态下不会出现这行文字，点击页面右上角一键登录
+        // var s = Math.sin(Math.PI / 6)
+        // var c = Math.cos(Math.PI / 6)
+
+        // ctx.translate(100, 100)
+
+        // var x = 0
+
+        // for (var i = 0; i <= 12; i++) {
+        //   x = Math.floor((255 / 12) * i)
+
+        //   ctx.fillStyle = "rgb(" + x + "," + x + "," + x + ")"
+        //   ctx.fillRect(0, 0, 100, 10)
+        //   ctx.transform(c, s, -s, c, 0, 0)
+        // }
+
+        // ctx.setTransform(-1, 0, 0, 1, 100, 100)
+        // ctx.fillStyle = "rgba(255, 128, 255, 0.5)"
+        // ctx.fillRect(0, 50, 100, 100)
+      }
+    </script>
+  </body>
+</html>

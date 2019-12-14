@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="1000" height="750"></canvas>
+        <div id="msg"></div>
+
+        <script>
+            var moon = {
+                randomColor: function() {
+                    return "#" + parseInt(Math.random() * 16777216).toString(16)
+                },
+                getNum: function(min, max) {
+                    return parseInt(Math.random() * (max - min)) + min
+                },
+                n: 0,
+                r: 10,
+                run: function() {
+                    this.canvas = document.getElementById("canvas")
+                    this.ctx = this.canvas.getContext("2d")
+                    this.bindEvents()
+                    var z = this
+                    setTimeout(function f() {
+                        z.draw()
+                        z.n++
+                        if (z.n < 10) setTimeout(f, 1000)
+                    }, 1000)
+                },
+                bindEvents: function() {
+                    this.canvas.onclick = function(e) {
+                        moon.ctx.lineWidth = moon.getNum(1, 10)
+                        moon.ctx.strokeStyle = moon.randomColor()
+                        moon.ctx.arc(e.clientX, e.clientY, moon.r, 0, Math.PI * 2)
+                        moon.ctx.stroke()
+                        moon.r += 10
+                        if (moon.r > 300) moon.r = 10
+                    }
+                },
+                draw: function() {
+                    moon.ctx.beginPath()
+                    moon.ctx.lineWidth = moon.getNum(1, 10)
+                    moon.ctx.strokeStyle = moon.randomColor()
+                    moon.ctx.arc(moon.getNum(1, 1000), moon.getNum(1, 600), moon.r, 0, Math.PI * 2)
+                    moon.ctx.stroke()
+                    moon.r += 10
+                    if (moon.r > 300) moon.r = 10
+                }
+            }
+
+            moon.run()
+        </script>
+    </body>
+</html>

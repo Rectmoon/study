@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <div id="msg"></div>
+
+        <script>
+            var msg = document.getElementById("msg")
+            var canvas = document.getElementById("canvas")
+            var ctx = canvas.getContext("2d")
+            var w = canvas.width,
+                h = canvas.height
+
+            ctx.fillRect(0, 0, w, h)
+            ctx.moveTo(0, 0)
+            ctx.lineTo(300, 300)
+            ctx.strokeStyle = "lightblue"
+            ctx.lineWidth = 2
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.moveTo(300, 300)
+            ctx.lineTo(0, 580)
+            ctx.lineTo(580, 580)
+            ctx.closePath()
+            ctx.fillStyle = "lightgreen"
+            ctx.strokeStyle = "#f00"
+            ctx.fill()
+            ctx.stroke()
+        </script>
+    </body>
+</html>

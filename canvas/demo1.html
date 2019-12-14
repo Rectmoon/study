@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <canvas id="canvas1" width="800" height="600"></canvas>
+
+        <script>
+            var canvas = document.getElementById("canvas")
+            var ctx = canvas.getContext("2d")
+            ctx.lineWidth = 6
+            ctx.strokeStyle = "orange"
+            ctx.moveTo(0, 0)
+            ctx.lineTo(800, 600)
+            ctx.lineTo(700, 400)
+            ctx.fill()
+            ctx.stroke()
+        </script>
+
+        <script>
+            var canvas1 = document.getElementById("canvas1")
+            var ctx1 = canvas1.getContext("2d")
+            var w = canvas1.width,
+                h = canvas1.height
+            ctx1.moveTo(0, 0)
+            ctx1.lineTo(w, h)
+            ctx1.lineTo(w, 0)
+            ctx1.lineTo(0, 0)
+            ctx1.lineWidth = 5
+            ctx1.strokeStyle = "lightblue"
+            ctx1.stroke()
+            ctx1.fill()
+        </script>
+    </body>
+</html>

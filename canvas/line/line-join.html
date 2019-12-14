@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+    <script>
+      try {
+        draw()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        ctx.lineWidth = 10
+
+        /**
+         * @lineJoin
+         * 此属性有3个值： round, bevel and miter。默认值是 miter。
+         * round
+         *   通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。 圆角的半径是线段的宽度。
+         *
+         * bevel
+         *   在相连部分的末端填充一个额外的以三角形为底的区域， 每个部分都有各自独立的矩形拐角。
+         *
+         * miter
+         * 通过延伸相连部分的外边缘，使其相交于一点，形成一个额外的菱形区域
+         *
+         */
+        // ctx.lineJoin = "miter"
+        // ctx.lineJoin = "bevel"
+        ctx.lineJoin = "round"
+
+        ctx.beginPath()
+        ctx.moveTo(0, 0)
+        ctx.lineTo(200, 100)
+        ctx.lineTo(300, 0)
+
+        ctx.stroke()
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="300" height="500"></canvas>
+        <div id="msg"></div>
+
+        <script>
+            var msg = document.getElementById("msg")
+            var canvas = document.getElementById("canvas")
+            var ctx = canvas.getContext("2d")
+            var w = canvas.width,
+                h = canvas.height
+
+            ctx.fillRect(0, 0, w, h)
+            ctx.moveTo(0, 0)
+            ctx.lineTo(100, 100)
+            ctx.strokeStyle = "lightblue"
+            ctx.lineWidth = 2
+            ctx.stroke()
+
+            canvas.ontouchstart = function() {
+                msg.innerHTML = "ontouchstart" + "<br/>"
+            }
+
+            canvas.ontouchmove = function(e) {
+                var touchE = e.targetTouches[0],
+                    x = touchE.clientX,
+                    y = touchE.clientY
+                msg.innerHTML = "touchmove" + x + ", " + y + "<br />"
+                ctx.lineTo(x, y)
+                ctx.stroke()
+            }
+
+            canvas.ontouchend = function() {
+                msg.innerHTML = "ontouchend" + "<br/>"
+            }
+        </script>
+    </body>
+</html>

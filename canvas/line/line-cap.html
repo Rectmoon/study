@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+
+    <canvas id="canvas2" width="500" height="300"></canvas>
+    <script>
+      try {
+        draw()
+        main()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        ctx.lineWidth = 10
+        ctx.lineCap = "round"
+        ctx.strokeStyle = "orange"
+
+        ctx.moveTo(20, 20)
+        ctx.lineTo(100, 100)
+        ctx.stroke()
+      }
+
+      function main() {
+        var canvas = document.getElementById("canvas2")
+        var ctx = canvas.getContext("2d")
+
+        var arr = ["butt", "round", "square"]
+        /**
+         * butt
+         *   线段末端以方形结束。
+         * round
+         *   线段末端以圆形结束。
+         * square
+         *   线段末端以方形结束，但是增加了一个宽度和线段相同，高度是线段厚度一半的矩形区域。
+         */
+
+        ctx.beginPath()
+        ctx.moveTo(10, 10)
+        ctx.lineTo(140, 10)
+        ctx.lineTo(10, 140)
+
+        ctx.strokeStyle = "orange"
+        ctx.stroke()
+
+        ctx.strokeStyle = "#f00"
+
+        for (var i = 0; i < arr.length; i++) {
+          ctx.lineWidth = 10
+          ctx.lineCap = arr[i]
+          ctx.beginPath()
+          ctx.moveTo(25 + i * 50, 10)
+          ctx.lineTo(25 + i * 50, 140)
+          ctx.stroke()
+        }
+      }
+    </script>
+  </body>
+</html>

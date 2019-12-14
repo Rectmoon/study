@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <div><img id="source" src="images/1.jpg" /></div>
+
+    <canvas id="canvas2"></canvas>
+
+    <script>
+      try {
+        main()
+      } catch (e) {}
+
+      function main() {
+        var source = document.getElementById("source")
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        source.onload = function() {
+          ctx.drawImage(source, 0, 0, 500, 333, 20, 20, 300, 227)
+        }
+
+        const c2 = document.getElementById("canvas2")
+        const ctx2 = c2.getContext("2d")
+
+        const image = new Image(60, 45)
+        image.onload = drawImageActualSize
+        image.src = "images/1.jpg"
+
+        function drawImageActualSize() {
+          c2.width = this.naturalWidth
+          c2.height = this.naturalHeight
+
+          ctx2.drawImage(this, 0, 0)
+          ctx2.drawImage(this, 0, 0, this.width, this.height)
+        }
+      }
+    </script>
+  </body>
+</html>

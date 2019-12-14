@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="300"></canvas>
+    <script>
+      try {
+        draw()
+      } catch (e) {}
+
+      function draw() {
+        var canvas = document.getElementById("canvas")
+        var ctx = canvas.getContext("2d")
+
+        for (var i = 0; i < 3; i++) {
+          for (var j = 0; j < 3; j++) {
+            ctx.save()
+            ctx.fillStyle = "rgb(" + 51 * i + ", " + (255 - 51 * i) + ", 255)"
+            ctx.translate(10 + j * 50, 10 + i * 50)
+            ctx.fillRect(0, 0, 25, 25)
+            ctx.restore()
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
