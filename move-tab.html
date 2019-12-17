@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+
+    <style>
+      ul,
+      li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .bar {
+        position: relative;
+        width: 700px;
+        height: 30px;
+        line-height: 30px;
+        background-color: #e62e00;
+        color: white;
+        font-size: 15px;
+        font-weight: bolder;
+      }
+
+      .item {
+        position: relative;
+        display: block;
+        float: left;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+        cursor: pointer;
+      }
+
+      .item-select {
+        background-color: #ff8533;
+      }
+    </style>
+
+    <script>
+      $(function() {
+        $('.item').mouseenter(function() {
+          /*
+          在从子项进入到子项中，会承接上一个未完成的动画，
+          若一次性滑动多个子项，此时我们并不需要上个子项所有的动画完成，而是直接让鼠标所在位置的子项进行动画，
+          所以要先停止之前所有的动画，只执行该子项的动画
+        */
+          $('#item-select').stop()
+          //当前子项的宽度，包含padding值
+          var hoverWidth = $(this).innerWidth()
+          //当前子项相对于父容器的左边距离
+          var hoverMarginLeft =
+            $(this).offset().left -
+            $('.item')
+              .eq(0)
+              .offset().left
+          //动画效果，定位背景选择框大小及位置
+          $('#item-select').animate({
+            width: hoverWidth + 'px',
+            left: hoverMarginLeft + 'px'
+          })
+          $('#view').html(hoverWidth + ' ' + hoverMarginLeft + ' ' + $('#view').offset().left)
+        })
+        //鼠标离开子项事件
+        $('.item').mouseleave(function() {
+          /*
+          在鼠标离开整个导航栏时，马上停止掉之前所有的动画并进行归位
+        */
+          $('#item-select').stop()
+          //背景选择框归位
+          $('#item-select').animate({
+            left: '0',
+            width: '20px'
+          })
+        })
+      })
+    </script>
+  </head>
+
+  <body>
+    <ul id="bar" class="bar">
+      <li id="item-select" class="item-select" style="width:30px;height:30px;position: absolute;"></li>
+      <li class="item item-select">首页</li>
+      <li class="item">百家号</li>
+      <li class="item">国内</li>
+      <li class="item">国际</li>
+      <li class="item">军事</li>
+      <li class="item">财经</li>
+      <li class="item">娱乐</li>
+      <li class="item">体育</li>
+      <li class="item">互联网</li>
+      <li class="item">科技</li>
+      <li class="item">游戏</li>
+      <li class="item">女人</li>
+      <li class="item">汽车</li>
+      <li class="item">房产</li>
+      <li class="item">个性推荐</li>
+    </ul>
+    <div id="view" style="position: relative;margin-left:10px"></div>
+  </body>
+</html>

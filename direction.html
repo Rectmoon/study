@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="js/lib/jquery-3.3.1.min.js"></script>
+
+    <style>
+      #box {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        border: 1px solid #ccc;
+        margin: 20px auto;
+        overflow: hidden;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      .info {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.8);
+        text-align: center;
+        line-height: 500px;
+      }
+
+      .from-left {
+        animation: from-left 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .from-right {
+        animation: from-right 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .from-top {
+        animation: from-top 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .from-bottom {
+        animation: from-bottom 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .to-left {
+        animation: to-left 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .to-right {
+        animation: to-right 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .to-top {
+        animation: to-top 0.5s 1;
+        animation-fill-mode: forwards;
+      }
+
+      .to-bottom {
+        animation: to-bottom 0.5s 2;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes from-left {
+        from {
+          left: -100%;
+        }
+
+        to {
+          left: 0;
+        }
+      }
+
+      @keyframes to-left {
+        from {
+          left: 0;
+        }
+
+        to {
+          left: -100%;
+        }
+      }
+
+      @keyframes from-top {
+        from {
+          top: -100%;
+          left: 0;
+        }
+
+        to {
+          top: 0;
+          left: 0;
+        }
+      }
+
+      @keyframes to-top {
+        from {
+          top: 0;
+          left: 0;
+        }
+
+        to {
+          top: -100%;
+          left: 0;
+        }
+      }
+
+      @keyframes from-bottom {
+        from {
+          top: 100%;
+        }
+
+        to {
+          top: 0;
+        }
+      }
+
+      @keyframes to-bottom {
+        from {
+          top: 0;
+        }
+
+        to {
+          top: 100%;
+        }
+      }
+
+      @keyframes from-right {
+        from {
+          left: 100%;
+        }
+
+        to {
+          left: 0;
+        }
+      }
+
+      @keyframes to-right {
+        from {
+          left: 0;
+        }
+
+        to {
+          left: 100%;
+        }
+      }
+    </style>
+
+    <script>
+      /*
+       * 获取元素移动的方向
+       * @param  $element  元素的jQuery对象
+       * @param  event     事件对象
+       * @return direction 返回一个数字：0:上，1:右，2:下，3:左
+       *
+       *
+       * 中心坐标 ($element.offset().left + w / 2,  -($element.offset().top + h / 2) ) => (0, 0)
+       * Z点坐标 (e.pageX,-e.pageY)  =>  (e.pageX - $element.offset().left - w / 2, -e.pageY + ($element.offset().top + h / 2))
+       * tan(x) = tan(x + 180)
+       * tan(x) = -tan(x + 90)
+       *  Math.atan2(y, x)
+       * 上 45 ~ 135
+       * 右 -45 ~ 45
+       * 下 -135 ~ -45
+       * 左 135 ~ 225
+       **/
+      function getDirection($element, event) {
+        var w = $element.width(),
+          h = $element.height(),
+          x = (event.pageX - $element.offset().left - w / 2) * (w > h ? h / w : 1),
+          y = (event.pageY - $element.offset().top - h / 2) * (h > w ? w / h : 1)
+        return Math.round((Math.atan2(y, x) * (180 / Math.PI) + 180) / 90 + 3) % 4
+      }
+
+      $(function() {
+        var directionMap = {
+          0: 'top',
+          1: 'right',
+          2: 'bottom',
+          3: 'left'
+        }
+
+        $('#box').on({
+          mouseenter: function(e) {
+            var $this = $(this)
+            $this
+              .find('.info')
+              .fadeIn()
+              .removeClass(
+                Object.values(directionMap)
+                  .map(v => 'to-' + v)
+                  .join(' ')
+              )
+              .addClass('from-' + directionMap[getDirection($this, e)])
+          },
+          mouseleave: function(e) {
+            var $this = $(this)
+            $this
+              .find('.info')
+              .removeClass(
+                Object.values(directionMap)
+                  .map(v => 'from-' + v)
+                  .join(' ')
+              )
+              .addClass('to-' + directionMap[getDirection($this, e)])
+              .fadeOut()
+          }
+        })
+      })
+    </script>
+  </head>
+
+  <body>
+    <div id="box">
+      <div class="info" style="display: none;">666</div>
+    </div>
+  </body>
+</html>
