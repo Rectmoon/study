@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>水波纹效果</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      @keyframes wave {
+        0% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+      .container {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        margin: 100px auto;
+      }
+
+      .container .wave {
+        position: absolute;
+        left: 30%;
+        top: 30%;
+        box-shadow: 0 0 120px 30px rgba(235, 31, 137, 1) inset;
+        border-radius: 100%;
+        padding: 20%;
+        z-index: 1;
+        opacity: 0;
+      }
+      .container .wave.wave1 {
+        animation: wave 12s 9s ease-out infinite;
+      }
+      .container .wave.wave2 {
+        animation: wave 12s 6s ease-out infinite;
+      }
+      .container .wave.wave3 {
+        animation: wave 12s 3s ease-out infinite;
+      }
+      .container .wave.wave4 {
+        animation: wave 12s 0s ease-out infinite;
+      }
+
+      .water-waves {
+        position: relative;
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 1px solid silver;
+        overflow: hidden;
+        text-align: center;
+        line-height: 50px;
+        animation: inherit;
+        animation: water-waves linear infinite;
+      }
+      .water-wave1 {
+        position: absolute;
+        top: 40%;
+        left: -25%;
+        background: #0f7ae4;
+        opacity: 0.7;
+        width: 200%;
+        height: 200%;
+        border-radius: 33%;
+        animation: inherit;
+        animation-duration: 5s;
+      }
+
+      .water-wave2 {
+        position: absolute;
+        top: 45%;
+        left: -35%;
+        background: #0f7ae4;
+        opacity: 0.5;
+        width: 200%;
+        height: 200%;
+        border-radius: 33%;
+        animation: inherit;
+        animation-duration: 7s;
+      }
+      .water-wave3 {
+        position: absolute;
+        top: 50%;
+        left: -35%;
+        background: #0f7ae4;
+        opacity: 0.3;
+        width: 200%;
+        height: 200%;
+        border-radius: 33%;
+        animation: inherit;
+        animation-duration: 11s;
+      }
+      @keyframes water-waves {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+      <div class="wave wave4"></div>
+    </div>
+
+    <div class="water-waves">
+      <div class="water-wave1"></div>
+      <div class="water-wave2"></div>
+      <div class="water-wave3"></div>
+    </div>
+  </body>
+</html>
