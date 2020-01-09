@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>hello</div>
+
+    <script>
+      if (window.ActiveXObject) {
+        document.body.oncopy = function() {
+          event.returnValue = false
+          var t = document.selection.createRange().text
+          var s = '\r\n原文出自[ 菠菜园 ] 转载请保留原文链接:' + location.href
+          clipboardData.setData('Text', t + '\r\n' + s)
+        }
+      } else {
+        function addLink() {
+          var body = document.getElementsByTagName('body')[0]
+          var selection = window.getSelection()
+          var pagelink = '原文出自[ 菠菜园 ] 转载请保留原文链接:' + document.location.href
+          var copytext = selection + pagelink
+          var newdiv = document.createElement('div')
+          newdiv.style.position = 'absolute'
+          newdiv.style.left = '-99999px'
+          body.appendChild(newdiv)
+          newdiv.innerHTML = copytext
+          selection.selectAllChildren(newdiv)
+          window.setTimeout(function() {
+            body.removeChild(newdiv)
+          }, 0)
+        }
+        document.body.addEventListener('copy', addLink, false)
+      }
+    </script>
+  </body>
+</html>
