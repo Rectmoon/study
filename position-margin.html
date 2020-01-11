@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      .relative {
+        position: relative;
+      }
+      .absolute {
+        position: absolute;
+      }
+
+      .box {
+        width: 400px;
+        height: 400px;
+        border: 1px solid pink;
+      }
+
+      .icon {
+        right: 0;
+        top: 0;
+      }
+
+      .box i {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+      }
+
+      .box p {
+        background: yellow;
+      }
+
+      .b {
+        margin-top: -285px;
+        background: orange;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <div class="box box1 relative">
+      <i class="icon absolute">icon</i>
+      <p>111</p>
+      <p>222</p>
+      <p>333</p>
+      <p>444</p>
+    </div>
+    <div class="b">我是模块B</div> -->
+
+    <div class="box box2">
+      <div class="relative">
+        <i class="icon absolute">icon</i>
+      </div>
+      <p>111</p>
+      <p>222</p>
+      <p>333</p>
+      <p>444</p>
+    </div>
+    <div class="b">我是模块B</div>
+  </body>
+</html>
