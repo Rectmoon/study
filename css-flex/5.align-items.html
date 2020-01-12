@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .box {
+        background-color: orange;
+      }
+
+      .box1 {
+        align-items: flex-start;
+      }
+
+      .box2 {
+        align-items: center;
+      }
+
+      .box3 {
+        align-items: flex-end;
+      }
+
+      .box4 {
+        align-items: baseline;
+      }
+
+      .box5 {
+        align-items: stretch;
+        justify-content: space-evenly;
+      }
+
+      .box5 > div {
+        width: 100px;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-container box box1">
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+      <div class="flex-item">4</div>
+    </div>
+
+    <div class="flex-container box box2">
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+      <div class="flex-item">4</div>
+    </div>
+
+    <div class="flex-container box box3">
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+      <div class="flex-item">4</div>
+    </div>
+
+    <div class="flex-container box box4">
+      <div class="flex-item">1</div>
+      <div class="flex-item">2</div>
+      <div class="flex-item">3</div>
+      <div class="flex-item">4</div>
+    </div>
+
+    <div class="flex-container box box5">
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+    </div>
+  </body>
+</html>

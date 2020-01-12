@@ -1,0 +1,97 @@
+/*
+  flex-direction
+    nowrap (默认值) : 所有的 flex 项都会在同一行上排布，也就是我们常说的单行，或不换行。
+    wrap: flex 项将从上到下根据实际情况排布再多行上，也就是我们常说的多行，或会换行。
+    wrap-reverse: flex 项将 从下到上 根据实际情况排布再多行上折行。
+
+  flex-flow 
+    flex-direction 和 flex-wrap 属性的缩写形式。同时定义 flex 容器的主轴和交叉轴。默认是 row nowrap。
+    
+  justify-content 属性定义了flex 项沿主轴方向的对齐方式。
+    当一行中的所有 flex 项都是固定大小，或者是灵活大小但已经达到最大 main size 时，它可以帮助分配主轴上的剩余空间。
+    当 flex 项溢出主轴的时候，它还可以用来控制flex 项的对齐方式。
+
+    flex-start (默认值) : flex 项从主轴的开始位置（main-start）开始排布。
+    center: flex 项沿主轴居中排布。
+    flex-end : flex 项从主轴的结束位置（main-end）开始排布
+    space-between: flex 项沿主轴均匀排布，即我们常说的沿主轴 两端对齐 ，第一个flex 项在主轴开始位置，最后一个flex 项在主轴结束位置。
+    space-around: flex 项沿主轴均匀排布。要注意的是 flex 项看起来间隙是不均匀的，因为所有 flex 项两边的空间是相等的。第一项在容器边缘有一个单位的空间，但是在两个 flex 项之间有两个单位的间隙，因为每个 flex 项的两侧都有一个单位的间隙。
+    space-evenly: 任何两个 flex 项之间的间距（以及到 flex 容器边缘的空间）相等。（注：该属性以前很少看到，原因是以前浏览器不支持，chrome 也是 60 版本之后才支持。延伸一下，align-content: space-evenly 。 ）
+
+  align-items 定义了 flex 项如何沿当前行在交叉轴上排布的默认行为。可以将其视为交叉轴（垂直于主轴）上的对齐方式。
+    flex-start: flex 项按照交叉轴的开始位置（cross-start）对齐。
+    center: flex 项以交叉轴为中心，居中对齐。
+    flex-end: flex 项按照交叉轴的结束位置（cross-end）对齐。
+    baseline: flex 项按照他们的文字基线对齐。
+    stretch (默认值) : 拉伸 flex 项以填充整个容器（这里特别要注意：如果 flex 项有尺寸属性（min-width / max-width / width / min-height / max-height / height），那么首先应用这些尺寸属性。）
+    
+  align-content
+    当交叉轴上有剩余空间时，
+    align-content可以设置 flex 容器中的 行 在交叉轴上如何分配剩余空间，类似于 justify-content 在主轴上对齐单个 flex 项的方式。
+    注意：当只有一行 flex 项时，此属性不起作用。
+    flex-start：多行在容器的开始位置排布
+    center：多行在容器的总结位置排布
+    flex-end：多行在容器的结束位置排布
+    space-between：多行均匀分布；第一行分布在容器的开始位置，最后一行分布在容器的结束位置
+    space-around: 多行均匀分布，并且每行的间距（包括离容器边缘的间距）相同；
+    strech (默认值)：多行拉伸以填充满整个剩余空间
+
+  order属性定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+    
+  flex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+
+  flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+    如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。
+    如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小。
+
+  flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。
+    浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。
+
+  flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。
+    该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+
+  align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。
+    默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+*/
+
+.flex-container {
+  display: flex;
+}
+
+.inline-flex-container {
+  display: inline-flex;
+}
+
+.flex-item {
+  background: tomato;
+  padding: 5px;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  line-height: 100px;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+.box {
+  margin-bottom: 20px;
+  min-height: 200px;
+}
+
+.box .item {
+  border: 1px solid #ddd;
+}

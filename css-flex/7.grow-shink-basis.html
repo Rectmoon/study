@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <!-- 
+      box1  
+        800 - (100 + 200 + 300) = 200
+        100 +  200 / 4 * 2 = 200
+        200 +  200 / 4 * 1 = 250
+        300 +  200 / 4 * 1 = 350
+
+      box2 
+        100 + 200 + 300 - 500 = 100
+        100 * 1 + 200 * 2 + 300 * 3 = 1400 
+        100 - 100 * (100 * 1 / 1400) = 92.85
+        200 - 100 * (200 * 2 / 1400) = 171.43
+        300 - 100 * (300 * 3 / 1400) = 235.72
+     -->
+    <style>
+      .box .left {
+        flex-basis: 200px;
+        flex-shrink: 0;
+      }
+
+      .box .middle {
+        flex: 1;
+        overflow-x: scroll;
+      }
+
+      .box .right {
+        flex-basis: 300px;
+        flex-shrink: 0;
+      }
+
+      .box .long {
+        width: 800px;
+      }
+
+      .box1 {
+        width: 800px;
+      }
+
+      .box1 .left {
+        flex-grow: 2;
+      }
+
+      .box1 .middle {
+        flex-grow: 1;
+      }
+
+      .box1 .right {
+        flex-grow: 1;
+      }
+
+      .box2 {
+        width: 500px;
+      }
+
+      .box2 .left {
+        flex-shrink: 1;
+      }
+
+      .box2 .middle {
+        flex-shrink: 2;
+      }
+
+      .box2 .right {
+        flex-shrink: 3;
+      }
+
+      .left {
+        flex-basis: 100px;
+        background: linear-gradient(to bottom right, green, white);
+      }
+
+      .middle {
+        flex-basis: 200px;
+        background: linear-gradient(to bottom right, yellow, white);
+      }
+
+      .right {
+        flex-basis: 300px;
+        background: linear-gradient(to bottom right, purple, white);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-container box">
+      <div class="left">left</div>
+      <div class="middle">
+        middle
+        <div class="long">long</div>
+      </div>
+      <div class="right">right</div>
+    </div>
+
+    <div class="flex-container box1">
+      <div class="left">left</div>
+      <div class="middle">middle</div>
+      <div class="right">right</div>
+    </div>
+
+    <div class="flex-container box2">
+      <div class="left">left</div>
+      <div class="middle">middle</div>
+      <div class="right">right</div>
+    </div>
+  </body>
+</html>
