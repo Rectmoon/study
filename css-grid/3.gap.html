@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /*
+        grid-column-gap / grid-row-gap: 指定网格线(grid lines)的大小。你可以把它想象为设置列/行之间间距的宽度。
+        !只能在 列/行 之间创建间距，网格外部边缘不会有这个间距。
+        注意：这两个属性将删除 grid- 前缀，就是将 grid-column-gap 和 grid-row-gap重命名为 column-gap 和 row-gap。 
+        Chrome 68+，Safari 11.2 Release 50+ 和Opera 54+ 已经支持无前缀的属性。
+
+        grid-gap: <grid-row-gap> <grid-column-gap>：长度值
+        注意：这个属性将删除 grid- 前缀，就是将 grid-gap 重命名为 gap。 
+        Chrome 68+，Safari 11.2 Release 50+ 和Opera 54+ 已经支持无前缀的属性。
+      */
+
+      .box1 {
+        grid-template-columns: 100px 50px 100px 1fr;
+        grid-template-rows: 80px auto 80px;
+        column-gap: 10px;
+        row-gap: 15px;
+      }
+
+      .box2 {
+        grid-template-columns: 100px 50px 100px 1fr;
+        grid-template-rows: 80px auto 80px;
+        gap: 10px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1"></div>
+    <div class="grid-container orange box box2"></div>
+  </body>
+</html>

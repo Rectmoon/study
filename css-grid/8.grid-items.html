@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /*
+        注意：float，display: inline-block，display: table-cell，vertical-align 和 column-* 属性对网格项无效。
+        
+        grid-column-start / grid-column-end / grid-row-start / grid-row-end
+          <line> ：可以是一个数字引用一个编号的网格线，或者一个名字来引用一个命名的网格线
+          span <number> ：该网格项将跨越所提供的网格轨道数量
+          span <name> ：该网格项将跨越到它与提供的名称位置
+          auto：表示自动放置，自动跨度，默认会扩展一个网格轨道的宽度或者高度
+
+        通过引用特定网格线(grid lines) 来确定 网格项(grid item) 在网格内的位置。
+        grid-column-start / grid-row-start 是网格项开始的网格线，grid-column-end / grid-row-end 是网格项结束的网格线。
+        如果没有声明指定 grid-column-end / grid-row-end，默认情况下，该网格项将占据 1 个轨道。
+        项目可以相互重叠。您可以使用 z-index 来控制它们的重叠顺序。
+        
+
+        grid-column、grid-row 分别为 grid-column-start + grid-column-end 和 grid-row-start + grid-row-end 的简写形式。
+        
+        grid-area 为网格项提供一个名称，以便可以 被使用网格容器 grid-template-areas 属性创建的模板进行引用。 
+        另外，这个属性可以用作grid-row-start + grid-column-start + grid-row-end + grid-column-end 的简写。
+          <name>：你所选的名称
+          <row-start> / <column-start> / <row-end> / <column-end>：数字或分隔线名称
+            
+        justify-self 
+          沿着 inline（行）轴线对齐网格项（ 相反的属性是 align-self ，沿着 block（列）轴线对齐）。此值适用于单个网格项内的内容。    
+          start：将网格项对齐到其单元格的左侧起始边缘（左侧对齐）
+          end：将网格项对齐到其单元格的右侧结束边缘（右侧对齐）
+          center：将网格项对齐到其单元格的水平中间位置（水平居中对齐）
+          stretch：填满单元格的宽度（默认值）
+
+        align-self与上述类似，方向垂直 
+
+        place-self 是设置 align-self 和 justify-self 的简写形式。
+        除 Edge 之外的所有主要浏览器都支持 place-self 简写属性。
+
+      */
+
+      .box1 {
+        grid-template-columns: [col1] 100px [col2] 120px [col3] auto [col4] 120px [col5] 100px [end];
+        grid-template-rows: [row1-start] 25% [row2-start] 100px [row3-start] auto [last-line];
+      }
+
+      .item-a {
+        grid-column-start: 2;
+        grid-column-end: five;
+        grid-row-start: row1-start;
+        grid-row-end: 3;
+        background-color: lightcoral;
+        z-index: 1;
+      }
+
+      .item-b {
+        grid-column-start: 1;
+        grid-column-end: span col4;
+        grid-row-start: 2;
+        grid-row-end: span 2;
+        background-color: cyan;
+      }
+
+      .item-c {
+        grid-column-start: 1;
+        grid-column-end: span 3;
+        grid-row-start: 2;
+        grid-row-end: span 2;
+        background-color: lightgreen;
+      }
+
+      .item-d {
+        grid-column: 3 / span 2;
+        grid-row: row3-start / 4;
+        background-color: lightskyblue;
+      }
+
+      .box2 {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+          'header header header header'
+          'main main . sidebar'
+          'footer footer footer footer';
+      }
+
+      .item-header {
+        grid-area: header;
+        background-color: lightseagreen;
+      }
+
+      .item-main {
+        grid-area: 2 / 1 / 3 / 6;
+        background-color: royalblue;
+        text-align: center;
+      }
+
+      .item-1 {
+        justify-self: start;
+      }
+
+      .item-2 {
+        justify-self: center;
+      }
+
+      .item-3 {
+        justify-self: end;
+      }
+
+      .item-4 {
+        justify-self: stretch;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container red box box1">
+      <div class="item-a">item-a</div>
+    </div>
+
+    <div class="grid-container orange box box1">
+      <div class="item-b">item-b</div>
+    </div>
+
+    <div class="grid-container orange box box1">
+      <div class="item-c">item-c</div>
+    </div>
+
+    <div class="grid-container orange box box1">
+      <div class="item-a">item-a</div>
+      <div class="item-c">item-c</div>
+    </div>
+
+    <div class="grid-container orange box box1">
+      <div class="item-d">item-d</div>
+    </div>
+
+    <div class="grid-container orange box box2">
+      <div class="item-header">item-header</div>
+    </div>
+
+    <div class="grid-container orange box box2">
+      <div class="item-main">item-main</div>
+    </div>
+
+    <div class="grid-container orange box box1">
+      <div class="item-1">item-1</div>
+      <div class="item-2">item-2</div>
+      <div class="item-3">item-3</div>
+      <div class="item-4">item-4</div>
+    </div>
+  </body>
+</html>

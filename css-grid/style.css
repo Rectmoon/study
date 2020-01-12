@@ -1,0 +1,34 @@
+.grid-container {
+  display: grid;
+}
+
+.inline-grid-container {
+  min-width: 200px;
+  display: inline-grid;
+}
+
+.orange {
+  color: orange;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.red {
+  color: red;
+}
+
+.white {
+  color: white;
+}
+
+.box {
+  min-height: 200px;
+  background-color: currentColor;
+  margin-bottom: 20px;
+}
+
+.box *::first-line {
+  color: #fff;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /*
+       justify-items: 沿着 inline（行）轴线对齐, 适用于容器内的所有网格项
+          start：将网格项对齐到其单元格的左侧起始边缘（左侧对齐）
+          end：将网格项对齐到其单元格的右侧结束边缘（右侧对齐）
+          center：将网格项对齐到其单元格的水平中间位置（水平居中对齐）
+          stretch：填满单元格的宽度（默认值）
+
+       align-items: 沿着 block（列）轴线对齐, 适用于容器内的所有网格项。
+          start：将网格项对齐到其单元格的顶部起始边缘（顶部对齐）
+          end：将网格项对齐到其单元格的底部结束边缘（底部对齐）
+          center：将网格项对齐到其单元格的垂直中间位置（垂直居中对齐）
+          stretch：填满单元格的高度（默认值）
+    
+       place-items 是设置 align-items 和 justify-items 的简写形式。
+          <align-items> <justify-items>
+          除 Edge 之外的所有主要浏览器都支持 place-items 简写属性。   
+
+      justify-content
+          有时，你的网格合计大小可能小于其 网格容器(grid container) 大小。
+          如果你的所有 网格项(grid items) 都使用像 px 这样的非灵活单位设置大小，就可能出现这种情况。
+          在这种情况下，您可以设置网格容器内的网格的对齐方式。
+          此属性沿着 inline（行）轴线对齐网格（相反的属性是 align-content ，沿着 block（列）轴线对齐网格）。
+          start：将网格对齐到 网格容器(grid container) 的左侧起始边缘（左侧对齐）
+          end：将网格对齐到 网格容器 的右侧结束边缘（右侧对齐）
+          center：将网格对齐到 网格容器 的水平中间位置（水平居中对齐）
+          stretch：调整 网格项(grid items) 的宽度，允许该网格填充满整个 网格容器 的宽度
+          space-around：在每个网格项之间放置一个均匀的空间，左右两端放置一半的空间
+          space-between：在每个网格项之间放置一个均匀的空间，左右两端没有空间
+          space-evenly：在每个网格项目之间放置一个均匀的空间，左右两端放置一个均匀的空间
+
+       align-content 类似上述，方向为垂直   
+
+       place-content 是设置 align-content 和 justify-content 的简写形式。
+          <align-content> <justify-content>：第一个值设置 align-content 属性，第二个值设置 justify-content 属性。
+          如果省略第二个值，则将第一个值同时分配给这两个属性。
+          除 Edge 之外的所有主要浏览器都支持 place-content 简写属性。
+      */
+
+      .box1 {
+        grid-template-columns: 100px 50px 100px 1fr;
+        grid-template-rows: 80px auto 80px;
+        justify-items: stretch;
+      }
+
+      .box2 {
+        grid-template-columns: 100px 50px 100px 1fr;
+        grid-template-rows: 80px auto 80px;
+        align-items: stretch;
+      }
+
+      .box3 {
+        grid-template-columns: 100px 50px 100px 1fr;
+        grid-template-rows: 80px auto 80px;
+        place-items: stretch end;
+      }
+
+      .box4 {
+        grid-template-columns: 100px 50px 100px 50px;
+        grid-template-rows: 80px auto 80px;
+        /* justify-content: start; */
+        /* justify-content: center; */
+        /* justify-content: end; */
+        /* justify-content: space-around; */
+        /* justify-content: space-between; */
+        /* justify-content: space-evenly; */
+      }
+
+      .box5 {
+        grid-template-areas:
+          'header header header header'
+          'main main . sidebar'
+          'footer footer footer footer';
+        /* justify-content: start; */
+        justify-content: stretch;
+      }
+
+      .box6 {
+        grid-template-columns: 100px 50px 100px 50px;
+        grid-template-rows: 80px auto 80px;
+        place-content: start end;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1">
+      <div class="item">
+        111
+      </div>
+    </div>
+
+    <div class="grid-container orange box box2">
+      <div class="item">
+        222
+      </div>
+    </div>
+
+    <div class="grid-container orange box box3">
+      <div class="item">
+        333
+      </div>
+    </div>
+
+    <div class="grid-container orange box box4">
+      <div class="item">
+        444
+      </div>
+    </div>
+
+    <div class="grid-container orange box box5">
+      <div class="item">
+        555
+      </div>
+    </div>
+
+    <div class="grid-container orange box box6">
+      <div class="item">
+        666
+      </div>
+    </div>
+  </body>
+</html>

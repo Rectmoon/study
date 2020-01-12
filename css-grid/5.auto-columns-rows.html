@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /*
+        grid-auto-columns / grid-auto-rows
+          指定任何自动生成的网格轨道(grid tracks)（又名隐式网格轨道）的大小。
+          当网格中的网格项多于单元格时，或者当网格项位于显式网格之外时，就会创建隐式轨道。
+      
+      */
+
+      .box1 {
+        grid-template-columns: 100px 50px 100px 50px;
+        grid-template-rows: 80px auto 80px;
+        grid-auto-rows: 100px;
+      }
+
+      .box2 {
+        grid-template-columns: 60px 60px;
+        grid-template-rows: 90px 90px;
+        align-content: center;
+        grid-auto-columns: 100px;
+      }
+
+      .item-a {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+      }
+
+      .item-b {
+        grid-column: 5 / 6;
+        grid-row: 2 / 3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1">
+      <div class="item1">Item1</div>
+      <div class="item2">Item2</div>
+      <div class="item3">Item3</div>
+      <div class="item4">Item4</div>
+      <div class="item5">Item5</div>
+      <div class="item6">Item6</div>
+      <div class="item7">Item7</div>
+      <div class="item8">Item8</div>
+      <div class="item9">Item9</div>
+      <div class="item10">Item10</div>
+      <div class="item11">Item11</div>
+      <div class="item12">Item12</div>
+      <div class="item13">Item13</div>
+    </div>
+
+    <div class="inline-grid-container red box box2">
+      <div class="item-a">aa</div>
+      <div class="item-b">bb</div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /*
+        grid-auto-flow
+          如果你有一些没有明确放置在网格上的网格项(grid items)，自动放置算法 会自动放置这些网格项。
+          该属性控制自动布局算法如何工作。
+          row：告诉自动布局算法依次填充每行，根据需要添加新行 （默认）
+          column：告诉自动布局算法依次填入每列，根据需要添加新列
+          dense：告诉自动布局算法在稍后出现较小的网格项时，尝试填充网格中较早的空缺
+      */
+
+      .box1 {
+        display: grid;
+        grid-template-columns: 60px 60px 60px 60px 60px;
+        grid-template-rows: 30px 30px;
+        grid-auto-flow: row;
+      }
+
+      .box2 {
+        display: grid;
+        grid-template-columns: 60px 60px 60px 60px 60px;
+        grid-template-rows: 30px 30px;
+        grid-auto-flow: column;
+      }
+
+      .item-a {
+        grid-column: 1;
+        grid-row: 1 / 3;
+      }
+      .item-e {
+        grid-column: 5;
+        grid-row: 1 / 3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+
+    <div class="inline-grid-container red box box2">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+  </body>
+</html>

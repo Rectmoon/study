@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /*
+      在一个声明中设置所有以下属性的简写： grid-template-rows, grid-template-columns, grid-template-areas,
+      grid-auto-rows, grid-auto-columns, 和 grid-auto-flow 。
+      （注意：您只能在单个网格声明中指定显式或隐式网格属性）。
+
+      none：将所有子属性设置为其初始值。
+      <grid-template>：与grid-template 简写的工作方式相同。
+      <grid-template-rows> / [ auto-flow && dense? ] <grid-auto-columns>? ：
+          将grid-template-rows 设置为指定的值。 
+          如果 auto-flow 关键字位于斜杠的右侧，则会将 grid-auto-flow 设置为 column。 
+          如果另外指定了 dense 关键字，则自动放置算法使用 “dense” 算法。 
+          如果省略 grid-auto-columns ，则将其设置为 auto。
+      [ auto-flow && dense? ] <grid-auto-rows>? / <grid-template-columns>：
+          将 grid-template-columns 设置为指定值。 
+          如果 auto-flow 关键字位于斜杠的左侧，则会将grid-auto-flow 设置为 row 。
+          如果另外指定了 dense 关键字，则自动放置算法使用 “dense” 打包算法。 
+          如果省略 grid-auto-rows ，则将其设置为 auto。
+      */
+
+      .box1 {
+        grid: 100px 300px / 3fr 1fr;
+      }
+
+      .box2 {
+        grid: auto-flow / 200px 1fr;
+      }
+
+      .box3 {
+        grid: auto-flow dense 100px / 1fr 2fr;
+      }
+
+      .box4 {
+        grid: 100px 300px / auto-flow 200px;
+        place-items: center center;
+      }
+
+      .box5 {
+        grid:
+          [row1-start] 'header header header' 1fr [row1-end]
+          [row2-start] 'footer footer footer' 25px [row2-end]
+          / 100px auto 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1"></div>
+
+    <div class="container red box box2">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+
+    <div class="grid-container yellow box box3">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+
+    <div class="grid-container orange box box4">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+
+    <div class="grid-container orange box box5">
+      <div class="item-a">item-a</div>
+      <div class="item-b">item-b</div>
+      <div class="item-c">item-c</div>
+      <div class="item-d">item-d</div>
+      <div class="item-e">item-e</div>
+    </div>
+  </body>
+</html>

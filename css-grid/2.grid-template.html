@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .box1 {
+        grid-template-columns: 40px 50px auto 50px 40px;
+        grid-template-rows: 25% 100px auto;
+      }
+
+      .box2 {
+        grid-template-columns: [col1] 40px [col2] 50px [col3] auto [col4] 50px [col5] 40px [end];
+        grid-template-rows: [row1-start] 25% [row2-start] 100px [row3-start] auto [last-line];
+      }
+
+      .box3 {
+        grid-template-columns: repeat(3, 1fr [col-start]);
+        grid-template-rows: [row1-start] 25% [row2-start] 100px [row3-start] auto [last-line];
+      }
+
+      .box3 .item {
+        grid-column-start: col-start 1;
+      }
+
+      .box4 {
+        grid-template-columns: 1fr 100px 1fr 1fr;
+        grid-template-rows: [row1-start] 25% [row2-start] 100px [row3-start] auto [last-line];
+      }
+
+      .item-header {
+        grid-area: header;
+        background-color: orange;
+      }
+      .item-main {
+        grid-area: main;
+        background-color: blueviolet;
+      }
+      .item-sidebar {
+        grid-area: sidebar;
+        background-color: red;
+      }
+      .item-footer {
+        grid-area: footer;
+        background-color: green;
+      }
+
+      .box5 {
+        grid-template-columns: repeat(4, 1fr [col]);
+        grid-template-rows: auto;
+        grid-template-areas:
+          'header header header header'
+          'main main . sidebar'
+          'footer footer footer footer';
+      }
+
+      .box6 {
+        /*
+         grid-template: 用于定义 grid-template-rows ，grid-template-columns ，grid-template-areas 简写属性。
+            none: 将所有三个属性设置为其初始值
+            <grid-template-rows> / <grid-template-columns>: 
+              将 grid-template-columns 和 grid-template-rows 设置为相应地特定的值，
+              并且设置grid-template-areas为none
+        
+        */
+        grid-template:
+          [row1-start] 'header header header' 1fr [row1-end]
+          [row2-start] 'footer footer footer' 1fr [row2-end]
+          / auto 50px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container orange box box1"></div>
+    <div class="grid-container yellow box box2"></div>
+    <div class="grid-container red box box3">
+      <div class="item">332</div>
+    </div>
+
+    <div class="grid-container orange box box4">
+      <div class="item">444</div>
+    </div>
+
+    <div class="grid-container white box box5">
+      <div class="item-header">header</div>
+      <div class="item-main">main</div>
+      <div class="item-sidebar">sidebar</div>
+      <div class="item-footer">footer</div>
+    </div>
+
+    <div class="grid-container red box box6">
+      <div class="item-header"></div>
+      <div class="item-footer"></div>
+    </div>
+  </body>
+</html>
