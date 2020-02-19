@@ -181,8 +181,7 @@ export function getTimeDetail(timeStr) {
     month: 2592000000,
     day: 86400000,
     hour: 3600000,
-    minter: 60000,
-    justnow: 30000
+    minter: 60000
   }
   const handleFn = [
     {
