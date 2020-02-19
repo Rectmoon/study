@@ -93,14 +93,7 @@ export function parseToDate(dateStr, formatStr = 'y-m-d h:i:s') {
   a.slice(1).forEach((item, i) => {
     obj[arr[i]] = item
   })
-  return new Date(
-    obj['y'] || '',
-    obj['m'] - 1 || '',
-    obj['d'] || '',
-    obj['h'] || '',
-    obj['i'] || '',
-    obj['s'] || ''
-  )
+  return new Date(obj['y'] || '', obj['m'] - 1 || '', obj['d'] || '', obj['h'] || '', obj['i'] || '', obj['s'] || '')
 }
 
 export function isLeapYear(year) {
@@ -126,26 +119,14 @@ export function weeksInWeekYear(weekYear) {
     因为365=364+1；364%7=0；且后面的1可以加到去模公式前面去；所以可以化简成
     c=(year+(year-1)/4-(year-1)/100+(year-1)/400)%7 。
   */
-  const p1 =
-      (weekYear +
-        Math.floor(weekYear / 4) -
-        Math.floor(weekYear / 100) +
-        Math.floor(weekYear / 400)) %
-      7,
+  const p1 = (weekYear + Math.floor(weekYear / 4) - Math.floor(weekYear / 100) + Math.floor(weekYear / 400)) % 7,
     last = weekYear - 1,
-    p2 =
-      (last +
-        Math.floor(last / 4) -
-        Math.floor(last / 100) +
-        Math.floor(last / 400)) %
-      7
+    p2 = (last + Math.floor(last / 4) - Math.floor(last / 100) + Math.floor(last / 400)) % 7
   return p1 === 4 || p2 === 3 ? 53 : 52
 }
 
 export function getSeverDateTime() {
-  let xhr = window.ActiveXObject
-    ? new ActiveXObject('Microsoft.XMLHTTP')
-    : new XMLHttpRequest()
+  let xhr = window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest()
   xhr.open('HEAD', window.location.href, false)
   xhr.send(null)
   let d = new Date(xhr.getResponseHeader('Date')),
@@ -158,9 +139,7 @@ export function getSeverDateTime() {
 export function getWeekOfYear(date, fromMonday = false) {
   let time,
     checkDate = date ? new Date(date) : new Date(),
-    d = fromMonday
-      ? checkDate.getDate() + 4 - (checkDate.getDay() || 7)
-      : checkDate.getDate() + 3 - checkDate.getDay()
+    d = fromMonday ? checkDate.getDate() + 4 - (checkDate.getDay() || 7) : checkDate.getDate() + 3 - checkDate.getDay()
   checkDate.setDate(d)
   time = checkDate.getTime()
   checkDate.setMonth(0)
@@ -181,22 +160,13 @@ export function formatDate(date = new Date(), fmt = 'yyyy-mm-dd hh:ii:ss') {
   }
   for (let k in o) {
     if (new RegExp(`(${k})`, 'i').test(fmt)) {
-      if (k == 'y+')
-        fmt = fmt.replace(RegExp.$1, ('' + o[k]).substr(4 - RegExp.$1.length))
+      if (k == 'y+') fmt = fmt.replace(RegExp.$1, ('' + o[k]).substr(4 - RegExp.$1.length))
       else if (k == 'l+') {
         let lens = RegExp.$1.length
         lens = lens == 1 ? 3 : lens
-        fmt = fmt.replace(
-          RegExp.$1,
-          ('00' + o[k]).substr(('' + o[k]).length - 1, lens)
-        )
+        fmt = fmt.replace(RegExp.$1, ('00' + o[k]).substr(('' + o[k]).length - 1, lens))
       } else {
-        fmt = fmt.replace(
-          RegExp.$1,
-          RegExp.$1.length == 1
-            ? o[k]
-            : ('00' + o[k]).substr(('' + o[k]).length)
-        )
+        fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length))
       }
     }
   }
@@ -206,39 +176,34 @@ export function formatDate(date = new Date(), fmt = 'yyyy-mm-dd hh:ii:ss') {
 export function getTimeDetail(timeStr) {
   let _now = new Date().getTime(),
     se = _now - timeStr,
-    res = ''
+    res = null
   const DATE_LEVEL = {
     month: 2592000000,
     day: 86400000,
     hour: 3600000,
-    minter: 60000
+    minter: 60000,
+    justnow: 30000
   }
   const handleFn = [
     {
       t: DATE_LEVEL.month,
-      fn: timeStr =>
-        new Date(timeStr).getMonth() +
-        1 +
-        '月' +
-        new Date(timeStr).getDate() +
-        '日'
+      fn: timeStr => new Date(timeStr).getMonth() + 1 + '月' + new Date(timeStr).getDate() + '日'
     },
     {
       t: DATE_LEVEL.day,
-      fn: timeStr => Math.floor(se / DATE_LEVEL.day) + '天前'
+      fn: () => Math.floor(se / DATE_LEVEL.day) + '天前'
     },
     {
       t: DATE_LEVEL.hour,
-      fn: timeStr => Math.floor(se / DATE_LEVEL.hour) + '小时前'
+      fn: () => Math.floor(se / DATE_LEVEL.hour) + '小时前'
     },
     {
       t: DATE_LEVEL.minter,
-      fn: timeStr => Math.ceil(se / DATE_LEVEL.minter) + '分钟前'
+      fn: () => Math.floor(se / DATE_LEVEL.minter) + '分钟前'
     }
   ]
   //求上一年最后一秒的时间戳
-  const lastYearTime =
-    new Date(new Date().getFullYear() + '-01-01 00:00:00') - 1
+  const lastYearTime = new Date(new Date().getFullYear() + '-01-01 00:00:00') - 1
   //把时间差（当前时间戳与上一年最后一秒的时间戳的差）和操作函数添加进去,
   //如果时间差（se）超过这个值，则代表了这个时间是上一年的时间。
   handleFn.unshift({
@@ -259,11 +224,11 @@ export function getTimeDetail(timeStr) {
   for (let i = 0, len = handleFn.length; i < len; i++) {
     let item = handleFn[i]
     if (se >= item.t) {
-      item.fn(timeStr) && (res = item.fn(timeStr))
-      if (res) return res
+      res = item.fn(timeStr)
+      break
     }
   }
-  return '1分钟前'
+  return res || '刚刚'
 }
 
 export function diffDate(startDate, endDate) {
@@ -304,12 +269,7 @@ export function diffDate(startDate, endDate) {
   }
 }
 
-export function getTheDestinyTime(
-  date = new Date(),
-  type = 'year',
-  next = true,
-  limit = 1
-) {
+export function getTheDestinyTime(date = new Date(), type = 'year', next = true, limit = 1) {
   const d = getType(date) === 'date' ? date : new Date(date)
   let year = d.getFullYear(),
     month = d.getMonth(),

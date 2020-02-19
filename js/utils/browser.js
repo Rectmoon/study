@@ -52,34 +52,38 @@ const browser = {
     let elementClassName = element.className
     return (
       elementClassName.length > 0 &&
-      (elementClassName == className ||
-        new RegExp('(^|\\s)' + className + '(\\s|$)').test(elementClassName))
+      (elementClassName == className || new RegExp('(^|\\s)' + className + '(\\s|$)').test(elementClassName))
     )
   },
   //为DOM对象增加样式类名称
   addClass(element, className) {
-    if (!this.hasClass(element, className))
-      element.className += (element.className ? ' ' : '') + className
+    if (!this.hasClass(element, className)) element.className += (element.className ? ' ' : '') + className
     return element
   },
   removeClass(element, className) {
-    element.className = element.className.replace(
-      new RegExp('(^|\\s+)' + className + '(\\s+|$)'),
-      ''
-    )
+    element.className = element.className.replace(new RegExp('(^|\\s+)' + className + '(\\s+|$)'), '')
     return element
   },
+
+  toggleClass(element, className) {
+    if (!element || !className) return
+    let classString = element.className
+    const nameIndex = classString.indexOf(className)
+    if (nameIndex === -1) {
+      classString += '' + className
+    } else {
+      classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
+    }
+    element.className = classString
+  },
+
   // 获取页面最大高度
   getMaxH() {
-    return this.getPageHeight() > this.getWinHeight()
-      ? this.getPageHeight()
-      : this.getWinHeight()
+    return this.getPageHeight() > this.getWinHeight() ? this.getPageHeight() : this.getWinHeight()
   },
   //获取页面最大宽度
   getMaxW() {
-    return this.getPageWidth() > this.getWinWidth()
-      ? this.getPageWidth()
-      : this.getWinWidth()
+    return this.getPageWidth() > this.getWinWidth() ? this.getPageWidth() : this.getWinWidth()
   },
   //网页内容高度
   getPageHeight() {
@@ -87,42 +91,37 @@ const browser = {
       window.innerHeight && window.scrollMaxY
         ? window.innerHeight + window.scrollMaxY
         : document.body.scrollHeight > document.body.offsetHeight
-          ? document.body.scrollHeight
-          : document.body.offsetHeight
-    return h > document.documentElement.scrollHeight
-      ? h
-      : document.documentElement.scrollHeight
+        ? document.body.scrollHeight
+        : document.body.offsetHeight
+    return h > document.documentElement.scrollHeight ? h : document.documentElement.scrollHeight
   },
   //网页内容宽度
   getPageWidth() {
     return window.innerWidth && window.scrollMaxX
       ? window.innerWidth + window.scrollMaxX
       : document.body.scrollWidth > document.body.offsetWidth
-        ? document.body.scrollWidth
-        : document.body.offsetWidth
+      ? document.body.scrollWidth
+      : document.body.offsetWidth
   },
   //浏览器可视区域高度
   getWinHeight() {
     return window.innerHeight
       ? window.innerHeight
       : document.documentElement && document.documentElement.clientHeight
-        ? document.documentElement.clientHeight
-        : document.body.offsetHeight
+      ? document.documentElement.clientHeight
+      : document.body.offsetHeight
   },
   //浏览器可视区域宽度
   getWinWidth() {
     return window.innerWidth
       ? window.innerWidth
       : document.documentElement && document.documentElement.clientWidth
-        ? document.documentElement.clientWidth
-        : document.body.offsetWidth
+      ? document.documentElement.clientWidth
+      : document.body.offsetWidth
   },
   //设置dom透明度
   setOpacity(ele, level) {
-    if (
-      this.browser.msie &&
-      (!document.documentMode || document.documentMode < 9)
-    ) {
+    if (this.browser.msie && (!document.documentMode || document.documentMode < 9)) {
       ele.style.filter = 'Alpha(opacity=' + level + ')'
     } else {
       ele.style.opacity = level / 100

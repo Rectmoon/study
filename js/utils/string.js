@@ -12,11 +12,9 @@ function snakeToCamel(str = '') {
   let leadingUnderscore = (str.match(LEADING_UNDERSCORE_REGEXP) || [])[0] || ''
   return (
     leadingUnderscore +
-    str
-      .replace(LEADING_UNDERSCORE_REGEXP, '')
-      .replace(SNAKECASE_PAIR, function(m) {
-        return m[m.length - 1].toUpperCase()
-      })
+    str.replace(LEADING_UNDERSCORE_REGEXP, '').replace(SNAKECASE_PAIR, function(m) {
+      return m[m.length - 1].toUpperCase()
+    })
   )
 }
 
@@ -127,8 +125,7 @@ function getMD5String(string) {
     var lWordCount
     var lMessageLength = string.length
     var lNumberOfWords_temp1 = lMessageLength + 8
-    var lNumberOfWords_temp2 =
-      (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64
+    var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64
     var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16
     var lWordArray = Array(lNumberOfWords - 1)
     var lBytePosition = 0
@@ -136,9 +133,7 @@ function getMD5String(string) {
     while (lByteCount < lMessageLength) {
       lWordCount = (lByteCount - (lByteCount % 4)) / 4
       lBytePosition = (lByteCount % 4) * 8
-      lWordArray[lWordCount] =
-        lWordArray[lWordCount] |
-        (string.charCodeAt(lByteCount) << lBytePosition)
+      lWordArray[lWordCount] = lWordArray[lWordCount] | (string.charCodeAt(lByteCount) << lBytePosition)
       lByteCount++
     }
     lWordCount = (lByteCount - (lByteCount % 4)) / 4
@@ -157,9 +152,7 @@ function getMD5String(string) {
     for (lCount = 0; lCount <= 3; lCount++) {
       lByte = (lValue >>> (lCount * 8)) & 255
       WordToHexValue_temp = '0' + lByte.toString(16)
-      WordToHexValue =
-        WordToHexValue +
-        WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2)
+      WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2)
     }
     return WordToHexValue
   }
@@ -294,11 +287,16 @@ function getMD5String(string) {
   return temp.toLowerCase()
 }
 
-export {
-  snakeToCamel,
-  camelToSnake,
-  camelKeys,
-  snakeKeys,
-  getValueByName,
-  getMD5String
+function getByteLength(str) {
+  // returns the byte length of an utf8 string
+  let s = str.length
+  for (var i = str.length - 1; i >= 0; i--) {
+    const code = str.charCodeAt(i)
+    if (code > 0x7f && code <= 0x7ff) s++
+    else if (code > 0x7ff && code <= 0xffff) s += 2
+    if (code >= 0xdc00 && code <= 0xdfff) i--
+  }
+  return s
 }
+
+export { snakeToCamel, camelToSnake, camelKeys, snakeKeys, getValueByName, getMD5String, getByteLength }
