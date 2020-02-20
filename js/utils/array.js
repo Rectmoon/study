@@ -1,5 +1,41 @@
 import { isObject, isArray } from './base'
 
+function swap(arr, i, j) {
+  ;[arr[i], arr[j]] = [arr[j], arr[i]]
+}
+
+function heapify(arr, n, i, desc = false) {
+  let c1 = 2 * i + 1
+  let c2 = 2 * i + 2
+  let targetIndex = i
+  if (c1 < n) {
+    const shouldSwapC1 = !desc ? arr[c1] > arr[targetIndex] : arr[c1] < arr[targetIndex]
+    shouldSwapC1 && (targetIndex = c1)
+  }
+  if (c2 < n) {
+    const shouldSwapC2 = !desc ? arr[c2] > arr[targetIndex] : arr[c2] < arr[targetIndex]
+    shouldSwapC2 && (targetIndex = c2)
+  }
+  if (targetIndex !== i) swap(arr, targetIndex, i)
+}
+
+function buildHeap(arr, n, isMinHeap) {
+  const lastIndex = n - 1
+  const parentIndex = Math.floor((lastIndex - 1) / 2)
+  for (let i = parentIndex; i >= 0; i--) {
+    heapify(arr, n, i, isMinHeap)
+  }
+}
+
+export function heapSort(arr, desc = false) {
+  buildHeap(arr, arr.length, desc)
+  for (let i = arr.length - 1; i >= 0; i--) {
+    swap(arr, i, 0)
+    heapify(arr, i, 0, desc)
+  }
+  return arr
+}
+
 export function getArrayKey(arr, v) {
   let findKey = -1
   if (isArray(arr) || isObject(arr)) {
@@ -33,8 +69,7 @@ export function bothHas(a1, a2) {
 export function bubleSort(arr) {
   const len = arr.length
   for (let i = len - 1; i > 0; i--)
-    for (let j = 0; j < i; j++)
-      arr[j] > arr[j + 1] && ([arr[j], arr[j + 1]] = [arr[j + 1], arr[j]])
+    for (let j = 0; j < i; j++) arr[j] > arr[j + 1] && ([arr[j], arr[j + 1]] = [arr[j + 1], arr[j]])
   return arr
 }
 
