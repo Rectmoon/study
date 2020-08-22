@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文字</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+      /*
+        设置字体样式：context.font　　
+        水平对齐方式：context.textAlign　（ 属性值有 start、end、right、center）
+        垂直对齐方式：context.textBaseline　　（属性值有 top、hanging、middle、alphabetic、ideographic、bottom）
+        计算字体长度(px)：var length = context.measureText(text)　　（只能计算长度，不能计算高度）
+        填充文字：context.fillText(text,x,y)  
+        绘制文字轮廓 context.strokeText(text,x,y)
+      */
+
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      ctx.fillStyle = '#ffcc00'
+      ctx.fillRect(10, 10, 500, 400)
+      ctx.fillStyle = '#ff0000'
+      ctx.strokeStyle = 'orange'
+
+      ctx.font = '20px Helvetica'
+      ctx.textAlign = 'start'
+      ctx.textBaseline = 'top'
+
+      const txt1 = '1 HTML5 CANVAS'
+      ctx.fillText(txt1, 10, 10)
+      const length1 = ctx.measureText(txt1)
+      ctx.fillText('长为' + length1.width + 'px', 10, 40)
+
+      ctx.font = 'italic 23px sans-serif'
+      const txt2 = '2 HTML5 CANVAS'
+      ctx.fillText(txt2, 10, 80)
+      const length2 = ctx.measureText(txt2)
+      ctx.fillText('长为' + length2.width + 'px', 10, 110)
+
+      ctx.font = 'bold 20px sans-serif'
+      const txt3 = '3 HTML5 CANVAS'
+      ctx.fillText(txt3, 10, 160)
+      length3 = ctx.measureText(txt3)
+      ctx.fillText('长为' + length3.width + 'px', 10, 190)
+
+      ctx.font = 'bold 20px sans-serif'
+      const txt4 = '4 HTML5 CANVAS'
+      ctx.strokeText(txt4, 10, 230)
+      length4 = ctx.measureText(txt4)
+      ctx.strokeText('长为' + length4.width + 'px', 10, 260)
+    </script>
+  </body>
+</html>

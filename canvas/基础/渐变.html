@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>渐变</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <canvas id="canvas2" width="400" height="300"></canvas>
+    <canvas id="canvas3" width="400" height="300"></canvas>
+    <canvas id="canvas4" width="400" height="300"></canvas>
+    <canvas id="canvas5" width="400" height="300"></canvas>
+    <canvas id="canvas6" width="400" height="300"></canvas>
+
+    <script>
+      /*
+      createLinearGradient(xStart,yStart,xEnd,yEnd)
+    　  xstart: 渐变开始点x坐标
+        ystart: 渐变开始点y坐标
+        xEnd: 渐变结束点x坐标
+        yEnd: 渐变结束点y坐标
+
+      addColorStop(offset,color)
+        offset: 设定的颜色离渐变结束点的偏移量(0~1)
+        color: 渐变颜色
+      */
+
+      function getContextById (id) {
+        const canvas = document.getElementById(id)
+        return canvas.getContext('2d')
+      }
+
+      ;(function () {
+        const ctx = getContextById('canvas')
+        const grd = ctx.createLinearGradient(50, 50, 300, 200)
+
+        grd.addColorStop(0, 'orange')
+        grd.addColorStop(0.2, 'red')
+        grd.addColorStop(0.4, 'yellow')
+        grd.addColorStop(0.6, 'green')
+        grd.addColorStop(0.8, 'blue')
+        grd.addColorStop(1, 'indigo')
+
+        ctx.fillStyle = grd
+        ctx.fillRect(10, 10, 300, 200)
+      })()
+    </script>
+
+    <script>
+      ;(function () {
+        const ctx2 = getContextById('canvas2')
+
+        const grd2 = ctx2.createLinearGradient(0, 0, 300, 0)
+        grd2.addColorStop(0, '#ff0000')
+        grd2.addColorStop(0.2, '#ff00ff')
+        grd2.addColorStop(0.4, '#ffff00')
+        grd2.addColorStop(0.6, '#00ffff')
+        grd2.addColorStop(0.8, 'pink')
+        grd2.addColorStop(1, '#0000ff')
+        ctx2.fillStyle = grd2
+        ctx2.fillRect(10, 10, 300, 200)
+      })()
+    </script>
+
+    <script>
+      /*
+       径向（发散）渐变  createLinearGradient(xStart,yStart,radiusStart,xEnd,yEnd,radiusEnd)
+
+          xStart: 发散开始圆心x坐标
+          yStart: 发散开始圆心y坐标
+          radiusStart: 发散开始圆半径
+          xEnd: 发散结束圆心x坐标
+          yEnd: 发散结束圆心y坐标
+          radiusEnd: 发散结束圆半径
+      */
+      ;(function () {
+        const ctx3 = getContextById('canvas3')
+        const grd = ctx3.createRadialGradient(150, 150, 0, 150, 150, 100)
+
+        grd.addColorStop(0, 'orange')
+        grd.addColorStop(1, 'indigo')
+
+        ctx3.fillStyle = grd
+        ctx3.beginPath()
+        ctx3.arc(150, 150, 100, 0, Math.PI * 2, true)
+        ctx3.closePath()
+        ctx3.fill()
+      })()
+      ;(function () {
+        const ctx4 = getContextById('canvas4')
+
+        const grd = ctx4.createRadialGradient(180, 70, 00, 180, 70, 150)
+
+        grd.addColorStop(0, 'rgb(255,80,0)')
+        grd.addColorStop(1, 'rgb(255,200,10)')
+        ctx4.fillStyle = grd
+        ctx4.beginPath()
+        ctx4.arc(150, 120, 100, 0, Math.PI * 2, true)
+        ctx4.closePath()
+        ctx4.fill()
+      })()
+      ;(function () {
+        const ctx5 = getContextById('canvas5')
+        const grd = ctx5.createRadialGradient(50, 50, 0, 200, 200, 150)
+
+        grd.addColorStop(0.1, 'orange')
+        grd.addColorStop(0.8, 'indigo')
+        grd.addColorStop(1, 'gold')
+        ctx5.fillStyle = grd
+        ctx5.strokeStyle = 'green'
+        ctx5.lineWidth = 10
+
+        ctx5.fillRect(10, 10, 200, 200)
+        ctx5.strokeRect(10, 10, 200, 200)
+      })()
+      ;(function () {
+        const ctx6 = getContextById('canvas6')
+
+        const grd = ctx6.createRadialGradient(50, 150, 100, 300, 150, 50)
+        grd.addColorStop(0, '#ff0000')
+        grd.addColorStop(0.2, '#ff00ff')
+        grd.addColorStop(0.4, '#ffff00')
+        grd.addColorStop(0.6, '#00ffff')
+        grd.addColorStop(0.8, 'pink')
+        grd.addColorStop(1, '#0000ff')
+        ctx6.fillStyle = grd
+        ctx6.fillRect(10, 10, 300, 260)
+        ctx6.strokeRect(10, 10, 300, 260)
+      })()
+    </script>
+  </body>
+</html>

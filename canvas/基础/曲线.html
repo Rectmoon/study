@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>曲线</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <script>
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      /*
+      绘制贝塞尔曲线 context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y) 
+        cp1x:第一个控制点x坐标
+        cp1y:第一个控制点y坐标
+        cp2x:第二个控制点x坐标
+        cp2y:第二个控制点y坐标
+        x:终点x坐标
+        y:终点y坐标
+
+      绘制二次样条曲线 context.quadraticCurveTo(qcpx,qcpy,qx,qy)
+        qcpx:二次样条曲线控制点x坐标
+        qcpy:二次样条曲线控制点y坐标
+        qx:二次样条曲线终点x坐标
+        qy:二次样条曲线终点y坐标
+      */
+
+      ctx.moveTo(50, 50)
+      ctx.lineWidth = 10
+      ctx.strokeStyle = 'orange'
+      ctx.bezierCurveTo(50, 50, 500, 50, 150, 150)
+      ctx.stroke()
+
+      ctx.moveTo(50, 200)
+      ctx.bezierCurveTo(50, 200, 150, 100, 150, 150)
+      ctx.stroke()
+      ctx.quadraticCurveTo(150, 250, 250, 250)
+      ctx.stroke()
+    </script>
+  </body>
+</html>

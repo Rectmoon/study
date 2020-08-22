@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>阴影</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <canvas id="canvas1" width="400" height="300"></canvas>
+
+    <script>
+      /*
+        context.shadowOffsetX : 阴影的横向位移量（默认值为0）
+        context.shadowOffsetY : 阴影的纵向位移量（默认值为0）
+        context.shadowColor : 阴影的颜色
+        context.shadowBlur : 阴影的模糊级别（值越大越模糊）
+      */
+
+      ;(function () {
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+
+        ctx.shadowOffsetX = 8
+        ctx.shadowOffsetY = 8
+        ctx.shadowColor = 'orange'
+        ctx.fillStyle = '#ffcc00'
+        ctx.fillRect(10, 10, 200, 100)
+      })()
+    </script>
+
+    <script>
+      ;(function () {
+        const canvas1 = document.getElementById('canvas1')
+        const ctx = canvas1.getContext('2d')
+
+        ctx.shadowOffsetX = 8
+        ctx.shadowOffsetY = 8
+        ctx.shadowColor = 'rgba(0,0,0,.9)'
+        ctx.shadowBlur = 20
+        ctx.fillStyle = 'indigo'
+        ctx.fillRect(10, 10, 200, 100)
+      })()
+    </script>
+  </body>
+</html>

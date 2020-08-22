@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圆角</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      ctx.beginPath()
+      ctx.moveTo(100, 50)
+      ctx.lineTo(180, 80)
+      ctx.closePath()
+      ctx.lineWidth = 8
+      ctx.strokeStyle = '#5f27cd'
+      ctx.lineJoin = 'round'
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(100, 120)
+      ctx.lineTo(100, 200)
+      ctx.lineTo(200, 200)
+      ctx.lineTo(200, 120)
+      ctx.strokeStyle = 'rgba(0,255,0,0.5)'
+      ctx.closePath()
+      ctx.lineWidth = 10
+      ctx.lineJoin = 'miter'
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.moveTo(240, 120)
+      ctx.lineTo(240, 200)
+      ctx.lineTo(300, 200)
+      ctx.lineTo(300, 120)
+      ctx.strokeStyle = '#ff9f43'
+      ctx.closePath()
+      ctx.lineWidth = 10
+      ctx.lineJoin = 'bevel'
+      ctx.stroke()
+    </script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>对角线</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      ctx.strokeStyle = '#8e44ad'
+      ctx.moveTo(0, 0)
+      ctx.lineTo(400, 300)
+      ctx.stroke()
+    </script>
+  </body>
+</html>

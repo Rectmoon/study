@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图像</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="800"></canvas>
+
+    <script>
+      /*
+        context.drawImage(image,x,y)
+            x: 图像左上顶点的x坐标
+            y: 图像左上顶点的y坐标
+
+        context.drawImage(image,x,y,w,h)
+          x: 图像左上顶点的x坐标
+          y: 图像左上顶点的y坐标
+          w: 绘制图像的宽度
+          h: 绘制图像的高度
+
+        context.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh):选取图像的一部分矩形区域进行绘制
+          sx：图像上的x坐标
+          sy：图像上的y坐标
+          sw：矩形区域的宽度
+          sh：矩形区域的高度
+          dx：画在canvas的x坐标
+          dy：画在canvas的y坐标
+          dw：画出来的宽度
+          dh：画出来的高度
+
+
+        context.createPattern(image,type)  
+          type: no-repeat: 不平铺repeat-x: 横方向平铺　repeat-y: 纵方向平铺　repeat: 全方向平铺
+      */
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      const img = new Image()
+      img.src = 'https://picsum.photos/400/300?random=1'
+      img.onload = function () {
+        ctx.drawImage(img, 10, 10)
+        ctx.drawImage(img, 600, 10, 400, 300)
+        ctx.drawImage(img, 30, 30, 150, 120, 10, 400, 400, 320)
+
+        const ptrn = ctx.createPattern(img, 'repeat')
+        ctx.fillStyle = ptrn
+        ctx.fillRect(450, 400, 400, 300)
+      }
+
+      //
+    </script>
+  </body>
+</html>

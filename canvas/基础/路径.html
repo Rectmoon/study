@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>路径</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      ctx.beginPath()
+      ctx.arc(50, 50, 80, 0, Math.PI / 2)
+      ctx.closePath()
+      ctx.fillStyle = '#eb4d4b'
+      ctx.fill()
+
+      ctx.beginPath()
+      ctx.arc(200, 50, 80, 0, Math.PI / 2)
+      ctx.closePath()
+      ctx.strokeStyle = '#686de0'
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.arc(50, 200, 80, 0, Math.PI / 2)
+      ctx.closePath()
+      ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'
+      ctx.strokeStyle = '#686de0'
+      ctx.fill()
+      ctx.stroke()
+      // 如果没有重新beginPath那么前面的路劲会保留
+      // ctx.beginPath()
+      ctx.arc(150, 180, 50, 0, Math.PI / 2, false)
+      ctx.arc(210, 220, 50, 0, Math.PI / 2, false)
+      // ctx.closePath()
+
+      ctx.fillStyle = 'orange'
+      ctx.fill()
+    </script>
+  </body>
+</html>

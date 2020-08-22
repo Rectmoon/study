@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>text-stroke-文字描边</title>
+    <style>
+      .container {
+        text-align: center;
+        font-family: Verdana;
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      .stroke {
+        color: #fff;
+      }
+
+      .stroke1 {
+        -webkit-text-stroke: 1px greenyellow;
+      }
+
+      .stroke2 {
+        text-shadow: greenyellow 1px 0 0, greenyellow 0 1px 0,
+          greenyellow -1px 0 0, greenyellow 0 -1px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <p>没有添加描边</p>
+      <p class="stroke stroke1">添加了字体描边</p>
+    </div>
+
+    <div class="container">
+      <p>没有添加描边</p>
+      <p class="stroke stroke2">添加了字体描边</p>
+    </div>
+  </body>
+</html>

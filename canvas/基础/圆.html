@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>圆</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script>
+      const canvas = document.getElementById('canvas')
+      const ctx = canvas.getContext('2d')
+
+      /*
+        ctx.arc(x,y,radius,startAngle,endAngle,anticlockwise)
+        x :圆的中心的 x 坐标
+        y :圆的中心的 y 坐标
+        r :圆的半径
+        sAngle :起始角，以弧度计（弧的圆形的三点钟位置是 0 度）
+        eAngle :结束角，以弧度计
+        counterclockwise :可选。规定应该逆时针还是顺时针绘图。false为 顺时针，true为逆时针
+    */
+      ctx.strokeStyle = '#F97F51'
+      ctx.beginPath()
+      ctx.arc(50, 50, 30, 0, 2 * Math.PI)
+      ctx.stroke()
+
+      ctx.strokeStyle = '#82589F'
+      ctx.beginPath()
+      ctx.arc(150, 50, 30, 0, 0.75 * Math.PI, true)
+      ctx.stroke()
+
+      ctx.strokeStyle = '#0be881'
+      ctx.beginPath()
+      ctx.arc(240, 50, 30, 0, 0.75 * Math.PI)
+      ctx.stroke()
+
+      ctx.fillStyle = '#ffa801'
+      ctx.strokeStyle = '#485460'
+      ctx.beginPath()
+      ctx.arc(50, 150, 30, 0, 2 * Math.PI, true)
+      ctx.fill()
+      ctx.stroke()
+
+      ctx.fillStyle = '#eb4d4b'
+      ctx.strokeStyle = '#f0932b'
+      ctx.beginPath()
+      ctx.arc(50, 240, 30, 0, 2 * Math.PI, true)
+      ctx.closePath()
+      ctx.fill()
+      ctx.stroke()
+
+      ctx.fillStyle = '#be2edd'
+      ctx.strokeStyle = '#7ed6df'
+      ctx.beginPath()
+      ctx.arc(50, 240, 20, 0, 2 * Math.PI, true)
+      ctx.closePath()
+      ctx.fill()
+      ctx.stroke()
+    </script>
+  </body>
+</html>
