@@ -1,0 +1,38 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: orange;
+  line-height: 40px;
+}
+
+#app {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex: 1;
+}
+
+.left {
+  background-color: indianred;
+  flex: 2;
+}
+
+.main {
+  background-color: lightskyblue;
+  flex: 8;
+}
