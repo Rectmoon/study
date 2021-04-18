@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padding Percent</title>
+  <style>
+    /*
+      在css里面，padding-top,padding-bottom,margin-top,margin-bottom取值为百分比的时候，参照的是父元素的宽度。
+      比如：父元素宽度是100px, 子元素padding-top:50%，那么padding-top的实际值就是100*50%=50px
+      这个小小的知识点，其实有很大的用处，应用也很广泛:
+        1. 进行提前占位，避免资源加载时候的闪烁，还可以让高度自适应;
+        2. 实现宽高等比
+    */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      list-style: none;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 600px;
+    }
+
+    .box {
+      width: 25%;
+      position: relative;
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+
+    .placeholder:after {
+      content: '';
+      display: block;
+      padding-top: 138%;
+    }
+
+    .img {
+      position: absolute;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="box placeholder"><img class="img" src="images/1.jpg"></div>
+    <div class="box placeholder"><img class="img" src="images/2.png"></div>
+    <div class="box placeholder"><img class="img" src="images/3.jpg"></div>
+  </div>
+</body>
+
+</html>

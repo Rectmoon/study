@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transform Variable</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .btn {
+      display: block;
+      background-color: indigo;
+      margin: 2rem 4rem;
+      width: 100px;
+      height: 25px;
+      border: none;
+      border-radius: .25rem;
+    }
+
+    .btn {
+      transform:
+        scale(var(--scale, 1.2)) rotate(var(--rotation, 10deg));
+    }
+
+    .big {
+      --scale: 2.5;
+    }
+
+    .tilted {
+      --rotation: -10deg
+    }
+  </style>
+
+</head>
+
+<body>
+  <button class="btn"></button>
+  <button class="btn big"></button>
+  <button class="btn tilted"></button>
+  <button class="btn big tilted"></button>
+</body>
+
+</html>
