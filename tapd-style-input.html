@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    [contenteditable]:focus {
+      outline: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div>
+    <input type="text" value="123；456" id='input'>
+  </div>
+
+  <script>
+    function debounce(fn, delay) {
+      var ctx;
+      var args;
+      var timer = null;
+
+      var later = function() {
+        fn.apply(ctx, args);
+        // 当事件真正执行后，清空定时器
+        timer = null;
+      };
+
+      return function() {
+        ctx = this;
+        args = arguments;
+        // 当持续触发事件时，若发现事件触发的定时器已设置时，则清除之前的定时器
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+
+        // 重新设置事件触发的定时器
+        timer = setTimeout(later, delay);
+      };
+    }
+
+
+    const input = document.getElementById('input')
+    const splitor = '；'
+
+    function getCurrentInfo(value, currentPos) {
+      const arr = value.split(splitor)
+
+      let currentIndex = 0, total = 0
+
+      for (let i = 0, len = arr.length; i < len; i++) {
+        const currentLength = arr[i].length + splitor.length
+
+        if (total + currentLength < currentPos) {
+          total += currentLength
+        } else {
+          currentIndex = i
+          break
+        }
+      }
+
+      return {
+        arr,
+        currentIndex
+      }
+    }
+
+    input.addEventListener('click', e => {
+      const currentPos = getCursorPosition(e.target)
+      const { arr, currentIndex } = getCurrentInfo(e.target.value, currentPos)
+
+      if (currentPos !== 0) {
+        setCursorPositiion(e.target, arr.reduce((acc, next, index) => {
+          if (index <= currentIndex) {
+            acc += next.length + splitor.length
+          }
+
+          return acc
+        }, 0))
+      }
+    })
+
+    input.addEventListener('input', debounce((e) => {
+      console.log({ e: e.target.value })
+    }), 200)
+
+    input.addEventListener('keyup', (e) => {
+      const currentPos = getCursorPosition(e.target)
+      const { arr, currentIndex } = getCurrentInfo(e.target.value, currentPos)
+
+      let destinationPos = currentPos
+
+      switch (e.which) {
+        case 37:
+          destinationPos -= (arr[currentIndex].length)
+          break
+        case 39:
+          destinationPos += (arr[currentIndex].length)
+          break
+        case 8:
+          destinationPos -= (arr[currentIndex].length)
+          e.target.value = arr.filter((item) => item !== arr[currentIndex]).join(';')
+          break
+        default:
+          break
+      }
+
+      setCursorPositiion(e.target, destinationPos)
+    })
+
+
+    function getCursorPosition(ctrl) {
+      let cursorPos = 0;
+      if (document.selection) {
+        var selectRange = document.selection.createRange();
+        selectRange.moveStart('character', -ctrl.value.length);
+        cursorPos = selectRange.text.length;
+      } else if (ctrl.selectionStart || ctrl.selectionStart == '0') {
+        cursorPos = ctrl.selectionStart;
+      }
+
+      return cursorPos;
+
+    }
+
+    function setCursorPositiion(ctrl, pos) {
+      if (ctrl.setSelectionRange) {
+        ctrl.focus()
+        ctrl.setSelectionRange(pos, pos)
+      } else if (ctrl.createTextRange) {
+        const range = ctrl.createTextRange()
+        range.collapse(true)
+        range.moveEnd('character', pos)
+        range.moveStart('character', pos)
+        range.select()
+      }
+    }
+  </script>
+
+</body>
+
+</html>
